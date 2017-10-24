@@ -8,10 +8,10 @@ public class Grid {
 	
 	public void update(){
 		for(GridBubble b: LL){
-			if( (((gunBub.xCoord - bubbleImageWidth) <= b.xCoord) || (b.xCoord <= (gunBub.xCoord + bubbleImageWidth)))
+			if( (((gunBub.xCoord - bubbleImageWidth) <= b.xCoord) && (b.xCoord <= (gunBub.xCoord + bubbleImageWidth)))
 				&&
-				(((gunBub.yCoord - bubbleImageHeight) <= b.yCoord) || (b.yCoord <= (gunBub.yCoord + bubbleImageHeight))) ){
-				//do something
+				(((gunBub.yCoord - bubbleImageHeight) <= b.yCoord) && (b.yCoord <= (gunBub.yCoord + bubbleImageHeight))) ){
+				//do something...
 			}
 		}
 	}
