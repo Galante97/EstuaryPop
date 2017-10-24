@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class Grid {
+public class PopModel {
 	LinkedList<GridBubble> LL = new LinkedList<GridBubble>();
 	int bubbleImageHeight;
 	int bubbleImageWidth;
@@ -21,5 +21,4 @@ public class Grid {
 			b.yCoord = b.yCoord + bubbleImageHeight;			
 			}
 	}
-
 }
