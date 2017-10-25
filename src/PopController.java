@@ -1,3 +1,4 @@
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,7 +16,8 @@ public class PopController {
 	public String objective2 = "no objective set";
 	public String objective3 = "no objective set";
 
-
+ 
+	//creates a new game with input on difficulty
 	public PopController(int diff) {
 		this.difficulty = diff;
 	}
@@ -23,7 +25,12 @@ public class PopController {
 	public static void main(String[] args) {
 		PopController Game = new PopController(EASY);
 		Game.setObjectives();
-
+		
+		 EventQueue.invokeLater(() -> {
+	            PopView frame = new PopView();
+	            frame.setVisible(true);
+	        });
+		
 		
 	}
 	
@@ -31,19 +38,19 @@ public class PopController {
 	public void setObjectives() {
 		Objective obj = new Objective();
 	
-		objective1 = obj.getObjective();
-		objective2 = obj.getObjective();
+		objective1 = obj.setObjective();
+		objective2 = obj.setObjective();
 		
 		//make sure objective 2 != objective 2
 		while (objective2 == objective1) {
-			objective2 = obj.getObjective();
+			objective2 = obj.setObjective();
 		}
 		
-		objective3 = obj.getObjective();
+		objective3 = obj.setObjective();
 		
 		//make sure objective 3 != objective 2/3
 		while (objective3 == objective1 || objective3 == objective2) { 
-			objective3 = obj.getObjective();
+			objective3 = obj.setObjective();
 		}
 		
 		Objectives.add(objective1);
