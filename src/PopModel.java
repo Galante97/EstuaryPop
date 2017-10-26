@@ -1,9 +1,11 @@
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class PopModel {
 	
 	int difficulty;
-	Objective[] objectives;
+	ArrayList<String> objectives = new ArrayList<String>();
 	Bubble[][] grid;
 	Bubble[] gunList;
 	//gunPosition
