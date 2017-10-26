@@ -1,7 +1,7 @@
-/Game.class
-/Grid.class
-/GridBubble.class
-/Gun.class
-/GunBubble.class
-/Sidebar.class
+/Objective.class
+/PopController.class
+/PopModel.class
+/PopTests.class
+/PopView.class
 /bubble.class
+/Bubble.class
