@@ -2,10 +2,16 @@ import java.util.LinkedList;
 
 public class PopModel {
 	
-	int bubbleImageHeight;
-	int bubbleImageWidth;
-	Bubble gunBub;
-	
+	int difficulty;
+	Objective[] objectives;
+	Bubble[][] grid;
+	Bubble[] gunList;
+	//gunPosition
+	//time
+	int score;
+	boolean obj0done = false;
+	boolean obj1done = false;
+	boolean obj2done = false;
 	
 	
 	public void update(){
@@ -51,10 +57,10 @@ public class PopModel {
 	}
 	
 	public void moveGun(){
-		//continuously changes the position of the gun until you 'click' at which point the loop is broken and shoot() is called
+		//waits for you to 'click' and then calls shoot with a time parameter
 	}
 	
-	public void shoot(){
+	public void shoot(){//time will be a parameter
 		//determines the location the bubble will land and calls checkMatch()
 	}
 	
