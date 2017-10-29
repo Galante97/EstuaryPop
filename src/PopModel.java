@@ -14,21 +14,25 @@ public class PopModel {
 	boolean obj0done = false;
 	boolean obj1done = false;
 	boolean obj2done = false;
+	int bubbleImageWidth;
+	int bubbleImageHeight;
 	
-	
-	public void update(){
-		for(Bubble b: LL){
-			if( bubbleContact(b) ){
-				// do something!
+	public void checkMatch(){ // not complete yet
+		for(Bubble[] bArr: grid){
+			for (Bubble b: bArr){
+				if( updateHelper1(b, gunList[0]) ){ // gunbubble has come into contact with gridbubble
+					// do something!
+				}
 			}
 		}
 	}
 	
-	//like checkMatch() ???
-	public boolean bubbleContact(Bubble bub){ // is there gun bubble and gridbubble contact
-		if( (((gunBub.xCoord - bubbleImageWidth) <= bub.xCoord) && (bub.xCoord <= (gunBub.xCoord + bubbleImageWidth)))
+	//like checkMatch() ??? no just breaking down checkmatch into several helpers that can be each be tested so the 
+	// the composite method, checkmatch, can be guaranteed to work -Sutton
+	public boolean updateHelper1(Bubble bub1, Bubble bub2){ // checks bubble contact between gunbubble and gridbubble
+		if( (((bub2.xCoord - bubbleImageWidth) <= bub1.xCoord) && (bub1.xCoord <= (bub2.xCoord + bubbleImageWidth)))
 				&&
-				(((gunBub.yCoord - bubbleImageHeight) <= bub.yCoord) && (bub.yCoord <= (gunBub.yCoord + bubbleImageHeight))) ){
+				(((bub2.yCoord - bubbleImageHeight) <= bub1.yCoord) && (bub1.yCoord <= (bub2.yCoord + bubbleImageHeight))) ){
 			return true;	
 		}else{
 			return false;
@@ -37,10 +41,12 @@ public class PopModel {
 	
 	
 	// like shift
-	public void moveBubblesDown(){ // shift gridbubbles down screen by one image height to make room for next new row
-		for(Bubble b: LL){
+	public void shift(){ // shift gridbubbles down screen by one image height to make room for next new row
+		for(Bubble[] bArr: grid){
+			for(Bubble b: bArr){
 			b.yCoord = b.yCoord + bubbleImageHeight;			
 			}
+		}
 	}
 	
 	////////////////////////////////////////
@@ -66,13 +72,9 @@ public class PopModel {
 		//determines the location the bubble will land and calls checkMatch()
 	}
 	
-	public void checkMatch(){
-		//somehow loops to check for matching bubbles and then deletes them from the grid list if they match
-	}
 	
-	public void shift(){
-		//shifts the grid down one row periodically
-	}
+	
+	
 	
 	///////////////////////////////////////
 }
