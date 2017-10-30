@@ -1,14 +1,12 @@
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-
-
+import java.util.Random;
 
 public class PopModel {
 	
 	int difficulty;
-	ArrayList<String> objectives = new ArrayList<String>();
+	int[] objectives = {0,0,0};
 	Bubble[][] grid;
 	Bubble[] gunList;
 	int score;
@@ -40,11 +38,48 @@ public class PopModel {
 	int contactX;
 	int contactY;
 
+	////////////////////////////////////////////////////
+	
+	public PopModel(int diff){
+		difficulty = diff;
+	}
+	
+	////////////////////////////////////////////////////
+	
+	//initializes the board
+	//pics three objectives from the objective class and randomly gives each bubble an objective
+	public void setGrid(){ 
+		Random rand = new Random();
+		while(objectives[0]!=objectives[1] && objectives[0]!=objectives[2] && objectives[1]!=objectives[2]){//makes sure the objectives arent the same (poorly written but works)
+			objectives[0] = rand.nextInt(6);
+			objectives[1] = rand.nextInt(6);
+			objectives[2] = rand.nextInt(6);
+		}//close while
+		for(int i = 0; i<startGridRows; i++) {
+			for (int j = 0; j<gridColumns; j++) {
+				r = rand.nextInt(3);
+				grid[i][j] = new Bubble(i, j, false, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
+			}//close for
+		}//close for
+	}
+	
+	//only used at the beginning
+	//adds bubbles to the gun list until it is full
+	//randomly chooses one of the prechoses objectives for each bubble
+	public void loadGun(){
+		for(int i = 0; i < gunList.length; i++) { 
+			Random rand = new Random();
+			r = rand.nextInt(3)
+			gunList[i] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
+		}//close for
+	}
+	
+	/////////////////////////////////////////////////////////
+	
 	//set from controller
 	public void setClicked(boolean click) {
 		this.clicked = click;
 	}
-	
 	
 	public void checkMatch(){ // not complete yet
 		for(Bubble[] bArr: grid){
@@ -70,34 +105,18 @@ public class PopModel {
 	}
 	
 	
-	// like shift
-	public void shift(){ // shift gridbubbles down screen by one image height to make room for next new row
-		for(Bubble[] bArr: grid){
-			for(Bubble b: bArr){
-			b.yCoord = b.yCoord + bubbleImageHeight;			
-			}
-		}
-	}
+// **~~lets not worry about this for the alpha~~**	
+//	public void shift(){ // shift gridbubbles down screen by one image height to make room for next new row
+//		for(Bubble[] bArr: grid){
+//			for(Bubble b: bArr){
+//				b.yCoord += 1;			
+//			}//close for
+//		}//close for
+//		for(Bubble m : grid[0]){
+//			
+//		}
+//	}
 	 
-	public void chooseObjectives(){
-		o1.setObjective();
-		o2.setObjective();
-		o3.setObjective();
-	}
-	
-	public void setGrid(){
-		Objective obj = new Objective(); 
-		for(int i = 0; i<gridRows; i++) {
-			for (int j = 0; j<gridColumns; j++) {
-				while(i<startGridRows) { //fill starting rows with Bubbles with Objectives
-					obj.setObjective();
-					grid[i][j] = new Bubble(gridBubblesX + (i*gridBubblesX), gridBubblesY + (j*gridBubblesY), false, obj);
-				} //fill the rest with null objectives
-				grid[i][j] = new Bubble(gridBubblesX + (i*gridBubblesX), gridBubblesY + (j*gridBubblesY), false, null);
-			}
-		}
-			
-	}
 	
 	//checks to see where in the grid the bubble landed compared to the one it made contact with
 	//helper for shoot
@@ -129,22 +148,14 @@ public class PopModel {
 		}
 	}
 	
-	//only used at the beginning
-	//adds bubbles to the gun list until it is full
-	public void loadGun(){
-		Objective obj = new Objective();
-		for(int i = 0; i < gunList.length; i++) {
-			obj.setObjective(); 
-			gunList[i] = new Bubble(gunBubblesX + (i*gunBubblesX), gunBubblesY, true, obj);
-		}
-	}
-	
 	//reloads when we shoot
 	public void reloadGun() {
-		for(int i=0; i<gunList.length-1; i++) {
+		for(int i = 0; i < gunList.length-1; i++) {//moves the bubbles in the list up one indice
 			gunList[i] = gunList[i+1];
-		}
-		gunList[gunList.length-1] = new Bubble(gunList[gunList.length-2].xCoord + gunBubblesX, gunBubblesY, true, new Objective());
+		}//close for
+		Random rand = new Random();
+		int r = rand.nextInt(3)
+		gunList[gunList.length-1] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));//adds a new bubble to the end
 	}
 	
 	//oscillation of gun that applies clicked as a mouse listener
@@ -244,5 +255,6 @@ public class PopModel {
 		reloadGun(); //removes old gunBubble and reloads gun
 		
 	}
+	
 
 }
