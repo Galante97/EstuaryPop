@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,44 +22,71 @@ public class PopView extends JFrame implements MouseListener {
 	private boolean clicked = false;
 
 	// constructor
-	public PopView(PopModel Model) {
+	public PopView(PopModel Model, JFrame frame) {
 		this.model = Model;
+		this.frame = frame;
 
 	}
-	
+
 	public boolean getClicked() {
 		return clicked;
 	}
-	
+
 	public void setClicked(boolean click) {
 		clicked = click;
 	}
 
 	// sets up frame and calls all draw functions
 	public void draw() {
-		frame = new JFrame();
-		frame.setTitle("Estuary Pop!");
+		// drawSidePanel();
+		// drawObjectives();
+		// drawGamePanel();
 
-		drawSidePanel();
-		drawObjectives();
+		// drawGunBubbles();
+		drawGridBubbles();
 
-		drawGamePanel();
-
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setSize(1200, 800);// 800 width and 1200 height
-		frame.setLayout(null);// using no layout managers
-		frame.setVisible(true);// making the frame visible
+		setTitle("Estuary Pop1111!");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 
 		System.out.println("Everything Drawn");
 	}
+
+	public void drawGunBubbles() {
+		for (int i = 0; i <= 20; i++) {
+			model.grid[i][0] = new Bubble(i*50, 0);
+			i++;
+		}
+
+	}
+
+	
+	
+	@Override
+	public void paint(Graphics g) {
+		System.out.println("paint");
+		for (int i = 0; i < 20; i++) {
+			
+			g.drawImage(model.grid[0][0].image, i*50, model.grid[0][0].yCoord, null);
+		}
+		
+
+	} 
+	
+	public void drawGridBubbles() {
+		//add(new Bubble(0, 0));
+		model.grid[0][0] = new Bubble(0, 0);
+		
+	}
+	
 
 	public void drawGamePanel() {
 		gamePanel = new JPanel();
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		gamePanel.addMouseListener(this);
-		frame.add(gamePanel);
-		
+		add(gamePanel);
 
 	}
 
@@ -69,7 +97,7 @@ public class PopView extends JFrame implements MouseListener {
 		sidePanel.setBackground(Color.LIGHT_GRAY);
 
 		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-		frame.add(sidePanel);
+		add(sidePanel);
 	}
 
 	// gets objectives from model and creates jlabels
@@ -92,27 +120,28 @@ public class PopView extends JFrame implements MouseListener {
 		objLabel3.setFont(font);
 
 	}
-	
 
-	//changes clicked to true if the mouse has been clicked in the game panel
+	// changes clicked to true if the mouse has been clicked in the game panel
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		clicked = true; if (clicked) {
-		System.out.println("click");
+		clicked = true;
+		if (clicked) {
+			System.out.println("click");
 		}
-	} 
+	}
 
+	// required functions for mouse listener - these do nothing
+	public void mousePressed(MouseEvent e) {
+	} // do nothing
 
-	//required functions for mouse listener - these do nothing
-	public void mousePressed(MouseEvent e) {} //do nothing
-	
-	public void mouseClicked(MouseEvent e) {	}//do nothing
-	
-	public void mouseEntered(MouseEvent e) {} //do nothing
+	public void mouseClicked(MouseEvent e) {
+	}// do nothing
 
-	public void mouseExited(MouseEvent e) {} //do nothing
-	
-	
+	public void mouseEntered(MouseEvent e) {
+	} // do nothing
+
+	public void mouseExited(MouseEvent e) {
+	} // do nothing
 
 }
