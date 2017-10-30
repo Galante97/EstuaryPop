@@ -30,6 +30,11 @@ public class PopModel {
 	int gridColumns;
 	int degree;
 	int bubbleSpeed;
+	boolean clicked = false;
+	
+	public void setClicked(boolean click) {
+		this.clicked = click;
+	}
 	
 	public void checkMatch(){ // not complete yet
 		for(Bubble[] bArr: grid){
@@ -80,38 +85,40 @@ public class PopModel {
 	}
 	
 	
-	//oscillation of gun
+	//oscillation of gun that applies clicked as a mouse listener
 	
 	public void moveGun(){
 		int r = gunImageHeight; // radius - it will be the gun image length
-		if (gunDirec == true) { //move right
-			degree += 1;
-		}
-		if (gunDirec == false) { //move left
-			degree -= 1;
-		}
+		while (clicked == false) {
+			if (gunDirec == true) { //move right
+				degree += 1;
+			}
+			if (gunDirec == false) { //move left
+				degree -= 1;
+			}
 		
-		gunXCoord = Math.sin(Math.toRadians(degree)) * r;
-		gunYCoord = Math.cos(Math.toRadians(degree)) * r;
+			gunXCoord = Math.sin(Math.toRadians(degree)) * r;
+			gunYCoord = Math.cos(Math.toRadians(degree)) * r;
 		
-		if (degree == 0) {
-    			gunDirec = true; //true means it is moving right
+			if (degree == 0) {
+				gunDirec = true; //true means it is moving right
+			}
+			if (degree == 180) {
+				gunDirec = false; //false means it is moving left
+			}
 		}
-		if (degree == 180) {
-		    gunDirec = false; //false means it is moving left
-		}
-	
+		shoot(); // if clicked, gun pauses and shoots
 	}
 			
 	
-	//ran during every frame of shoot - checks if we should stop the bubble - if we should, we return true
+	//ran during every frame of shoot - checks if it comes into contact with another bubble - if it does, we return true
 	public boolean stopBubble(Bubble b) {
 		if ((b.xCoord % (bubbleImageWidth/2) == 0) && (b.yCoord % (bubbleImageHeight/2) == 0)){ //sees if the xCoord and yCoord would place it into a 
 			//bubble spot so we don't have to check every single frame
 			if (degree < 45) { //check left half of grid - minimizes amount of bubbles to check
 				for (int i = 0; i < gridColumns; i+=bubbleImageWidth) {
 					for (int j = 0; j < gridRows/2; j+=bubbleImageHeight) {
-						if (checkContact(b, grid[i][j])){
+						if (checkContact(b, grid[i][j])) { //or y = image height
 							return true;
 						}
 					}
@@ -131,7 +138,7 @@ public class PopModel {
 	}
 
 	
-	//we want it to choose a certain spot in the grid so the x coordinate must round to the nearest to a certain number that is divisible by the bubbleImageWidth
+	//moves forward on an angle
 	public void moveBubbleForward(Bubble b) {
 		Long x = Math.round(bubbleSpeed * Math.sin(degree));
 		Long y = Math.round(bubbleSpeed * Math.cos(degree));
@@ -152,13 +159,15 @@ public class PopModel {
 		gunList[0].xCoord = x.intValue();
 		gunList[0].yCoord = y.intValue();
 		
+		clicked = false; //start moving the gun again
+		moveGun();
 		
-		while (stopBubble(gunList[0]) == false) {
+		while (stopBubble(gunList[0]) == false) { //move the bubble forward until it makes contact
 			moveBubbleForward(gunList[0]);
 		}
-		checkMatch();
+		checkMatch(); //check if there are any matches that need to be popped
 		
-		//determines the location the bubble will land and calls checkMatch()
+		
 	}
 
 }
