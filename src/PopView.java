@@ -1,7 +1,9 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,8 +20,14 @@ public class PopView extends JFrame implements MouseListener {
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
+
+	JPanel BubblePanel1;
+	JPanel BubblePanel2;
+
 	PopModel model;
 	private boolean clicked = false;
+
+	JPanel[][] panelGrid;
 
 	// constructor
 	public PopView(PopModel Model, JFrame frame) {
@@ -36,12 +44,13 @@ public class PopView extends JFrame implements MouseListener {
 		clicked = click;
 	}
 
+	
+
 	// sets up frame and calls all draw functions
 	public void draw() {
 		// drawSidePanel();
 		// drawObjectives();
 		// drawGamePanel();
-
 		// drawGunBubbles();
 		drawGridBubbles();
 
@@ -49,38 +58,34 @@ public class PopView extends JFrame implements MouseListener {
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
 
 		System.out.println("Everything Drawn");
 	}
 
-	public void drawGunBubbles() {
-		for (int i = 0; i <= 20; i++) {
-			model.grid[i][0] = new Bubble(i*50, 0);
-			i++;
-		}
-
-	}
-
-	
-	
-	@Override
-	public void paint(Graphics g) {
-		System.out.println("paint");
-		for (int i = 0; i < 20; i++) {
-			
-			//g.drawImage(model.grid[0][0].image, i*50, model.grid[0][0].yCoord, null);
-		
-		}
-		
-
-	} 
-	
 	public void drawGridBubbles() {
-		//add(new Bubble(0, 0));
-		//model.grid[0][0] = new Bubble(0, 0);
-		
-	}
+		panelGrid = new JPanel[model.gridRows][model.gridColumns];
+
+		for (int i = 0; i < model.gridColumns; i++) {
+			for (int j = 0; j < model.gridRows; j++) {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(i*50, j*50);
+				model.grid[i][j] = bub; //ADDS TO MODEL BUBBLE GRID LIST
+				panel.setBounds(i*50, j*50, 50, 56);
+				panel.setOpaque(false);
+				//panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(panel);
+				panel.add(bub,BorderLayout.NORTH);
+			}
+		}
+
 	
+
+	}
+
+	public void drawGunBubbles() {
+
+	}
 
 	public void drawGamePanel() {
 		gamePanel = new JPanel();

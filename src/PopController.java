@@ -18,8 +18,8 @@ public class PopController {
 		PopView view = new PopView(model, frame); // creates the window
 		view.draw();
 		view.setVisible(true);
-		
 		while (playAgain) {
+		
 			/*
 			 * model.setGrid(); model.loadGun(); while(!won){ model.moveGun(); } if(won){
 			 * //ask if you want to play again }

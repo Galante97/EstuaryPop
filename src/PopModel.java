@@ -7,7 +7,9 @@ public class PopModel {
 	
 	int difficulty;
 	int[] objectives = {0,0,0};
-	Bubble[][] grid;
+	int gridRows = 5; // must be initialized here
+	int gridColumns = 16; // must be initialized here
+	Bubble[][] grid = new Bubble[gridColumns][gridRows];
 	Bubble[] gunList;
 	int score;
 	boolean obj0done = false;
@@ -22,8 +24,6 @@ public class PopModel {
 	Boolean gunDirec = true;
 	double gunEdgeX = 0; 
 	double gunEdgeY = 0;
-	int gridRows; // must be initialized here
-	int gridColumns; // must be initialized here
 	int startGridRows; // number of rows we are starting with, must be initialized here
 	int degree;
 	int bubbleSpeed;

@@ -45,21 +45,18 @@ public class Bubble extends JPanel {
 	}
 
 	private void loadImage() {
-		System.out.println("loadImage");
 		ImageIcon ii = new ImageIcon("src/blueBubble.png");
 		image = ii.getImage();
-		System.out.println(ii.getIconWidth());
 		
-
 	}
 
-/*	@Override
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		System.out.println("paintComponent");
-		g.drawImage(image, xCoord, yCoord, null);
+		g.drawImage(image, 0,0, null);
 
-	} */
+	} 
 
 	public String toString() {
 		if (showGunImage) {
