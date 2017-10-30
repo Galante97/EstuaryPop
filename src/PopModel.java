@@ -8,7 +8,7 @@ public class PopModel {
 	int difficulty;
 	int[] objectives = {0,0,0};
 	int gridRows = 5; // must be initialized here
-	int gridColumns = 16; // must be initialized here
+	int gridColumns = 18; // must be initialized here
 	Bubble[][] grid = new Bubble[gridColumns][gridRows];
 	Bubble[] gunList;
 	int score;

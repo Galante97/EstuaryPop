@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,6 +11,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,13 +23,8 @@ public class PopView extends JFrame implements MouseListener {
 	JPanel sidePanel;
 	JPanel gamePanel;
 
-	JPanel BubblePanel1;
-	JPanel BubblePanel2;
-
 	PopModel model;
 	private boolean clicked = false;
-
-	JPanel[][] panelGrid;
 
 	// constructor
 	public PopView(PopModel Model, JFrame frame) {
@@ -44,17 +41,16 @@ public class PopView extends JFrame implements MouseListener {
 		clicked = click;
 	}
 
-	
-
 	// sets up frame and calls all draw functions
 	public void draw() {
-		// drawSidePanel();
+		drawSidePanel();
 		// drawObjectives();
-		// drawGamePanel();
-		// drawGunBubbles();
+		drawGunBubbles();
+		drawGun();
 		drawGridBubbles();
+		drawGamePanel();
 
-		setTitle("Estuary Pop1111!");
+		setTitle("Estuary Pop!");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -64,27 +60,52 @@ public class PopView extends JFrame implements MouseListener {
 	}
 
 	public void drawGridBubbles() {
-		panelGrid = new JPanel[model.gridRows][model.gridColumns];
-
 		for (int i = 0; i < model.gridColumns; i++) {
 			for (int j = 0; j < model.gridRows; j++) {
 				JPanel panel = new JPanel();
-				Bubble bub = new Bubble(i*50, j*50);
-				model.grid[i][j] = bub; //ADDS TO MODEL BUBBLE GRID LIST
-				panel.setBounds(i*50, j*50, 50, 56);
+				Bubble bub = new Bubble(i * 50, j * 50);
+				model.grid[i][j] = bub; // ADDS TO MODEL BUBBLE GRID LIST
+				panel.setBounds(i * 50 + 45, j * 50 + 12, 50, 56);
 				panel.setOpaque(false);
-				//panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				add(panel);
-				panel.add(bub,BorderLayout.NORTH);
+				panel.add(bub, BorderLayout.NORTH);
 			}
 		}
 
-	
+	}
+
+	public void drawGun() {
+		JPanel panel = new JPanel();
+		Gun gun = new Gun();
+		panel.setBounds(410, 649, 131, 120);
+		panel.setOpaque(false);
+		//panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(panel);
+		panel.add(gun, BorderLayout.NORTH);
 
 	}
 
 	public void drawGunBubbles() {
+		for (int i = 0; i < 8; i++) {
+			if (i == 1) {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(0, 0);
+				panel.setBounds(i * 50 + 550, 712, 50, 56);
+				panel.setOpaque(false);
+				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(panel);
+				panel.add(bub, BorderLayout.NORTH);
+			} else {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(0, 0);
+				panel.setBounds(i * 50 + 450, 712, 50, 56);
+				panel.setOpaque(false);
+				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(panel);
+				panel.add(bub, BorderLayout.NORTH);
 
+			}
+		}
 	}
 
 	public void drawGamePanel() {
@@ -110,7 +131,7 @@ public class PopView extends JFrame implements MouseListener {
 	public void drawObjectives() {
 		JLabel objLabel1 = new JLabel(model.objectives.get(0), null, JLabel.CENTER);
 		JLabel objLabel2 = new JLabel(model.objectives.get(1), null, JLabel.CENTER);
-		JLabel objLabel3 = new JLabel(model.objectives.get(2), null, JLabel.CENTER);
+		JLabel objLabel3 = new JLabel(model.objectives[2], null, JLabel.CENTER);
 
 		sidePanel.add(objLabel1);
 		sidePanel.add(objLabel2);
