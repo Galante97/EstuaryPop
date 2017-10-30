@@ -5,7 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -16,12 +18,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class PopView extends JFrame implements MouseListener {
+public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
+
+	JPanel BubbleInGun;
+	int BubbleInGunX;
+	int BubbleInGunY;
+	int mouseX;
+	int mouseY;
+
+	Timer timer;
+	private final int DELAY = 25;
 
 	PopModel model;
 	private boolean clicked = false;
@@ -56,6 +68,9 @@ public class PopView extends JFrame implements MouseListener {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 
+		timer = new Timer(DELAY, this);
+		timer.start();
+
 		System.out.println("Everything Drawn");
 	}
 
@@ -75,29 +90,51 @@ public class PopView extends JFrame implements MouseListener {
 	}
 
 	public void drawGun() {
+
 		JPanel panel = new JPanel();
 		Gun gun = new Gun();
 		panel.setBounds(410, 649, 131, 120);
 		panel.setOpaque(false);
-		//panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(panel);
 		panel.add(gun, BorderLayout.NORTH);
 
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (clicked == true) {
+		//	BubbleInGunX;
+		//	BubbleInGunY;
+		//	MouseX;
+		//	MouseY;
+			
+			BubbleInGunY--;
+			BubbleInGun.setBounds(mouseX, mouseY, 50, 56);
+		}
+
+	}
+
 	public void drawGunBubbles() {
+		BubbleInGunX = 450;
+		BubbleInGunY = 712;
+		
 		for (int i = 0; i < 8; i++) {
-			if (i == 1) {
-				JPanel panel = new JPanel();
-				Bubble bub = new Bubble(0, 0);
-				panel.setBounds(i * 50 + 550, 712, 50, 56);
+
+			JPanel panel = new JPanel();
+			Bubble bub = new Bubble(0, 0);
+			panel.setOpaque(false);
+
+			if (i == 0) {
+				BubbleInGun = panel;
+				panel.setBounds(i * 50 + 450, 712, 50, 56);
 				panel.setOpaque(false);
-				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				add(panel);
 				panel.add(bub, BorderLayout.NORTH);
+
+			} else if (i == 1) {
+				continue; // skip a space
 			} else {
-				JPanel panel = new JPanel();
-				Bubble bub = new Bubble(0, 0);
 				panel.setBounds(i * 50 + 450, 712, 50, 56);
 				panel.setOpaque(false);
 				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -154,8 +191,13 @@ public class PopView extends JFrame implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		clicked = true;
 		if (clicked) {
-			System.out.println("click");
+			System.out.println("Fire!");
+			 mouseX = e.getX();
+		     mouseY = e.getY();
+		    System.out.println(mouseX + "," + mouseY);//these co-ords are relative to the component
+
 		}
+		//clicked = false;
 	}
 
 	// required functions for mouse listener - these do nothing

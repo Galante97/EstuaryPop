@@ -16,7 +16,7 @@ public class PopModel {
 	boolean obj1done = false;
 	boolean obj2done = false;
 
-	int bubbleImageWidth; // need a getter for this
+	int bubbleImageWidth; // need a getter for this  
 	int bubbleImageHeight; // need a getter for this
 	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
 	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();	
@@ -297,9 +297,11 @@ public class PopModel {
 	
 	//ran during every frame of shoot - checks if it comes into contact with another bubble - if it does, we return true
 	//helper for shoot
-	public boolean stopBubble(Bubble b, int degr) {
-		if ((b.xCoord % (gridBubblesX) == 0) && (b.yCoord % (gridBubblesY) == 0)){ //sees if the xCoord and yCoord would place it into a 
+	public boolean stopBubble(Bubble b, int degr, int xMoved, int yMoved) {
+		if ((xMoved / (gridBubblesX) >= 1) && (yMoved / (gridBubblesY) >= 1)){ //sees if the xCoord and yCoord would place it into a 
 			//bubble spot so we don't have to check every single frame
+			xMoved = 0;
+			yMoved = 0; //reset these values
 			if (degr < 45) { //check left half of grid - minimizes amount of bubbles to check
 				for (int i = 0; i < gridColumns; i+=bubbleImageWidth) {
 					for (int j = 0; j < gridRows/2; j+=bubbleImageHeight) {
@@ -346,16 +348,18 @@ public class PopModel {
 	public void shoot(int degr, double xCo, double yCo){
 		Long x = Math.round(xCo);
 		Long y = Math.round(yCo);
-	
-		
 		gunList[0].xCoord = x.intValue();
 		gunList[0].yCoord = y.intValue();
+		int xMoved = gunList[0].xCoord;
+		int yMoved = gunList[0].yCoord;
 		
 		clicked = false; //start moving the gun again
 		moveGun();
 		
-		while (stopBubble(gunList[0], degr) == false) { //move the bubble forward until it makes contact
+		while (stopBubble(gunList[0], degr, xMoved, yMoved) == false) { //move the bubble forward until it makes contact
 			moveBubbleForward(gunList[0], degr);
+			xMoved += gunList[0].xCoord;
+			yMoved += gunList[0].yCoord;
 		}
 		
 		addToGrid(gunList[0]);

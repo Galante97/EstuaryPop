@@ -21,7 +21,7 @@ public class PopController {
 		while (playAgain) {
 		
 			/*
-			 * model.setGrid(); model.loadGun(); while(!won){ model.moveGun(); } if(won){
+			 * model.setGrid(); model.loadGun(); while(!won){ model.moveGun(); } if(won){ 
 			 * //ask if you want to play again }
 			 */
 		}
