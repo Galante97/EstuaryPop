@@ -1,51 +1,119 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class PopView extends JFrame {
+public class PopView extends JFrame implements MouseListener {
 
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
+
 	PopModel model;
+	private boolean clicked = false;
 
 	// constructor
-	public PopView(PopModel Model) {
+	public PopView(PopModel Model, JFrame frame) {
 		this.model = Model;
+		this.frame = frame;
 
+	}
+
+	public boolean getClicked() {
+		return clicked;
+	}
+
+	public void setClicked(boolean click) {
+		clicked = click;
 	}
 
 	// sets up frame and calls all draw functions
 	public void draw() {
-		frame = new JFrame();
-		frame.setTitle("Estuary Pop!");
-
 		drawSidePanel();
-		drawObjectives();
-
+		// drawObjectives();
+		drawGunBubbles();
+		drawGun();
+		drawGridBubbles();
 		drawGamePanel();
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setSize(1200, 800);// 800 width and 1200 height
-		frame.setLayout(null);// using no layout managers
-		frame.setVisible(true);// making the frame visible
+		setTitle("Estuary Pop!");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
 
 		System.out.println("Everything Drawn");
+	}
+
+	public void drawGridBubbles() {
+		for (int i = 0; i < model.gridColumns; i++) {
+			for (int j = 0; j < model.gridRows; j++) {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(i * 50, j * 50);
+				model.grid[i][j] = bub; // ADDS TO MODEL BUBBLE GRID LIST
+				panel.setBounds(i * 50 + 45, j * 50 + 12, 50, 56);
+				panel.setOpaque(false);
+				add(panel);
+				panel.add(bub, BorderLayout.NORTH);
+			}
+		}
+
+	}
+
+	public void drawGun() {
+		JPanel panel = new JPanel();
+		Gun gun = new Gun();
+		panel.setBounds(410, 649, 131, 120);
+		panel.setOpaque(false);
+		//panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		add(panel);
+		panel.add(gun, BorderLayout.NORTH);
+
+	}
+
+	public void drawGunBubbles() {
+		for (int i = 0; i < 8; i++) {
+			if (i == 1) {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(0, 0);
+				panel.setBounds(i * 50 + 550, 712, 50, 56);
+				panel.setOpaque(false);
+				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(panel);
+				panel.add(bub, BorderLayout.NORTH);
+			} else {
+				JPanel panel = new JPanel();
+				Bubble bub = new Bubble(0, 0);
+				panel.setBounds(i * 50 + 450, 712, 50, 56);
+				panel.setOpaque(false);
+				// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(panel);
+				panel.add(bub, BorderLayout.NORTH);
+
+			}
+		}
 	}
 
 	public void drawGamePanel() {
 		gamePanel = new JPanel();
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-		frame.add(gamePanel);
+		gamePanel.addMouseListener(this);
+		add(gamePanel);
 
 	}
 
@@ -56,14 +124,14 @@ public class PopView extends JFrame {
 		sidePanel.setBackground(Color.LIGHT_GRAY);
 
 		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-		frame.add(sidePanel);
+		add(sidePanel);
 	}
 
 	// gets objectives from model and creates jlabels
 	public void drawObjectives() {
 		JLabel objLabel1 = new JLabel(model.objectives.get(0), null, JLabel.CENTER);
 		JLabel objLabel2 = new JLabel(model.objectives.get(1), null, JLabel.CENTER);
-		JLabel objLabel3 = new JLabel(model.objectives.get(2), null, JLabel.CENTER);
+		JLabel objLabel3 = new JLabel(model.objectives[2], null, JLabel.CENTER);
 
 		sidePanel.add(objLabel1);
 		sidePanel.add(objLabel2);
@@ -79,5 +147,28 @@ public class PopView extends JFrame {
 		objLabel3.setFont(font);
 
 	}
+
+	// changes clicked to true if the mouse has been clicked in the game panel
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		clicked = true;
+		if (clicked) {
+			System.out.println("click");
+		}
+	}
+
+	// required functions for mouse listener - these do nothing
+	public void mousePressed(MouseEvent e) {
+	} // do nothing
+
+	public void mouseClicked(MouseEvent e) {
+	}// do nothing
+
+	public void mouseEntered(MouseEvent e) {
+	} // do nothing
+
+	public void mouseExited(MouseEvent e) {
+	} // do nothing
 
 }

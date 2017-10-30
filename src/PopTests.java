@@ -15,11 +15,11 @@ public class PopTests {
 		p.bubbleImageHeight = 3;
 		p.bubbleImageWidth = 3;	
 		//p.gunBub = new Bubble(7, 10);
-		assertTrue( p.contact(new Bubble(9,10), new Bubble(7,10))); // contact! grid bubble is inside gunbubble
-		assertFalse(p.contact(new Bubble(11,10), new Bubble(7,10) )); //grid bubble is right and outside of gun bubble
-		assertFalse(p.contact(new Bubble(3,10),new Bubble(7,10) ));  // grid bubble is left and outside of gun bubble
-		assertFalse(p.contact(new Bubble(7,14), new Bubble(7,10))); // grid bubble is lower than gun bubble but still outside
-		assertFalse(p.contact(new Bubble(7,6), new Bubble(7,10)));  // grid bubble it higher than gun bubble but still outside
+		assertTrue( p.checkContact(new Bubble(9,10), new Bubble(7,10))); // contact! grid bubble is inside gunbubble
+		assertFalse(p.checkContact(new Bubble(11,10), new Bubble(7,10) )); //grid bubble is right and outside of gun bubble
+		assertFalse(p.checkContact(new Bubble(3,10),new Bubble(7,10) ));  // grid bubble is left and outside of gun bubble
+		assertFalse(p.checkContact(new Bubble(7,14), new Bubble(7,10))); // grid bubble is lower than gun bubble but still outside
+		assertFalse(p.checkContact(new Bubble(7,6), new Bubble(7,10)));  // grid bubble it higher than gun bubble but still outside
 	} 
 
 	@Test
@@ -58,7 +58,7 @@ public class PopTests {
 		
 		for(Bubble[] brow:p.grid){
 			for(Bubble b: brow){
-				System.out.println("x " +b.xCoord+ " y " + b.yCoord + " color " + b.color);
+				System.out.println("x " +b.xCoord+ " y " + b.yCoord + " color " + b.color); 
 			}
 		}
 		
