@@ -17,9 +17,19 @@ public class Bubble {
 	
 	}
 	
+	Bubble(int x, int y, String s){
+		xCoord = x;
+		yCoord = y;
+		color = s;
+	}
+	
 	Bubble(int x, int y){
 		xCoord = x;
 		yCoord = y;
+	}
+	
+	public String toString(){
+		return "x " + xCoord+ " y " +yCoord+ " color "+ color;
 	}
 	
 	
