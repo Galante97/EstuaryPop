@@ -1,6 +1,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -9,17 +12,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class PopView extends JFrame {
+public class PopView extends JFrame implements MouseListener {
 
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
 	PopModel model;
+	private boolean clicked = false;
 
 	// constructor
 	public PopView(PopModel Model) {
 		this.model = Model;
 
+	}
+	
+	public boolean getClicked() {
+		return clicked;
+	}
+	
+	public void setClicked(boolean click) {
+		clicked = click;
 	}
 
 	// sets up frame and calls all draw functions
@@ -44,8 +56,9 @@ public class PopView extends JFrame {
 		gamePanel = new JPanel();
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+		gamePanel.addMouseListener(this);
 		frame.add(gamePanel);
+		
 
 	}
 
@@ -79,5 +92,27 @@ public class PopView extends JFrame {
 		objLabel3.setFont(font);
 
 	}
+	
+
+	//changes clicked to true if the mouse has been clicked in the game panel
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		clicked = true; if (clicked) {
+		System.out.println("click");
+		}
+	} 
+
+
+	//required functions for mouse listener - these do nothing
+	public void mousePressed(MouseEvent e) {} //do nothing
+	
+	public void mouseClicked(MouseEvent e) {	}//do nothing
+	
+	public void mouseEntered(MouseEvent e) {} //do nothing
+
+	public void mouseExited(MouseEvent e) {} //do nothing
+	
+	
 
 }
