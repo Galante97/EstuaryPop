@@ -9,6 +9,7 @@ public class PopController {
 	public static final int HARD = 1;
 
 	public int difficulty; // determines speed of game
+	boolean clicked;
 	
 	PopModel model;
 	PopView view;
@@ -30,6 +31,14 @@ public class PopController {
 		controller.setObjectives(); //randomly generates objectives
 		view.draw();
 
+	}
+	
+	public void setClicked() {
+		model.setClicked(clicked);
+	}
+	
+	public void getClicked() {
+		clicked = view.getClicked();
 	}
 
 	// picks 3 random objectives from "Objectives" class
@@ -65,5 +74,6 @@ public class PopController {
 	public void setGunList() {
 
 	}
+	
 
 }
