@@ -95,19 +95,20 @@ public class PopView extends JFrame implements MouseListener {
 	
 
 	//changes clicked to true if the mouse has been clicked in the game panel
+
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		clicked = true;
-		if (clicked) {
-			System.out.println("click");
+	public void mouseReleased(MouseEvent e) {
+		clicked = true; if (clicked) {
+		System.out.println("click");
 		}
-	}
+	} 
+
 
 	//required functions for mouse listener - these do nothing
 	public void mousePressed(MouseEvent e) {} //do nothing
-
-	public void mouseReleased(MouseEvent e) {} //do nothing
-
+	
+	public void mouseClicked(MouseEvent e) {	}//do nothing
+	
 	public void mouseEntered(MouseEvent e) {} //do nothing
 
 	public void mouseExited(MouseEvent e) {} //do nothing
