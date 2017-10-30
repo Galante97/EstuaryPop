@@ -1,12 +1,14 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Bubble extends JPanel {
+public class Bubble extends JPanel  {
 
 	public int xCoord;
 	public int yCoord;
@@ -50,8 +52,8 @@ public class Bubble extends JPanel {
 		ImageIcon black = new ImageIcon("src/blackBubble.png");
 
 		Random rand = new Random();
-		int  colorChoose = rand.nextInt(5) + 1; 	//5 is the maximum and the 1 is our minimum 
-	
+		int colorChoose = rand.nextInt(5) + 1; // 5 is the maximum and the 1 is our minimum
+
 		switch (colorChoose) {
 		case 1:
 			color = "blue";
@@ -77,7 +79,7 @@ public class Bubble extends JPanel {
 		default:
 			break;
 		}
-	
+
 	}
 
 	@Override
@@ -93,5 +95,6 @@ public class Bubble extends JPanel {
 			return color + gridImage;
 		}
 	}
+
 
 }
