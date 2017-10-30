@@ -98,6 +98,9 @@ public class PopView extends JFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		clicked = true;
+		if (clicked) {
+			System.out.println("click");
+		}
 	}
 
 	//required functions for mouse listener - these do nothing
