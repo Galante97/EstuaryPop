@@ -68,7 +68,8 @@ public class PopView extends JFrame implements MouseListener {
 		System.out.println("paint");
 		for (int i = 0; i < 20; i++) {
 			
-			g.drawImage(model.grid[0][0].image, i*50, model.grid[0][0].yCoord, null);
+			//g.drawImage(model.grid[0][0].image, i*50, model.grid[0][0].yCoord, null);
+		
 		}
 		
 
@@ -76,7 +77,7 @@ public class PopView extends JFrame implements MouseListener {
 	
 	public void drawGridBubbles() {
 		//add(new Bubble(0, 0));
-		model.grid[0][0] = new Bubble(0, 0);
+		//model.grid[0][0] = new Bubble(0, 0);
 		
 	}
 	
