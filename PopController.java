@@ -45,18 +45,20 @@ public class PopController {
 	public void setObjectives() {
 		Objective obj = new Objective();
 	
-		String objective1 = obj.setObjective();
-	    String objective2 = obj.setObjective();
-		String objective3 = obj.setObjective();
+		String objective1 = obj.objec;
+	    String objective2 = obj.objec;
+		String objective3 = obj.objec;
 		
 		// make sure objective 2 != objective 2
 		while (objective2 == objective1) {
-			objective2 = obj.setObjective();
+			 obj.setObjective();
+			objective2 = obj.objec;
 		}
 
 		// make sure objective 3 != objective 2/3
 		while (objective3 == objective1 || objective3 == objective2) {
-			objective3 = obj.setObjective();
+			obj.setObjective();
+			objective3 = obj.objec;
 		}
 
 		model.objectives.add(objective1);
