@@ -17,7 +17,7 @@ public class myPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		System.out.println("FUCK U");
+		System.out.println("");
 		// Draw Text
 		g.drawString("This is my custom Panel!", 10, 20);
 	}
