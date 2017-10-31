@@ -39,7 +39,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	private boolean clicked = false;
 
 	// constructor
-	public PopView(PopModel Model, JFrame frame) {
+	public PopView(PopModel Model, JFrame frame) {  
 		this.model = Model;
 		this.frame = frame;
 

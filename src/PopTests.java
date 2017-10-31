@@ -38,7 +38,7 @@ public class PopTests {
 		assertTrue(5== p.matchedList.size());
 	}
 	
-	@Test
+	//@Test
 	public void checkMatchTest(){
 		PopModel p = new PopModel();
 		p.bubbleImageHeight = 5;
@@ -54,6 +54,40 @@ public class PopTests {
 		p.grid[1][2]= new Bubble(10,5,"Green");
 		p.grid[1][3]= new Bubble(15,5, "Green");
 		p.gunList[0] = new Bubble(15,10,"Green"); 
+		p.checkMatch(); 
+		
+		for(Bubble[] brow:p.grid){
+			for(Bubble b: brow){
+				if(b == null){
+					continue;
+				}
+				
+				System.out.println("x " +b.xCoord+ " y " + b.yCoord + " color " + b.color); 
+			}
+		}
+		
+		//System.out.println(p.grid[0][2]);
+	}
+	
+	@Test
+	public void checkMatch2Test(){
+		PopModel p = new PopModel();
+		p.bubbleImageHeight = 5;
+		p.bubbleImageWidth = 5;	
+		p.contactX =3;
+		p.contactY= 2;
+		p.gunList = new Bubble[2];
+		p.grid = new Bubble[3][4];	
+		p.grid[0][0]= new Bubble(0,0,"Blue");
+		p.grid[0][1] = new Bubble(5,0, "Blue");
+		p.grid[0][2] = new Bubble(10,0,"Green") ;
+		p.grid[0][3] = new Bubble(15,0,"blue");
+		p.grid[1][0] = new Bubble(0,5,"Green");
+		p.grid[1][1]= new Bubble(5,5,"Green");
+		p.grid[1][2]= new Bubble(10,5,"Green");
+		p.grid[1][3]= new Bubble(15,5, "Green");
+		p.gunList[0] = new Bubble(15,10,"Green"); 
+		p.grid[2][3] = new Bubble(15,10,"Green");
 		p.checkMatch();
 		
 		for(Bubble[] brow:p.grid){
@@ -68,6 +102,7 @@ public class PopTests {
 		
 		//System.out.println(p.grid[0][2]);
 	}
+	
 	
 	
 	
