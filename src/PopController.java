@@ -15,9 +15,16 @@ public class PopController {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		PopModel model = new PopModel(1);// will ask for difficulty
-		PopView view = new PopView(model, frame); // creates the window
-		view.draw();
-		view.setVisible(true);
+		model.setGrid();
+		//PopView view = new PopView(model, frame); // creates the window
+		//view.draw();
+		//view.setVisible(true);
+		for(Bubble[] x: model.grid){
+			System.out.println("");
+			for(Bubble y : x){
+				System.out.print(y+" ");
+			}
+		}
 		while (playAgain) {
 		
 			/*

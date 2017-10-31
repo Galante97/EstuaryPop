@@ -7,15 +7,15 @@ public class PopModel {
 	
 	int difficulty;
 	int[] objectives = {0,0,0};
+	Objective o = new Objective();
 	int gridRows = 5; // must be initialized here
 	int gridColumns = 18; // must be initialized here
-	Bubble[][] grid = new Bubble[gridColumns][gridRows];  
+	Bubble[][] grid = new Bubble[gridRows][gridColumns];  
 	Bubble[] gunList;
 	int score;
 	boolean obj0done = false; 
 	boolean obj1done = false;
 	boolean obj2done = false;
-
 	int bubbleImageWidth; // need a getter for this  
 	int bubbleImageHeight; // need a getter for this
 	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
@@ -27,7 +27,7 @@ public class PopModel {
 	Boolean gunDirec = true;
 	double gunEdgeX = 0; 
 	double gunEdgeY = 0;
-	int startGridRows; // number of rows we are starting with, must be initialized here
+	int startGridRows = 3; // number of rows we are starting with, must be initialized here
 	int degree;
 	int bubbleSpeed;
 	boolean clicked = false;
@@ -54,16 +54,19 @@ public class PopModel {
 	//initializes the board
 	//pics three objectives from the objective class and randomly gives each bubble an objective
 	public void setGrid(){ 
+		System.out.println("hi");
 		Random rand = new Random();
-		while(objectives[0]!=objectives[1] && objectives[0]!=objectives[2] && objectives[1]!=objectives[2]){//makes sure the objectives arent the same (poorly written but works)
+		while(objectives[0]==objectives[1] || objectives[0]==objectives[2] || objectives[1]==objectives[2]){//makes sure the objectives arent the same (poorly written but works)
 			objectives[0] = rand.nextInt(6);
 			objectives[1] = rand.nextInt(6);
 			objectives[2] = rand.nextInt(6);
 		}//close while
-		for(int i = 0; i<startGridRows; i++) {
-			for (int j = 0; j<gridColumns; j++) {
-				r = rand.nextInt(3);
-				grid[i][j] = new Bubble(i, j, false, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
+		for(int i = 0; i < startGridRows; i++) {
+			System.out.println("hi again");
+			int j = 0;
+			for (; j < gridColumns; j++) {
+				int r = rand.nextInt(3);
+				grid[i][j] = new Bubble(i, j, false, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));
 			}//close for
 		}//close for
 	}
@@ -74,8 +77,8 @@ public class PopModel {
 	public void loadGun(){
 		for(int i = 0; i < gunList.length; i++) { 
 			Random rand = new Random();
-			r = rand.nextInt(3);
-			gunList[i] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
+			int r = rand.nextInt(3);
+			gunList[i] = new Bubble(-1, -1, true, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));
 		}//close for
 	}
 	
@@ -236,8 +239,8 @@ public class PopModel {
 			gunList[i] = gunList[i+1];
 		}//close for
 		Random rand = new Random();
-		int r = rand.nextInt(3)
-		gunList[gunList.length-1] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));//adds a new bubble to the end
+		int r = rand.nextInt(3);
+		gunList[gunList.length-1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));//adds a new bubble to the end
 
 	}
 	
