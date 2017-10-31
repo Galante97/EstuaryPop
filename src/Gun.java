@@ -10,7 +10,6 @@ public class Gun extends JPanel {
 	
 	Gun() {
 		loadImage();
-
 		int w = image.getWidth(this);
 		int h = image.getHeight(this);
 		setPreferredSize(new Dimension(w, h));

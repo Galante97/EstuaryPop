@@ -9,7 +9,7 @@ public class PopModel {
 	int[] objectives = {0,0,0};
 	int gridRows = 5; // must be initialized here
 	int gridColumns = 18; // must be initialized here
-	Bubble[][] grid = new Bubble[gridColumns][gridRows];
+	Bubble[][] grid = new Bubble[gridColumns][gridRows];  
 	Bubble[] gunList;
 	int score;
 	boolean obj0done = false; 
@@ -41,8 +41,7 @@ public class PopModel {
 	int contactX;
 	int contactY;
 
-	public PopModel(){
-		
+	public PopModel(){	
 	}
 	
 	
@@ -70,12 +69,12 @@ public class PopModel {
 	}
 	
 	//only used at the beginning
-	//adds bubbles to the gun list until it is full
+	//adds bubbles to the gun list until it is full 
 	//randomly chooses one of the prechoses objectives for each bubble
 	public void loadGun(){
 		for(int i = 0; i < gunList.length; i++) { 
 			Random rand = new Random();
-			r = rand.nextInt(3)
+			r = rand.nextInt(3);
 			gunList[i] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
 		}//close for
 	}
@@ -89,58 +88,53 @@ public class PopModel {
 
 	
 	public void checkMatch(){ // not complete yet
-		Bubble pivotBubble; //current bubble being matched to
 		int row=-1;
 		breakhere:
-		for(Bubble[] bArr: grid){
-			row++;
-			int col=-1;
-			for (Bubble b: bArr){ 			
-				col++ ;
-				if( checkContact(b, gunList[0]) ){          //  gunbubble has come into contact with a gridbubble 
-					if( match(b, gunList[0]) ){        // gunbubble and gridbubble have matching types
-						matchedList.add(gunList[0]);   // if size > 4, popping will occur
-						//matchedList.add(b);            // this is our first matching bubble	 		       
-						recursion(row,col,b);          // look for more matches 						
-						if(matchedList.size()>=4){     // pop bubble by deleting from grid and remove from matchedlist
-							for(Bubble bub: matchedList){
-								  for(int i=0; i<grid.length; i++){
-									  for(int j=0; j<grid[0].length;j++){
-										  if(grid[i][j]== null){
-											  continue;
-										  }
-										  if(grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord){
-											  grid[i][j]= null;
-											//  matchedList.remove();		 	 						  
-										  }
-									  }
-								  }
-							}
-							
-						} break breakhere;
-						//else{                         // minimum number of bubbles not reached, no not pop bubbles, clear matchedList
-							 // matchedList.clear();
-						//}
-						
-							
-					}else{
-						                               // halt gunbubble's motion and capture on to grid as new grid bubble
-					                                  // call some halt method to stop gun bubble x,y
-                                                       // copy to new grid array
-                                                       // remove from gun array
-                                                       // copy gun array to new gun array so that gun is loaded to gunList[0]
-					}                                   
-				}else{                                 // no gun bubble to grid bubble contact, do nothing
-					
-					
-					}
-				
+			for(Bubble[] bArr: grid){  
+				row++;
+				int col=-1;
+				for (Bubble b: bArr){ 			
+					col++ ;
+					if( checkContact(b, gunList[0]) ){          //  gunbubble has come into contact with a gridbubble 
+						if( match(b, gunList[0]) ){             // gunbubble and gridbubble have matching types
+							matchedList.add(gunList[0]);        // if size > 4, popping will occur
+							//matchedList.add(b);               // this is our first matching bubble	 		       
+							recursion(row,col,b);               // look for more matches 						
+							if(matchedList.size()>=4){          // pop bubble by deleting from grid and remove from matchedlist
+								for(Bubble bub: matchedList){
+									for(int i=0; i<grid.length; i++){
+										for(int j=0; j<grid[0].length;j++){
+											if(grid[i][j]== null){
+												continue;
+											}
+											if(grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord){
+												grid[i][j]= null;
+												//  matchedList.remove();		 	 						  
+											}
+										}
+									}
+								}
 
+							} break breakhere;
+							//else{                              // minimum number of bubbles not reached, no not pop bubbles, clear matchedList
+							// matchedList.clear();
+							//}
+
+
+						}else{
+							// halt gunbubble's motion and capture on to grid as new grid bubble
+							// call some halt method to stop gun bubble x,y
+							// copy to new grid array
+							// remove from gun array
+							// copy gun array to new gun array so that gun is loaded to gunList[0]
+						}                                   
+					}else{                                       // no gun bubble to grid bubble contact, do nothing					
+
+					}
 				}
-			
 			}
-		} 
-	
+	} 
+
 	
 	//like checkMatch() ??? no just breaking down checkmatch into several helpers that can be each be tested so the 
 	// the composite method, checkmatch, can be guaranteed to work -Sutton

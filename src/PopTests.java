@@ -5,7 +5,7 @@ import org.junit.Test;
 public class PopTests {
 
 	//@Test
-	public void popController_SetObjectivesTest() {
+	public void popController_SetObjectivesTest() { 
 
 	}
 	
@@ -53,11 +53,15 @@ public class PopTests {
 		p.grid[1][1]= new Bubble(5,5,"Green");
 		p.grid[1][2]= new Bubble(10,5,"Green");
 		p.grid[1][3]= new Bubble(15,5, "Green");
-		p.gunList[0] = new Bubble(15,10,"Green");
+		p.gunList[0] = new Bubble(15,10,"Green"); 
 		p.checkMatch();
 		
 		for(Bubble[] brow:p.grid){
 			for(Bubble b: brow){
+				if(b == null){
+					continue;
+				}
+				
 				System.out.println("x " +b.xCoord+ " y " + b.yCoord + " color " + b.color); 
 			}
 		}
