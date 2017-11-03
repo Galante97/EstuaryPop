@@ -12,9 +12,10 @@ public class PopModel {
 
 	int difficulty;
 	int[] objectives = { 0, 0, 0 };
+	Objective o = new Objective();
 	int gridRows = 5; // must be initialized here
 	int gridColumns = 18; // must be initialized here
-	Bubble[][] grid = new Bubble[gridColumns][gridRows];
+	Bubble[][] grid = new Bubble[gridRows][gridColumns];
 	Bubble[] gunList;
 	int score;
 	boolean obj0done = false;
@@ -22,6 +23,8 @@ public class PopModel {
 	boolean obj2done = false;
 	int bubbleImageWidth; // need a getter for this
 	int bubbleImageHeight; // need a getter for this
+	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
+	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();
 	int gunImageWidth; // need a getter for this
 	int gunImageHeight; // need a getter for this
 	double gunXCoord;
@@ -29,7 +32,7 @@ public class PopModel {
 	Boolean gunDirec = true;
 	double gunEdgeX = 0;
 	double gunEdgeY = 0;
-	int startGridRows; // number of rows we are starting with, must be initialized here
+	int startGridRows = 3; // number of rows we are starting with, must be initialized here
 	int degree;
 	int bubbleSpeed;
 	boolean clicked = false;
@@ -44,43 +47,41 @@ public class PopModel {
 	int contactY;
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame();
+	/*	JFrame frame = new JFrame();
 		PopModel model = new PopModel(1);// will ask for difficulty
 		PopView view = new PopView(model, frame); // creates the window
 		view.draw();
 		view.setVisible(false);
 
-		Robot robot;
-		try {
-			robot = new Robot();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-		
-		int mask = InputEvent.MOUSE_BUTTON1_DOWN;
-		bot.mouseMove(x, y);           
-		bot.mousePress(mask);     
-		bot.mouseRelease(mask);
+		model.setGrid();
+		System.out.println("Grid Set!");
 
-		robot.mousePress(InputEvent.BUTTON1_MASK);
-		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		model.gunList = new Bubble[5];
+		model.loadGun();
+		System.out.println("Gun Loaded!");
+
+		model.clicked = true;
+		System.out.println("User Clicked");
+		model.shoot(85, 450, 712);
+		model.clicked = false;
+		System.out.println(); */
 
 	}
 
-	////////////////////////////////////////////////////
+	public PopModel() {
+	}
 
 	public PopModel(int diff) {
 		difficulty = diff;
 	}
 
-	////////////////////////////////////////////////////
-
 	// initializes the board
 	// pics three objectives from the objective class and randomly gives each bubble
 	// an objective
 	public void setGrid() {
+		System.out.println("hi");
 		Random rand = new Random();
-		while (objectives[0] != objectives[1] && objectives[0] != objectives[2] && objectives[1] != objectives[2]) {// makes
+		while (objectives[0] == objectives[1] || objectives[0] == objectives[2] || objectives[1] == objectives[2]) {// makes
 																													// sure
 																													// the
 																													// objectives
@@ -96,10 +97,12 @@ public class PopModel {
 			objectives[2] = rand.nextInt(6);
 		} // close while
 		for (int i = 0; i < startGridRows; i++) {
-			for (int j = 0; j < gridColumns; j++) {
-				r = rand.nextInt(3);
-				grid[i][j] = new Bubble(i, j, false, returnColor(objectives[r]), returnGunImg(objectives[r]),
-						returnGridImg(objectives[r]));
+			System.out.println("hi again");
+			int j = 0;
+			for (; j < gridColumns; j++) {
+				int r = rand.nextInt(3);
+				grid[i][j] = new Bubble(i, j, false, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
+						o.returnGridImg(objectives[r]));
 			} // close for
 		} // close for
 	}
@@ -107,15 +110,14 @@ public class PopModel {
 	// only used at the beginning
 	// adds bubbles to the gun list until it is full
 	// randomly chooses one of the prechoses objectives for each bubble
-	public void loadGun(){
-		for(int i = 0; i < gunList.length; i++) { 
+	public void loadGun() {
+		for (int i = 0; i < gunList.length; i++) {
 			Random rand = new Random();
-			r = rand.nextInt(3)
-			gunList[i] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));
-		}//close for
+			int r = rand.nextInt(3);
+			gunList[i] = new Bubble(-1, -1, true, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
+					o.returnGridImg(objectives[r]));
+		} // close for
 	}
-
-	/////////////////////////////////////////////////////////
 
 	// set from controller
 	public void setClicked(boolean click) {
@@ -123,10 +125,21 @@ public class PopModel {
 	}
 
 	public void checkMatch() { // not complete yet
-		for (Bubble[] bArr : grid) {
-			for (Bubble b : bArr) {
-				if (checkContact(b, gunList[0])) { // gunbubble has come into contact with gridbubble
-					// do something!
+		matchedList.add(gunList[0]); // if size > 4, popping will occur
+		// matchedList.add(b); // this is our first matching bubble
+		recursion(contactY, contactX, gunList[0]); // look for more matches
+		if (matchedList.size() >= 4) { // pop bubble by deleting from grid
+			for (Bubble bub : matchedList) {
+				for (int i = 0; i < grid.length; i++) {
+					for (int j = 0; j < grid[0].length; j++) {
+						if (grid[i][j] == null) {
+							continue;
+						}
+						if (grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord) {
+							grid[i][j] = null;
+							// matchedList.remove();
+						}
+					}
 				}
 			}
 		}
@@ -147,6 +160,56 @@ public class PopModel {
 		}
 	}
 
+	public boolean match(Bubble bub1, Bubble bub2) {
+		return bub1.color == bub2.color && bub1 != null && bub2 != null;
+	}
+
+	public void recursion(int row, int col, Bubble pivot) {
+		if (grid[row][col] == null) {
+			return;
+		}
+		if (grid[row][col].color == pivot.color) {
+			matchedList.add(grid[row][col]);
+			beenHere(row, col);
+		} else if (grid[row][col].color != pivot.color || grid[row][col] == null || beenHere(row, col)) {
+			return;
+		}
+		if (isInBound(row, col + 1) && !beenHere(row, col + 1)) {
+			recursion(row, col + 1, pivot);
+		}
+		if (isInBound(row, col - 1) && !beenHere(row, col - 1)) {
+			recursion(row, col - 1, pivot);
+		}
+		if (isInBound(row - 1, col) && !beenHere(row - 1, col)) {
+			recursion(row - 1, col, pivot);
+		}
+		if (isInBound(row + 1, col) && !beenHere(row + 1, col)) {
+			recursion(row + 1, col, pivot);
+		} else {
+			return;
+		}
+	}
+
+	public boolean isInBound(int row, int col) {
+		return row <= grid.length - 1 && col <= grid[0].length - 1 && col >= 0 && row >= 0;
+	}
+
+	public boolean beenHere(int row, int col) {
+		int[] xy = new int[2];
+		boolean flag = false;
+		for (int[] xys : haveBeenHere) {
+			if (xys[0] == row && xys[1] == col) {
+				flag = true;
+			}
+		}
+		if (flag == false) {
+			xy[0] = row;
+			xy[1] = col;
+			haveBeenHere.add(xy);
+		}
+		return flag;
+	}
+
 	// **~~lets not worry about this for the alpha~~**
 	// public void shift(){ // shift gridbubbles down screen by one image height to
 	// make room for next new row
@@ -159,6 +222,10 @@ public class PopModel {
 	//
 	// }
 	// }
+
+	public void chooseObjectives() {
+		// randomly selects 3 objectives from pool (where is the pool???)
+	}
 
 	// checks to see where in the grid the bubble landed compared to the one it made
 	// contact with
@@ -197,12 +264,14 @@ public class PopModel {
 
 	// reloads when we shoot
 	public void reloadGun() {
-		for(int i = 0; i < gunList.length-1; i++) {//moves the bubbles in the list up one indice
-			gunList[i] = gunList[i+1];
-		}//close for
+		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
+			gunList[i] = gunList[i + 1];
+		} // close for
 		Random rand = new Random();
-		int r = rand.nextInt(3)
-		gunList[gunList.length-1] = new Bubble(null, null, true, returnColor(objectives[r]), returnGunImg(objectives[r]), returnGridImg(objectives[r]));//adds a new bubble to the end
+		int r = rand.nextInt(3);
+		gunList[gunList.length - 1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]),
+				o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));// adds a new bubble to the end
+
 	}
 
 	// oscillation of gun that applies clicked as a mouse listener
@@ -233,10 +302,12 @@ public class PopModel {
 	// ran during every frame of shoot - checks if it comes into contact with
 	// another bubble - if it does, we return true
 	// helper for shoot
-	public boolean stopBubble(Bubble b, int degr) {
-		if ((b.xCoord % (gridBubblesX) == 0) && (b.yCoord % (gridBubblesY) == 0)) { // sees if the xCoord and yCoord
-																					// would place it into a
+	public boolean stopBubble(Bubble b, int degr, int xMoved, int yMoved) {
+		if ((xMoved / (gridBubblesX) >= 1) && (yMoved / (gridBubblesY) >= 1)) { // sees if the xCoord and yCoord would
+																				// place it into a
 			// bubble spot so we don't have to check every single frame
+			xMoved = 0;
+			yMoved = 0; // reset these values
 			if (degr < 45) { // check left half of grid - minimizes amount of bubbles to check
 				for (int i = 0; i < gridColumns; i += bubbleImageWidth) {
 					for (int j = 0; j < gridRows / 2; j += bubbleImageHeight) {
@@ -282,15 +353,19 @@ public class PopModel {
 	public void shoot(int degr, double xCo, double yCo) {
 		Long x = Math.round(xCo);
 		Long y = Math.round(yCo);
-
 		gunList[0].xCoord = x.intValue();
 		gunList[0].yCoord = y.intValue();
+		int xMoved = gunList[0].xCoord;
+		int yMoved = gunList[0].yCoord;
 
 		clicked = false; // start moving the gun again
 		moveGun();
 
-		while (stopBubble(gunList[0], degr) == false) { // move the bubble forward until it makes contact
+		while (stopBubble(gunList[0], degr, xMoved, yMoved) == false) { // move the bubble forward until it makes
+																		// contact
 			moveBubbleForward(gunList[0], degr);
+			xMoved += gunList[0].xCoord;
+			yMoved += gunList[0].yCoord;
 		}
 
 		addToGrid(gunList[0]);
@@ -301,5 +376,4 @@ public class PopModel {
 		reloadGun(); // removes old gunBubble and reloads gun
 
 	}
-
 }

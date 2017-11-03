@@ -15,11 +15,19 @@ public class PopController {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		PopModel model = new PopModel(1);// will ask for difficulty
+		//model.setGrid();
 		PopView view = new PopView(model, frame); // creates the window
 		view.draw();
 		view.setVisible(true);
-		while (playAgain) {
 		
+		for (Bubble[] x : model.grid) {
+			System.out.println("");
+			for (Bubble y : x) {
+				System.out.print(y + " ");
+			}
+		}
+		while (playAgain) {
+
 			/*
 			 * model.setGrid(); model.loadGun(); while(!won){ model.moveGun(); } if(won){
 			 * //ask if you want to play again }
@@ -36,3 +44,4 @@ public class PopController {
 		clicked = view.getClicked();
 	}
 }
+

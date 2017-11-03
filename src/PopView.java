@@ -43,7 +43,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	private boolean clicked = false;
 
 	// constructor
-	public PopView(PopModel Model, JFrame frame) {
+	public PopView(PopModel Model, JFrame frame) {  
 		this.model = Model;
 		this.frame = frame;
 
@@ -83,7 +83,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			for (int j = 0; j < model.gridRows; j++) {
 				JPanel panel = new JPanel();
 				Bubble bub = new Bubble(i * 50, j * 50);
-				model.grid[i][j] = bub; // ADDS TO MODEL BUBBLE GRID LIST
+				//model.grid[i][j] = bub; // ADDS TO MODEL BUBBLE GRID LIST
 				panel.setBounds(i * 50 + 45, j * 50 + 12, 50, 56);
 				panel.setOpaque(false);
 				add(panel);
