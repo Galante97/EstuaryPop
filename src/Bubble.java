@@ -1,3 +1,4 @@
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -10,8 +11,8 @@ import javax.swing.JPanel;
 
 public class Bubble extends JPanel  {
 
-	public int xCoord;
-	public int yCoord;
+	public double xCoord;
+	public double yCoord;
 	public String color;
 	public String gunImage;
 	public String gridImage;
@@ -20,7 +21,7 @@ public class Bubble extends JPanel  {
 
 	public Image image;
 
-	Bubble(int x, int y, Boolean bool, String c, String gunI, String gridI) {
+	Bubble(double x, double y, Boolean bool, String c, String gunI, String gridI) {
 		xCoord = x;
 		yCoord = y;
 		showGunImage = bool;
@@ -29,17 +30,16 @@ public class Bubble extends JPanel  {
 		gridImage = gridI;
 	}
 	
-	Bubble(int x, int y, String s){
+	Bubble(double x, double y, String s){
 		xCoord = x;
 		yCoord = y;
 		color = s;
 	}
-	
-	
 
-	Bubble(int x, int y) {
+	Bubble(double x, double y) {
 		xCoord = x;
 		yCoord = y;
+
 		initBubble();
 	}
 
@@ -60,6 +60,7 @@ public class Bubble extends JPanel  {
 
 		Random rand = new Random();
 		int colorChoose = rand.nextInt(5) + 1; // 5 is the maximum and the 1 is our minimum
+
 		switch (colorChoose) {
 		case 1:
 			color = "blue";
@@ -85,8 +86,8 @@ public class Bubble extends JPanel  {
 		default:
 			break;
 		}
-	}
 
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -104,3 +105,4 @@ public class Bubble extends JPanel  {
 
 
 }
+

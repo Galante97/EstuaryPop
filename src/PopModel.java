@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ public class PopModel {
 	boolean obj2done = false;
 	int bubbleImageWidth; // need a getter for this  
 	int bubbleImageHeight; // need a getter for this
-	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
+	LinkedList<Bubble> matchedList;  // list of matched bubbles to be possibly popped
 	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();	
 	int gunImageWidth; // need a getter for this
 	int gunImageHeight; // need a getter for this
@@ -40,6 +41,33 @@ public class PopModel {
 	int gridBubblesY = bubbleImageHeight/2;
 	int contactX;
 	int contactY;
+	int screenWidth;
+	int screenHeight;
+	double gridHeight;
+
+	
+	public static void main(String[] args) {
+		/*	JFrame frame = new JFrame();
+			PopModel model = new PopModel(1);// will ask for difficulty
+			PopView view = new PopView(model, frame); // creates the window
+			view.draw();
+			view.setVisible(false);
+
+			model.setGrid();
+			System.out.println("Grid Set!");
+
+			model.gunList = new Bubble[5];
+			model.loadGun();
+			System.out.println("Gun Loaded!");
+
+			model.clicked = true;
+			System.out.println("User Clicked");
+			model.shoot(85, 450, 712);
+			model.clicked = false;
+			System.out.println(); */
+
+		}
+	
 
 	public PopModel(){	
 	}
@@ -89,82 +117,80 @@ public class PopModel {
 		this.clicked = click;
 	}
 
-	
-	public void checkMatch(){ // not complete yet
-		matchedList.add(gunList[0]);                    // if size > 4, popping will occur
-		//matchedList.add(b);                           // this is our first matching bubble	 		       
-		recursion(contactY,contactX,gunList[0]);        // look for more matches 						
-		if(matchedList.size()>=4){                      // pop bubble by deleting from grid
-			for(Bubble bub: matchedList){
-				for(int i=0; i<grid.length; i++){
-					for(int j=0; j<grid[0].length;j++){
-						if(grid[i][j]== null){
+	public void checkMatch() { // not complete yet
+		matchedList = new LinkedList<Bubble>();
+		matchedList.add(gunList[0]); // if size > 4, popping will occur
+		// matchedList.add(b); // this is our first matching bubble
+		recursion(contactY, contactX, gunList[0]); // look for more matches
+		if (matchedList.size() >= 4) { // pop bubble by deleting from grid
+			for (Bubble bub : matchedList) {
+				for (int i = 0; i < grid.length; i++) {
+					for (int j = 0; j < grid[0].length; j++) {
+						if (grid[i][j] == null) {
 							continue;
 						}
-						if(grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord){
-							grid[i][j]= null;
-							//  matchedList.remove();		 	 						  
+						if (grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord) {
+							grid[i][j] = null;
+							// matchedList.remove();
 						}
 					}
 				}
 			}
-		}
-	}
-
-
-
-	
-	//like checkMatch() ??? no just breaking down checkmatch into several helpers that can be each be tested so the 
-	// the composite method, checkmatch, can be guaranteed to work -Sutton
-	//gonna use this updateHelper1 for shoot, switched the name to checkContact -Olivia
-	public boolean checkContact(Bubble bub1, Bubble bub2){ // checks bubble contact between gunbubble and gridbubble
-		if( (((bub2.xCoord - bubbleImageWidth) <= bub1.xCoord) && (bub1.xCoord <= (bub2.xCoord + bubbleImageWidth)))
-				&&
-				(((bub2.yCoord - bubbleImageHeight) <= bub1.yCoord) && (bub1.yCoord <= (bub2.yCoord + bubbleImageHeight))) ){
-			return true;	
 		}else{
-			return false;
+			     // add gunBubble to grid
 		}
 	}
+	
 	
 	public boolean match(Bubble bub1, Bubble bub2){
 		return bub1.color == bub2.color && bub1 != null && bub2 != null;  
 	}
 	
 	
-	public void recursion(int row, int col, Bubble pivot) { 
-		if(grid[row][col] == null){
+	/**
+	 * 
+	 * @param row x-index of grid where a match between gunBubble and grid was made
+	 * @param col y-index of grid where a match between gunBubble and grid was made
+	 * @param gunBubble the bubble being matched to
+	 */
+	public void recursion(int row, int col, Bubble gunBubble) {
+		if (grid[row][col] == null) {
 			return;
 		}
-	    if(grid[row][col].color== pivot.color ){
-	        matchedList.add(grid[row][col]);
-	        beenHere(row,col);
-	    }
-	    else if (grid[row][col].color!= pivot.color || grid[row][col] == null || beenHere(row,col) ){
-	        return;
-	    }
-	    if (isInBound(row,col + 1) && !beenHere(row,col+1)){
-	        recursion(row,col+1,pivot);
-	    }
-	    if(isInBound(row, col - 1)&& !beenHere(row,col-1)){
-	        recursion(row, col - 1,pivot);
-	    }
-	    if(isInBound(row -1, col)&& !beenHere(row-1,col)){
-	        recursion(row-1,col,pivot);
-	    } 
-	    if(isInBound(row + 1, col)&& !beenHere(row+1,col)) {
-	        recursion(row+1,col, pivot);
-	    }
-	    else {
-	        return;
-	    }
+		if (grid[row][col].color == gunBubble.color) {
+			matchedList.add(grid[row][col]);
+			beenHere(row, col);
+		} else if (grid[row][col].color != gunBubble.color || grid[row][col] == null || beenHere(row, col)) {
+			return;
+		}
+		if (isInBound(row, col + 1) && !beenHere(row, col + 1)) { 
+			recursion(row, col + 1, gunBubble);
+		}
+		if (isInBound(row, col - 1) && !beenHere(row, col - 1)) {
+			recursion(row, col - 1, gunBubble);
+		}
+		if (isInBound(row - 1, col) && !beenHere(row - 1, col)) {
+			recursion(row - 1, col, gunBubble);
+		}
+		if (isInBound(row + 1, col) && !beenHere(row + 1, col)) {
+			recursion(row + 1, col, gunBubble);
+		} else {
+			return;
+		}
 	}
+
 	
 
 	public boolean isInBound(int row, int col) {	
 	    return row<= grid.length-1 && col <= grid[0].length-1 && col >= 0 && row>= 0;
 	}
-	
+	/**
+	 * 
+	 * @param row is the y-index of the grid
+	 * @param col is the x-index of the grid
+	 * @return boolean based on if the index has been visited before
+	 * builds a list of visited locations on the grid 
+	 */
 	public boolean beenHere(int row, int col){
 		int[] xy = new int[2];
 		boolean flag = false;
@@ -203,8 +229,13 @@ public class PopModel {
 
 	 
 	
-	//checks to see where in the grid the bubble landed compared to the one it made contact with
-	//helper for shoot
+	/**
+	 * 
+	 * @param b gun bubble to be placed into the grid
+	 * checks to see where in the grid the bubble landed compared to the one it made
+	 * contact with
+	 *helper for shoot
+	 */
 	public void addToGrid(Bubble b) { 
 		b.showGunImage = false;
 		if((contactX == b.xCoord)&&(contactY > b.yCoord)){//above contact bubble
@@ -233,7 +264,9 @@ public class PopModel {
 		}
 	}
 	
-	//reloads when we shoot
+	/**
+	 * moves bubbles in array toward index 0
+	 */
 	public void reloadGun() {
 		for(int i = 0; i < gunList.length-1; i++) {//moves the bubbles in the list up one indice
 			gunList[i] = gunList[i+1];
@@ -244,107 +277,116 @@ public class PopModel {
 
 	}
 	
-	//oscillation of gun that applies clicked as a mouse listener
-	//ran throughout game
-	public void moveGun(){
-		int r = gunImageHeight; // radius - it will be the gun image length
+	/**
+	 * starts gun moving by continuously varying the angle of the barrel between 0-180 degrees
+	 * applies clicked as a mouse listener
+	 * ran throughout game
+	 */
+	public void moveGun() {
+		int degree=90;
+		Boolean gunDirec = true;
+		int r = bubbleImageWidth; // radius - it will be the gun image length 
 		while (clicked == false) {
-			if (gunDirec == true) { //move right
+			if (gunDirec == true) { // move right
 				degree += 1;
 			}
-			if (gunDirec == false) { //move left
+			if (gunDirec == false) { // move left
 				degree -= 1;
 			}
-		
-			gunXCoord = Math.sin(Math.toRadians(degree)) * r;
-			gunYCoord = Math.cos(Math.toRadians(degree)) * r;
-		
 			if (degree == 0) {
-				gunDirec = true; //true means it is moving right
+				gunDirec = true; // true means it is moving right
 			}
 			if (degree == 180) {
-				gunDirec = false; //false means it is moving left
+				gunDirec = false; // false means it is moving left
 			}
 		}
-		shoot(degree, gunXCoord, gunYCoord); // if clicked, gun pauses and shoots
+		shoot(degree); // if clicked, gun pauses and shoots
 	}
+
 			
 	
-	//ran during every frame of shoot - checks if it comes into contact with another bubble - if it does, we return true
-	//helper for shoot
-	public boolean stopBubble(Bubble b, int degr, int xMoved, int yMoved) {
-		if ((xMoved / (gridBubblesX) >= 1) && (yMoved / (gridBubblesY) >= 1)){ //sees if the xCoord and yCoord would place it into a 
-			//bubble spot so we don't have to check every single frame
-			xMoved = 0;
-			yMoved = 0; //reset these values
-			if (degr < 45) { //check left half of grid - minimizes amount of bubbles to check
-				for (int i = 0; i < gridColumns; i+=bubbleImageWidth) {
-					for (int j = 0; j < gridRows/2; j+=bubbleImageHeight) {
-						if (checkContact(b, grid[i][j])) { //need to add or y = frame height
-							contactX = i;
-							contactY = j;
-							return true;
-						}
+	/**
+	 * 
+	 * @param gunBubble bubble that is shot from gun
+	 * @return true if contact found
+	 */
+	public boolean stopBubble(Bubble gunBubble) {	
+		int j=-1;
+		boolean flag = false;
+		if(gunList[0].yCoord <= gridHeight){		// if gun bubble has reached grid	
+			breakToHere:
+			for(Bubble[] barr: grid){
+				j++;	
+				int i=-1;
+				for(Bubble bub : barr){
+					i++;
+					if(bub == null){                // skip null locations in grid
+						continue;
+					}
+					//if(checkContact(bub, gunBubble)){       // find match
+					if((((gunBubble.xCoord - bubbleImageWidth) <= bub.xCoord) &&       // checking contact between gunbubble and grid
+							(bub.xCoord <= (gunBubble.xCoord + bubbleImageWidth)))
+							&& (((gunBubble.yCoord - bubbleImageHeight) <= bub.yCoord)
+									&& (bub.yCoord <= (gunBubble.yCoord + bubbleImageHeight)))){					
+						contactX = i;
+						contactY = j;
+						flag = true;
+						break breakToHere;
+					}else{
+						flag = false;
 					}
 				}
-			}
-			else if (degr >= 45) { // check right half of grid 
-				for (int i = 0; i < gridColumns; i+=bubbleImageWidth) {
-					for (int j = gridRows/2; j < gridRows; j+=bubbleImageHeight) {//call update helper
-						if (checkContact(b, grid[i][j])){
-							contactX = i;
-							contactY = j;
-							return true;
-						}
-					}
-				}
-			}
+			}			
 		}
-		return false;
-	}
-
-	
-	//moves forward on an angle
-	//helper for shoot
-	public void moveBubbleForward(Bubble b, int degr) {
-		Long x = Math.round(bubbleSpeed * Math.sin(degr));
-		Long y = Math.round(bubbleSpeed * Math.cos(degr));
-	
-		b.xCoord += x.intValue();
-		b.yCoord += y.intValue();
-		
+		return flag;
 	}
 	
-	
-	//puts the gunBubble into the xCoord and yCoord of where the gun is and shoots it by moving the bubble until it comes in
-	//contact with another bubble
-	//takes degree, xCoordinate, and yCoordinate of the gun at the time when shoot is activated
-	//called by moveGun
-	public void shoot(int degr, double xCo, double yCo){
-		Long x = Math.round(xCo);
-		Long y = Math.round(yCo);
-		gunList[0].xCoord = x.intValue();
-		gunList[0].yCoord = y.intValue();
-		int xMoved = gunList[0].xCoord;
-		int yMoved = gunList[0].yCoord;
-		
-		clicked = false; //start moving the gun again
-		moveGun();
-		
-		while (stopBubble(gunList[0], degr, xMoved, yMoved) == false) { //move the bubble forward until it makes contact
-			moveBubbleForward(gunList[0], degr);
-			xMoved += gunList[0].xCoord;
-			yMoved += gunList[0].yCoord;
+	/**
+	 * 
+	 * @param degr angle of gun barrel
+	 * shoots the bubble toward the grid
+	 */
+	public void shoot(int degr) { 
+		gunList[0].xCoord = screenWidth/2; // x, y position of bubble in gun
+		gunList[0].yCoord = screenHeight;                        
+		while (stopBubble(gunList[0]) == false) { // move the bubble forward until it makes contact													
+			gunList[0].xCoord += bubbleSpeed * Math.cos(Math.toRadians(degr));
+			gunList[0].yCoord +=-bubbleSpeed * Math.sin(Math.toRadians(degr));			
 		}
-		
-		addToGrid(gunList[0]);
-		
-		checkMatch(); //check if there are any matches that need to be popped
-		
+		checkMatch(); // check if there are any matches that need to be popped
 		gunList[0] = null;
-		reloadGun(); //removes old gunBubble and reloads gun
-		
+		reloadGun(); // removes old gunBubble and reloads gun
+		//clicked = false; // start moving the gun again 
+		//moveGun();
 	}
+}
 	
 
-}
+
+
+
+	
+	
+	
+
+	
+
+	
+
+	
+
+	
+	
+	
+
+
+	
+	
+
+	
+		
+	
+	
+
+	
+	
