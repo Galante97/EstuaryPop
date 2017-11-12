@@ -1,6 +1,10 @@
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
+
+
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -23,8 +27,13 @@ public class PopModel {
 	boolean obj2done = false;
 	int bubbleImageWidth; // need a getter for this
 	int bubbleImageHeight; // need a getter for this
+
 	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
 	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();
+
+	LinkedList<Bubble> matchedList;  // list of matched bubbles to be possibly popped
+	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();	
+
 	int gunImageWidth; // need a getter for this
 	int gunImageHeight; // need a getter for this
 	double gunXCoord;
@@ -45,8 +54,16 @@ public class PopModel {
 	int gridBubblesY = bubbleImageHeight / 2;
 	int contactX;
 	int contactY;
+
 	public static String[] modelcolors = {"r","o","y","g","b","p"};
 	public static void main(String[] args) {
+
+
+
+	
+
+	
+
 
 		PopModel model = new PopModel(1);
 		model.modelSetGrid();
@@ -185,6 +202,10 @@ public class PopModel {
 	}
 
 	public void checkMatch() { // not complete yet
+
+
+		matchedList = new LinkedList<Bubble>();
+
 		matchedList.add(gunList[0]); // if size > 4, popping will occur
 		// matchedList.add(b); // this is our first matching bubble
 		recursion(contactY, contactX, gunList[0]); // look for more matches
@@ -202,6 +223,7 @@ public class PopModel {
 					}
 				}
 			}
+
 		}
 	}
 
@@ -220,41 +242,65 @@ public class PopModel {
 		}
 	}
 
-	public boolean match(Bubble bub1, Bubble bub2) {
-		return bub1.color == bub2.color && bub1 != null && bub2 != null;
-	}
 
-	public void recursion(int row, int col, Bubble pivot) {
+	
+	
+	public boolean match(Bubble bub1, Bubble bub2){
+		return bub1.color == bub2.color && bub1 != null && bub2 != null;  
+	}
+	
+	
+	/**
+	 * 
+	 * @param row x-index of grid where a match between gunBubble and grid was made
+	 * @param col y-index of grid where a match between gunBubble and grid was made
+	 * @param gunBubble the bubble being matched to
+	 */
+	public void recursion(int row, int col, Bubble gunBubble) {
 		if (grid[row][col] == null) {
 			return;
 		}
-		if (grid[row][col].color == pivot.color) {
+		if (grid[row][col].color == gunBubble.color) {
 			matchedList.add(grid[row][col]);
 			beenHere(row, col);
-		} else if (grid[row][col].color != pivot.color || grid[row][col] == null || beenHere(row, col)) {
+		} else if (grid[row][col].color != gunBubble.color || grid[row][col] == null || beenHere(row, col)) {
 			return;
 		}
-		if (isInBound(row, col + 1) && !beenHere(row, col + 1)) {
-			recursion(row, col + 1, pivot);
+		if (isInBound(row, col + 1) && !beenHere(row, col + 1)) { 
+			recursion(row, col + 1, gunBubble);
 		}
 		if (isInBound(row, col - 1) && !beenHere(row, col - 1)) {
-			recursion(row, col - 1, pivot);
+			recursion(row, col - 1, gunBubble);
 		}
 		if (isInBound(row - 1, col) && !beenHere(row - 1, col)) {
-			recursion(row - 1, col, pivot);
+			recursion(row - 1, col, gunBubble);
 		}
 		if (isInBound(row + 1, col) && !beenHere(row + 1, col)) {
-			recursion(row + 1, col, pivot);
+			recursion(row + 1, col, gunBubble);
+
 		} else {
 			return;
 		}
 	}
 
+	
+
+
 	public boolean isInBound(int row, int col) {
 		return row <= grid.length - 1 && col <= grid[0].length - 1 && col >= 0 && row >= 0;
 	}
 
-	public boolean beenHere(int row, int col) {
+
+
+	/**
+	 * 
+	 * @param row is the y-index of the grid
+	 * @param col is the x-index of the grid
+	 * @return boolean based on if the index has been visited before
+	 * builds a list of visited locations on the grid 
+	 */
+	public boolean beenHere(int row, int col){
+
 		int[] xy = new int[2];
 		boolean flag = false;
 		for (int[] xys : haveBeenHere) {
@@ -283,6 +329,7 @@ public class PopModel {
 	// }
 	// }
 
+
 	public void chooseObjectives() {
 		// randomly selects 3 objectives from pool (where is the pool???)
 	}
@@ -290,7 +337,18 @@ public class PopModel {
 	// checks to see where in the grid the bubble landed compared to the one it made
 	// contact with
 	// helper for shoot
-	public void addToGrid(Bubble b) {
+
+	 
+	
+	/**
+	 * 
+	 * @param b gun bubble to be placed into the grid
+	 * checks to see where in the grid the bubble landed compared to the one it made
+	 * contact with
+	 *helper for shoot
+	 */
+	public void addToGrid(Bubble b) { 
+
 		b.showGunImage = false;
 		if ((contactX == b.xCoord) && (contactY > b.yCoord)) {// above contact bubble
 			grid[contactX][contactY - 1] = b;
@@ -322,7 +380,14 @@ public class PopModel {
 		}
 	}
 
+
 	// reloads when we shoot
+
+	
+	/**
+	 * moves bubbles in array toward index 0
+	 */
+
 	public void reloadGun() {
 		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
 			gunList[i] = gunList[i + 1];
@@ -334,10 +399,21 @@ public class PopModel {
 
 	}
 
+
 	// oscillation of gun that applies clicked as a mouse listener
 	// ran throughout game
+
+	
+	/**
+	 * starts gun moving by continuously varying the angle of the barrel between 0-180 degrees
+	 * applies clicked as a mouse listener
+	 * ran throughout game
+	 */
 	public void moveGun() {
-		int r = gunImageHeight; // radius - it will be the gun image length
+		int degree=90;
+		Boolean gunDirec = true;
+		int r = bubbleImageWidth; // radius - it will be the gun image length 
+
 		while (clicked == false) {
 			if (gunDirec == true) { // move right
 				degree += 1;
@@ -346,8 +422,11 @@ public class PopModel {
 				degree -= 1;
 			}
 
+
 			gunXCoord = Math.sin(Math.toRadians(degree)) * r;
 			gunYCoord = Math.cos(Math.toRadians(degree)) * r;
+
+
 
 			if (degree == 0) {
 				gunDirec = true; // true means it is moving right
@@ -356,8 +435,9 @@ public class PopModel {
 				gunDirec = false; // false means it is moving left
 			}
 		}
-		shoot(degree, gunXCoord, gunYCoord); // if clicked, gun pauses and shoots
+		shoot(degree); // if clicked, gun pauses and shoots
 	}
+
 
 	// ran during every frame of shoot - checks if it comes into contact with
 	// another bubble - if it does, we return true
@@ -386,10 +466,44 @@ public class PopModel {
 							contactY = j;
 							return true;
 						}
+
+			
+	
+	/**
+	 * 
+	 * @param gunBubble bubble that is shot from gun
+	 * @return true if contact found
+	 */
+	public boolean stopBubble(Bubble gunBubble) {	
+		int j=-1;
+		boolean flag = false;
+		if(gunList[0].yCoord <= gridHeight){		// if gun bubble has reached grid	
+			breakToHere:
+			for(Bubble[] barr: grid){
+				j++;	
+				int i=-1;
+				for(Bubble bub : barr){
+					i++;
+					if(bub == null){                // skip null locations in grid
+						continue;
+					}
+					//if(checkContact(bub, gunBubble)){       // find match
+					if((((gunBubble.xCoord - bubbleImageWidth) <= bub.xCoord) &&       // checking contact between gunbubble and grid
+							(bub.xCoord <= (gunBubble.xCoord + bubbleImageWidth)))
+							&& (((gunBubble.yCoord - bubbleImageHeight) <= bub.yCoord)
+									&& (bub.yCoord <= (gunBubble.yCoord + bubbleImageHeight)))){					
+						contactX = i;
+						contactY = j;
+						flag = true;
+						break breakToHere;
+					}else{
+						flag = false;
+
 					}
 				}
-			}
+			}			
 		}
+
 		return false;
 	}
 
@@ -437,3 +551,57 @@ public class PopModel {
 
 	}
 }
+
+		return flag;
+	}
+	
+	/**
+	 * 
+	 * @param degr angle of gun barrel
+	 * shoots the bubble toward the grid
+	 */
+	public void shoot(int degr) { 
+		gunList[0].xCoord = screenWidth/2; // x, y position of bubble in gun
+		gunList[0].yCoord = screenHeight;                        
+		while (stopBubble(gunList[0]) == false) { // move the bubble forward until it makes contact													
+			gunList[0].xCoord += bubbleSpeed * Math.cos(Math.toRadians(degr));
+			gunList[0].yCoord +=-bubbleSpeed * Math.sin(Math.toRadians(degr));			
+		}
+		checkMatch(); // check if there are any matches that need to be popped
+		gunList[0] = null;
+		reloadGun(); // removes old gunBubble and reloads gun
+		//clicked = false; // start moving the gun again 
+		//moveGun();
+	}
+}
+	
+
+
+
+
+	
+	
+	
+
+	
+
+	
+
+	
+
+	
+	
+	
+
+
+	
+	
+
+	
+		
+	
+	
+
+	
+	
+>>>>>>> e77eceb00855875e75d8e4087908f95ac6b59409
