@@ -22,7 +22,7 @@ public class PopController {
 	public double xCo;
 	public double yCo;
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -35,7 +35,7 @@ public class PopController {
 				model.moveGun(); //since this needs to move in every frame
 			}
 		});
-		
+		*/
 		
 	
 	//	view.setVisible(true);

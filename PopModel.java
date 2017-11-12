@@ -16,7 +16,7 @@ public class PopModel {
 	int[] objectives = { 0, 0, 0 };
 
 	
-	//need getters for all of these
+	//need getters for all of these ///done
 	int startGridColumns = 5;
 	int gridRows = 18; // must be initialized here
 	int gridColumns = 20; // must be initialized here, this should be length of gamePanel
@@ -30,14 +30,14 @@ public class PopModel {
 	boolean obj0done = false;
 	boolean obj1done = false;
 	boolean obj2done = false;
-	int bubbleImageWidth = 50; // need a getter for this
-	int bubbleImageHeight = 50; // need a getter for this
+	int bubbleImageWidth = 50; // need a getter for this ///done
+	int bubbleImageHeight = 50; // need a getter for this ///done
 	
 	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
 	LinkedList<int[]> haveBeenHere = new LinkedList<int[]>();
 	
-	int gunImageWidth; // need a getter for this
-	int gunImageHeight; // need a getter for this
+	int gunImageWidth; // need a getter for this ///done
+	int gunImageHeight; // need a getter for this ///done
 	
 	private double gunXCoord =450;
 	private double gunYCoord = 500;
@@ -54,6 +54,7 @@ public class PopModel {
 	int gridBubblesY = 25;
 	int contactX;
 	int contactY;
+	public static String[] modelcolors = {"r","o","y","g","b","p"};
 
 	public static void main(String[] args) {
 	/*	JFrame frame = new JFrame();
@@ -71,7 +72,10 @@ public class PopModel {
 		model.shoot(85, 450, 712);
 		model.clicked = false;
 		System.out.println(); */
-
+		
+		PopModel model = new PopModel(1);
+		model.modelSetGrid();
+		model.printGrid();
 	}
 
 	public PopModel() {
@@ -100,6 +104,24 @@ public class PopModel {
 	// initializes the board
 	// pics three objectives from the objective class and randomly gives each bubble
 	// an objective
+	public void modelSetGrid() {
+		Random r = new Random();
+		
+		for (int i = 0; i < gridRows; i++) {
+			for (int j = 0; j < startGridColumns; j++) {
+				grid[i][j] = new Bubble(i, j, modelcolors[r.nextInt(6)]);
+			}
+		}
+						
+	}
+	public void printGrid() {
+		for (int i = 0; i < gridRows; i++) {
+			for (int j = 0; j < startGridColumns; j++) {
+				System.out.print(grid[i][j].color);
+				System.out.print(" ");
+			}
+			System.out.println();
+	}
 	public void setGrid() {
 		System.out.println("hi");
 		Random rand = new Random();
@@ -427,6 +449,34 @@ public class PopModel {
 		reloadGun(); // removes old gunBubble and reloads gun
 
 	}
-
+/*	int startGridColumns = 5;
+	int gridRows = 18; // must be initialized here
+	int gridColumns = 20; // must be initialized here, this should be length of gamePanel
+	int currGridRows = 5;*/
+	
+	public int getStartColumns() {
+		return startGridColumns;
+	}
+	public int getgridRows() {
+		return gridRows;
+	}
+	public int getgridColumns() {
+		return gridColumns;
+	}
+	public int getcurrGridRows() {
+		return currGridRows;
+	}
+	public int getbubbleImageWidth() {
+		return bubbleImageWidth;
+	}
+	public int getbubbleImageHeight() {
+		return bubbleImageHeight;
+	}
+	public int getgunImageWidth() {
+		return gunImageWidth;
+	}
+	public int getgunImageHeight() {
+		return gunImageHeight;
+	}
 
 }

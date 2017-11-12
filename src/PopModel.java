@@ -7,14 +7,14 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.JFrame;
-
+import java.util.Scanner;
 public class PopModel {
 
 	int difficulty;
 	int[] objectives = { 0, 0, 0 };
 	Objective o = new Objective();
-	int gridRows = 5; // must be initialized here
-	int gridColumns = 18; // must be initialized here
+	int gridRows = 8; // must be initialized here
+	int gridColumns = 5; // must be initialized here
 	Bubble[][] grid = new Bubble[gridRows][gridColumns];
 	Bubble[] gunList;
 	int score;
@@ -45,27 +45,15 @@ public class PopModel {
 	int gridBubblesY = bubbleImageHeight / 2;
 	int contactX;
 	int contactY;
-
+	public static String[] modelcolors = {"r","o","y","g","b","p"};
 	public static void main(String[] args) {
-	/*	JFrame frame = new JFrame();
-		PopModel model = new PopModel(1);// will ask for difficulty
-		PopView view = new PopView(model, frame); // creates the window
-		view.draw();
-		view.setVisible(false);
 
-		model.setGrid();
-		System.out.println("Grid Set!");
-
-		model.gunList = new Bubble[5];
-		model.loadGun();
-		System.out.println("Gun Loaded!");
-
-		model.clicked = true;
-		System.out.println("User Clicked");
-		model.shoot(85, 450, 712);
-		model.clicked = false;
-		System.out.println(); */
-
+		PopModel model = new PopModel(1);
+		model.modelSetGrid();
+		model.printGrid();
+		for(int i = 0; i < 10; i++) {
+			model.modelShoot();
+		}
 	}
 
 	public PopModel() {
@@ -78,6 +66,78 @@ public class PopModel {
 	// initializes the board
 	// pics three objectives from the objective class and randomly gives each bubble
 	// an objective
+	
+	
+	
+	
+	//modelSetGrid sets the grid, using the Bubble constructor with no View parameters
+	             //right now, it fills every grid index with a bubble, and initializes the 
+				 //bottom three rows Bubble.color = N (NULL)
+				 //function should be used to write and test a working CheckContact Function
+	//@author: Scott
+	public void modelSetGrid() {
+		Random r = new Random();
+		
+		for (int i = 0; i < gridRows; i++) {
+			for (int j = 0; j < gridColumns; j++) {
+				//loads the gun
+				grid[i][j] = new Bubble(i, j, modelcolors[r.nextInt(5)]);
+			}
+		}
+		for(int i = 5; i<gridRows; i++) {
+			for (int j = 0; j<gridColumns; j++) {
+				//initializes the bottom three rows Bubble.color to N(NULL)
+				grid[i][j].color = "N";
+			}
+		}
+						
+	}
+	/*
+	 * modelShoot() function for quick shooting, type in x and y coords, changes
+	 * bubble color at the index you shoot
+	 * use to test and write a working Checkcontact function
+	 */
+	//@author: Scott
+	public void modelShoot() {
+		Random r = new Random();
+		Bubble b = new Bubble(0, 0, modelcolors[r.nextInt(5)]);
+		System.out.print("Bubble color is "+ b.color);
+		System.out.println();
+		System.out.print("enter y coord: ");
+		Scanner in = new Scanner(System.in);
+		int x = in.nextInt();
+		System.out.print("enter x coord: ");
+		int y = in.nextInt();
+		b.xCoord = x;
+		b.yCoord = y;
+		grid[x][y] = b;
+		//prints the grid after every shot
+		printGrid();
+	}
+	
+	
+	//printGrid() function, prints the grid
+	//@author:Scott
+	public void printGrid() {
+		System.out.println();
+		for(int i = 0; i < gridColumns; i++) {
+			System.out.print(i+" ");
+		}
+		System.out.println();
+		for (int i = 0; i < gridRows; i++) {
+			for (int j = 0; j < gridColumns; j++) {
+				System.out.print(grid[i][j].color);
+				System.out.print(" ");
+			}
+			System.out.print("  " + i);
+			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	
+	
+	
 	public void setGrid() {
 		System.out.println("hi");
 		Random rand = new Random();

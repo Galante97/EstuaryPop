@@ -32,6 +32,11 @@ public class Bubble extends JPanel  {
 		gridImage = gridI;
 		initBubble();
 	}
+	Bubble(int x, int y, String c){
+		xCoord = x;
+		yCoord = y;
+		color = c;
+	}
 
 
 	public void initBubble() {
