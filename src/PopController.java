@@ -6,6 +6,18 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+
+/**
+* PopController
+* The PopController class is the controller in the MVC that handles the data 
+* between the model and the view
+*
+*
+* @author  James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+* @version 1.0
+* @since   2017-09-31 
+*/
+
 public class PopController {
 
 	public int difficulty; // determines speed of game
@@ -17,7 +29,7 @@ public class PopController {
 	static Scanner scn = new Scanner(System.in);
 	
 	////////////////////////////////
-	//Some printing functions//
+
 
 	/**
 	 * Used for printing the grid to the console. Essentially for testing purposes
