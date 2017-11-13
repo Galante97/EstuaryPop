@@ -5,22 +5,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
 public class PopModel {
 
 	int difficulty;
-	int[] objectives = { 0, 0, 0 };
+	int[] objectives = {0, 0, 0};
 	Objective o = new Objective();
-	int gridRows = 5; // must be initialized here
-	int gridColumns = 18; // must be initialized here
-	Bubble[][] grid = new Bubble[gridRows][gridColumns];
-	Bubble[] gunList;
-	int score;
 	boolean obj0done = false;
 	boolean obj1done = false;
 	boolean obj2done = false;
+	int gridRows = 8; //this size for testing purposes (prints nicely in the console)
+	int gridColumns = 5;
+	int startGridRows;
+	Bubble[][] grid = new Bubble[gridRows][gridColumns];
+	int gunListLength = 5;
+	Bubble[] gunList = new Bubble[gunListLength];
+	int score;
+	Scanner scn = new Scanner(System.in);
+	
 	int bubbleImageWidth; // need a getter for this
 	int bubbleImageHeight; // need a getter for this
 	LinkedList<Bubble> matchedList = new LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
@@ -32,13 +37,9 @@ public class PopModel {
 	Boolean gunDirec = true;
 	double gunEdgeX = 0;
 	double gunEdgeY = 0;
-	int startGridRows = 3; // number of rows we are starting with, must be initialized here
 	int degree;
 	int bubbleSpeed;
 	boolean clicked = false;
-	Objective o1;
-	Objective o2;
-	Objective o3;
 	int gunBubblesX; // determines spacing of gun bubbles
 	int gunBubblesY; // constant
 	int gridBubblesX = bubbleImageWidth / 2; // determines xCoords grid bubbles
@@ -67,56 +68,129 @@ public class PopModel {
 		System.out.println(); */
 
 	}
+	
+	//////////////////////////////////////////////
 
-	public PopModel() {
-	}
-
-	public PopModel(int diff) {
+	/**
+	 * Constructor.
+	 * @param diff is the difficulty of the game passed in from PopController. It is used to set the initial number of bubbles on the board
+	 */
+	public PopModel(int diff) {//constructor
 		difficulty = diff;
+		startGridRows = 3 + diff;//Just a temporary use of difficulty
 	}
-
-	// initializes the board
-	// pics three objectives from the objective class and randomly gives each bubble
-	// an objective
-	public void setGrid() {
-		System.out.println("hi");
+	
+	///////////////////////////////////////////////
+	
+	/**
+	 * randomly selects three objectives which are the teaching points of each game
+	 * allows the game to be different every time you play
+	 */
+	public void chooseObjectives(){	//fills the array of ints called "objectives" with three different random numbers.
+									//these will be the three objectives for the given game
+		System.out.println("Choosing objectives..");
 		Random rand = new Random();
-		while (objectives[0] == objectives[1] || objectives[0] == objectives[2] || objectives[1] == objectives[2]) {// makes
-																													// sure
-																													// the
-																													// objectives
-																													// arent
-																													// the
-																													// same
-																													// (poorly
-																													// written
-																													// but
-																													// works)
+		while (objectives[0] == objectives[1] || objectives[0] == objectives[2] || objectives[1] == objectives[2]){//inefficient but works
 			objectives[0] = rand.nextInt(6);
 			objectives[1] = rand.nextInt(6);
 			objectives[2] = rand.nextInt(6);
 		} // close while
+	}
+	
+	/**
+	 * places the bubbles in the grid randomly
+	 */
+	public void setGrid() {//randomly initializes the grid
+		Random rand = new Random();
+		System.out.println("Filling grid...");
 		for (int i = 0; i < startGridRows; i++) {
-			System.out.println("hi again");
-			int j = 0;
-			for (; j < gridColumns; j++) {
+			for (int j = 0; j < gridColumns; j++) {
 				int r = rand.nextInt(3);
-				grid[i][j] = new Bubble(i, j, false, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
-						o.returnGridImg(objectives[r]));
+				grid[i][j] = new Bubble(i, j, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),o.returnGridImg(objectives[r]));
+				grid[i][j].switchImage();
 			} // close for
 		} // close for
 	}
 
-	// only used at the beginning
-	// adds bubbles to the gun list until it is full
-	// randomly chooses one of the prechoses objectives for each bubble
-	public void loadGun() {
-		for (int i = 0; i < gunList.length; i++) {
+	/**
+	 * initializes the gun at the beginning of the game by filling the gunList with random bubbles
+	 * also reloads the gun after everytime you shoot
+	 */
+	public void loadGun() {//combines loadGun and reloadGun into one (more efficient)
+		System.out.println("Loading Gun...");
+		while(gunList[0] == null){
+			for(int i = 0; i < gunListLength-1; i++){
+				gunList[i] = gunList[i+1];
+			}
 			Random rand = new Random();
 			int r = rand.nextInt(3);
-			gunList[i] = new Bubble(-1, -1, true, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
-					o.returnGridImg(objectives[r]));
-		} // close for
+			gunList[gunListLength-1] = new Bubble(-1, -1, o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),o.returnGridImg(objectives[r]));
+		}
+	}
+	
+	/**
+	 * Once the shot bubble finds it place in the grid, this method is called
+	 * to check the surrounding bubbles for matches and removes them from the
+	 * board if they match
+	 * @param x is the x coord of the bubble you are checking around (initially the one just shot but its recursive so all the matches around that one too)
+	 * @param y is the y coord of the bubble you are checking around
+	 */
+	public void checkMatch2(int x, int y){//recursive
+		String c = grid[y][x].color;
+		if(x+1 <= gridColumns-1){//check right
+			if(grid[y][x+1] != null && c.equals(grid[y][x+1].color)){
+				grid[y][x] = null;
+				checkMatch2(x+1, y);
+				grid[y][x+1] = null;
+			}
+		}
+		if(x-1 >= 0){//check left
+			if(grid[y][x-1] != null && c.equals(grid[y][x-1].color)){
+				grid[y][x] = null;
+				checkMatch2(x-1, y);
+				grid[y][x-1] = null;
+			}
+		}
+		if(y+1 <= gridRows-1){//check down (notice the sign)
+			if(grid[y+1][x] != null && c.equals(grid[y+1][x].color)){
+				grid[y][x] = null;
+				checkMatch2(x, y+1);
+				grid[y+1][x] = null;
+			}
+		}
+		if(y-1 >= 0){//check up
+			if(grid[y-1][x] != null && c.equals(grid[y-1][x].color)){
+				grid[y][x] = null;
+				checkMatch2(x, y-1);
+				grid[y-1][x] = null;
+			}
+		}
+	}
+	
+	/**
+	 * Just used for testing
+	 * prompts the play for x and y coords of the place they would like to shoot the bubble that is in the front of the gunList
+	 */
+	public void dummyShoot(){	//for testing purposes. Just enter the location in the grid you want to shoot the bubble
+								//(top left is (0,0))
+		System.out.println("Dummy Shoot...");
+		while(true){
+		    System.out.println("X coord? ...");
+		    int x = scn.nextInt();
+			System.out.println("Y coord? ...");
+		    int y = scn.nextInt();
+			if(grid[y][x] == null){
+				grid[y][x] = gunList[0];
+				grid[y][x].switchImage();
+				gunList[0] = null;
+				loadGun();
+				checkMatch2(x,y);
+				break;
+			}
+			else{
+				System.out.println("Choose and empty space!");
+			}
+		}
 	}
 
 	// set from controller
@@ -222,10 +296,7 @@ public class PopModel {
 	//
 	// }
 	// }
-
-	public void chooseObjectives() {
-		// randomly selects 3 objectives from pool (where is the pool???)
-	}
+	
 
 	// checks to see where in the grid the bubble landed compared to the one it made
 	// contact with
@@ -263,16 +334,16 @@ public class PopModel {
 	}
 
 	// reloads when we shoot
-	public void reloadGun() {
-		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
-			gunList[i] = gunList[i + 1];
-		} // close for
-		Random rand = new Random();
-		int r = rand.nextInt(3);
-		gunList[gunList.length - 1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]),
-				o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));// adds a new bubble to the end
-
-	}
+//	public void reloadGun() {
+//		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
+//			gunList[i] = gunList[i + 1];
+//		} // close for
+//		Random rand = new Random();
+//		int r = rand.nextInt(3);
+//		gunList[gunList.length - 1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]),
+//				o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));// adds a new bubble to the end
+//
+//	}
 
 	// oscillation of gun that applies clicked as a mouse listener
 	// ran throughout game
@@ -373,7 +444,8 @@ public class PopModel {
 		checkMatch(); // check if there are any matches that need to be popped
 
 		gunList[0] = null;
-		reloadGun(); // removes old gunBubble and reloads gun
-
+		//reloadGun(); // removes old gunBubble and reloads gun
 	}
+	
+	
 }
