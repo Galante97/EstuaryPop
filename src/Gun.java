@@ -7,7 +7,9 @@ import javax.swing.JPanel;
 
 public class Gun extends JPanel {
 	public Image image;
-
+	/**
+	 * Gun constructor 
+	 */
 	Gun() {
 		loadImage();
 		int w = image.getWidth(this);
@@ -15,7 +17,9 @@ public class Gun extends JPanel {
 		setPreferredSize(new Dimension(w, h));
 
 	}
-
+	/**
+	 * loads the gun image for the View
+	 */
 	private void loadImage() {
 		ImageIcon gun = new ImageIcon("src/gunMount.png");
 		image = gun.getImage();
@@ -23,6 +27,9 @@ public class Gun extends JPanel {
 	}
 
 	@Override
+	/**
+	 * paints the gun for the View
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
