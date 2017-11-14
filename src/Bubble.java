@@ -114,15 +114,14 @@ public class Bubble extends JPanel  {
 	public String color;
 	public String gunImage;
 	public String gridImage;
-	public Boolean showGunImage; // will be used to for if true show the gun image, if false, show grid image
+	public Boolean showGunImage = true; // will be used to for if true show the gun image, if false, show grid image
 	public Objective obj;
 
 	public Image image;
 
-	Bubble(int x, int y, Boolean bool, String c, String gunI, String gridI) {
+	Bubble(int x, int y, String c, String gunI, String gridI) {
 		xCoord = x;
 		yCoord = y;
-		showGunImage = bool;
 		color = c;
 		gunImage = gunI;
 		gridImage = gridI;
@@ -190,12 +189,17 @@ public class Bubble extends JPanel  {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
 	}
+	
+	public void switchImage(){
+		showGunImage = false;
+	}
 
-	public String toString() {
-		if (showGunImage) {
-			return color + gunImage;
-		} else {
-			return color + gridImage;
+	public String toString(){
+		if(showGunImage){
+			return "[" + color + ", " + gunImage + "]";
+		}
+		else{
+			return "[" + color + ", " + gridImage + "]";
 		}
 	}
 
