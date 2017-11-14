@@ -21,10 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- * PopView The PopView class is the viee in the MVC that handles the data being
- * being show on the view, and draws all objects
- *
- *
+ * PopModel The PopModel class is the model in the MVC that hold the current state of the game
  * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
  * @version 1.0
  * @since 2017-09-31

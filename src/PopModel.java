@@ -9,6 +9,10 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+/**
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ */
+
 public class PopModel {
 
 	int difficulty;
@@ -193,11 +197,22 @@ public class PopModel {
 		}
 	}
 
-	// set from controller
+	
+	/**
+	 * 
+	 * @param click mouse clicked = true
+	 *  set from controller
+	 * 
+	 * 
+	 */
 	public void setClicked(boolean click) {
 		this.clicked = click;
 	}
 
+	
+	/**
+	 *  checks for location matches between gun bubble and grid bubble
+	 */
 	public void checkMatch() { // not complete yet
 		matchedList.add(gunList[0]); // if size > 4, popping will occur
 		// matchedList.add(b); // this is our first matching bubble
@@ -219,11 +234,13 @@ public class PopModel {
 		}
 	}
 
-	// like checkMatch() ??? no just breaking down checkmatch into several helpers
-	// that can be each be tested so the
-	// the composite method, checkmatch, can be guaranteed to work -Sutton
-	// gonna use this updateHelper1 for shoot, switched the name to checkContact
-	// -Olivia
+	
+	/**
+	 * 
+	 * @param bub1 grid bubble being checked location match 
+	 * @param bub2 gun bubble being checked for location match
+	 * @return true if match found based on locations
+	 */
 	public boolean checkContact(Bubble bub1, Bubble bub2) { // checks bubble contact between gunbubble and gridbubble
 		if ((((bub2.xCoord - bubbleImageWidth) <= bub1.xCoord) && (bub1.xCoord <= (bub2.xCoord + bubbleImageWidth)))
 				&& (((bub2.yCoord - bubbleImageHeight) <= bub1.yCoord)
@@ -233,11 +250,22 @@ public class PopModel {
 			return false;
 		}
 	}
-
+	/**
+	 * 
+	 * @param bub1 bubble being compared for color
+	 * @param bub2 bubble being compared for color
+	 * @return true if same color
+	 */
 	public boolean match(Bubble bub1, Bubble bub2) {
 		return bub1.color == bub2.color && bub1 != null && bub2 != null;
 	}
 
+	/**
+	 * 
+	 * @param row y-value of grid index
+	 * @param col x-vlaue of grid index
+	 * @param pivot gun bubble being compared to grid for matches based on color and touching
+	 */
 	public void recursion(int row, int col, Bubble pivot) {
 		if (grid[row][col] == null) {
 			return;
@@ -264,10 +292,22 @@ public class PopModel {
 		}
 	}
 
+	/**
+	 * 
+	 * @param row y-value of grid index
+	 * @param col x-value of grid index
+	 * @return true if inside the grid
+	 */
 	public boolean isInBound(int row, int col) {
 		return row <= grid.length - 1 && col <= grid[0].length - 1 && col >= 0 && row >= 0;
 	}
 
+	/**
+	 * 
+	 * @param row y-value of grid
+	 * @param col x-value of grid
+	 * @return true if the recursive method has been to this grid location
+	 */
 	public boolean beenHere(int row, int col) {
 		int[] xy = new int[2];
 		boolean flag = false;
@@ -284,23 +324,19 @@ public class PopModel {
 		return flag;
 	}
 
-	// **~~lets not worry about this for the alpha~~**
-	// public void shift(){ // shift gridbubbles down screen by one image height to
-	// make room for next new row
-	// for(Bubble[] bArr: grid){
-	// for(Bubble b: bArr){
-	// b.yCoord += 1;
-	// }//close for
-	// }//close for
-	// for(Bubble m : grid[0]){
-	//
-	// }
-	// }
 	
 
-	// checks to see where in the grid the bubble landed compared to the one it made
-	// contact with
-	// helper for shoot
+	
+	/**
+	 * 
+	 * @param b bubble being added to grid
+	 * 
+	 *  checks to see where in the grid the bubble landed compared to the one it made
+	 * contact with
+	 * helper for shoot
+	 * 
+	 * 
+	 */
 	public void addToGrid(Bubble b) {
 		b.showGunImage = false;
 		if ((contactX == b.xCoord) && (contactY > b.yCoord)) {// above contact bubble
@@ -333,20 +369,29 @@ public class PopModel {
 		}
 	}
 
-	// reloads when we shoot
-//	public void reloadGun() {
-//		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
-//			gunList[i] = gunList[i + 1];
-//		} // close for
-//		Random rand = new Random();
-//		int r = rand.nextInt(3);
-//		gunList[gunList.length - 1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]),
-//				o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));// adds a new bubble to the end
-//
-//	}
+	
+	/**
+	 *  reloads when we shoot
+	 */
+	public void reloadGun() {
+		for (int i = 0; i < gunList.length - 1; i++) {// moves the bubbles in the list up one indice
+			gunList[i] = gunList[i + 1];
+		} // close for
+		Random rand = new Random();
+		int r = rand.nextInt(3);
+		gunList[gunList.length - 1] = new Bubble(-1, -1, true, o.returnColor(objectives[r]),
+				o.returnGunImg(objectives[r]), o.returnGridImg(objectives[r]));// adds a new bubble to the end
 
-	// oscillation of gun that applies clicked as a mouse listener
-	// ran throughout game
+	}
+
+	
+	/**
+	 * 
+	 *  oscillation of gun that applies clicked as a mouse listener
+	 * ran throughout game
+	 * 
+	 * 
+	 */
 	public void moveGun() {
 		int r = gunImageHeight; // radius - it will be the gun image length
 		while (clicked == false) {
@@ -373,6 +418,14 @@ public class PopModel {
 	// ran during every frame of shoot - checks if it comes into contact with
 	// another bubble - if it does, we return true
 	// helper for shoot
+	/**
+	 * 
+	 * @param b gun bubble being checked for location
+	 * @param degr angle of gun
+	 * @param xMoved projection of gun angle onto x plane
+	 * @param yMoved projection of gun angle onto y plane
+	 * @return true if bubble has made contact with grid
+	 */
 	public boolean stopBubble(Bubble b, int degr, int xMoved, int yMoved) {
 		if ((xMoved / (gridBubblesX) >= 1) && (yMoved / (gridBubblesY) >= 1)) { // sees if the xCoord and yCoord would
 																				// place it into a
@@ -404,8 +457,17 @@ public class PopModel {
 		return false;
 	}
 
-	// moves forward on an angle
-	// helper for shoot
+	
+	/**
+	 * 
+	 * @param b gun bubble being checked
+	 * @param degr angle of gun
+	 * 
+	 *  moves forward on an angle
+	 * helper for shoot
+	 * 
+	 * 
+	 */
 	public void moveBubbleForward(Bubble b, int degr) {
 		Long x = Math.round(bubbleSpeed * Math.sin(degr));
 		Long y = Math.round(bubbleSpeed * Math.cos(degr));
@@ -415,12 +477,14 @@ public class PopModel {
 
 	}
 
-	// puts the gunBubble into the xCoord and yCoord of where the gun is and shoots
-	// it by moving the bubble until it comes in
-	// contact with another bubble
-	// takes degree, xCoordinate, and yCoordinate of the gun at the time when shoot
-	// is activated
-	// called by moveGun
+	
+	/**
+	 * 
+	 * @param degr angle of gun
+	 * @param xCo projection of gun onto x-axis
+	 * @param yCo projection of gun onto y-axis
+	 * 
+	 */
 	public void shoot(int degr, double xCo, double yCo) {
 		Long x = Math.round(xCo);
 		Long y = Math.round(yCo);

@@ -1,3 +1,9 @@
+
+/**
+ * 
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ */
 public class Objective {
 
 	public String[] colors = {"red   ","orange","yellow","green ","blue  ","purple"};
