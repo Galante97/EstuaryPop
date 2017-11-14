@@ -7,60 +7,16 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-
 /**
-* PopController
-* The PopController class is the controller in the MVC that handles the data 
-* between the model and the view
-*
-*
-* @author  James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
-* @version 1.0
-* @since   2017-09-31 
-*/
+ * PopController The PopController class is the controller in the MVC that
+ * handles the data between the model and the view
+ *
+ *
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ * @version 1.0
+ * @since 2017-09-31
+ */
 
-public class PopController {
-
-	public int difficulty; // determines speed of game
-	static boolean won = false; 
-	static boolean playAgain = true;
-	boolean clicked;
-
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		PopModel model = new PopModel(1);// will ask for difficulty
-		//model.setGrid();
-		PopView view = new PopView(model, frame); // creates the window
-		view.draw();
-		view.setVisible(true);
-		
-		for (Bubble[] x : model.grid) {
-			System.out.println("");
-			for (Bubble y : x) {
-				System.out.print(y + " ");
-			}
-		}
-		while (playAgain) {
-
-			/*
-			 * model.setGrid(); model.loadGun(); while(!won){ model.moveGun(); } if(won){
-			 * //ask if you want to play again }
-			 */
-		}
-
-	}
-
-	public void setClicked() {
-		model.setClicked(clicked); 
-	}
-
-	public void getClicked() {
-		clicked = view.getClicked();
-	}
-}
-
-
-<<<<<<< HEAD
 public class PopController {
 
 	public int difficulty; // determines speed of game
@@ -70,72 +26,75 @@ public class PopController {
 	boolean clicked;
 	static int highScore = 0;
 	static Scanner scn = new Scanner(System.in);
-	
-	////////////////////////////////
 
+	////////////////////////////////
 
 	/**
 	 * Used for printing the grid to the console. Essentially for testing purposes
+	 * 
 	 * @param m is the PopModel instance that this method is printing
 	 */
-	public static void printGrid(PopModel m){
-		for(int i = 0; i < m.gridRows-1 ; i++){
+	public static void printGrid(PopModel m) {
+		for (int i = 0; i < m.gridRows - 1; i++) {
 			System.out.println("");
-			for(int j = 0; j < m.gridColumns ; j++){
-				if(m.grid[i][j] == null){
+			for (int j = 0; j < m.gridColumns; j++) {
+				if (m.grid[i][j] == null) {
 					System.out.print("[  Empty  ]\t\t");
-				}
-				else{
-					System.out.print(m.grid[i][j]+"\t");
+				} else {
+					System.out.print(m.grid[i][j] + "\t");
 				}
 			}
 		}
 		System.out.println("");
-		System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-		for(Bubble b: m.grid[m.gridRows-1]){
-			if(b == null){	
+		System.out.println(
+				"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+		for (Bubble b : m.grid[m.gridRows - 1]) {
+			if (b == null) {
 				System.out.print("[  Empty  ]\t\t");
-			}
-			else{
-				System.out.print(b+"\t");
+			} else {
+				System.out.print(b + "\t");
 			}
 		}
 	}
-	
+
 	/**
-	 * Used for printing the gunList to the console. Essentially for testing purposes
-	 * @param m is the PopModel instance that this method is printing
+	 * Used for printing the gunList to the console. Essentially for testing
+	 * purposes
+	 * 
+	 * @param m  is the PopModel instance that this method is printing
 	 */
-	public static void printGunList(PopModel m){
-		for(Bubble x: m.gunList){
+	public static void printGunList(PopModel m) {
+		for (Bubble x : m.gunList) {
 			System.out.print(x + " - ");
 		}
 		System.out.println("");
 	}
-	
+
 	/**
-	 * Used for printing the objectives to the console so the player knows the objectives. Essentially for testing purposes
-	 * @param m is the PopModel instance that this method is printing from
+	 * Used for printing the objectives to the console so the player knows the
+	 * objectives. Essentially for testing purposes
+	 * 
+	 * @param m  is the PopModel instance that this method is printing from
 	 */
-	public static void printObjectives(PopModel m){
+	public static void printObjectives(PopModel m) {
 		int n = 1;
-		for(int i: m.objectives){
+		for (int i : m.objectives) {
 			System.out.println("\t" + n + ".)\t" + m.o.returnStatements(i));
 			n++;
 		}
 	}
-	
+
 	////////////////////////////////
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		PopModel model = new PopModel(1);// will ask for difficulty
-		//model.setGrid();
+		// model.setGrid();
 		PopView view = new PopView(model, frame); // creates the window
 		view.draw();
 		view.setVisible(true);
-		while (playAgain) {	//just uses model methods to play game
-							//must play in console, ignor the popup window to play this
+		while (playAgain) { // just uses model methods to play game
+							// must play in console, ignor the popup window to play this
 			System.out.println("What difficulty would you like to play? ...\n*(1 = Easy, 2 = Medium, 3 = Hard)*");
 			int d = scn.nextInt();
 			PopModel m = new PopModel(d);
@@ -151,44 +110,45 @@ public class PopController {
 				printGunList(m);
 				m.dummyShoot();
 				won = true;
-				for(Bubble[] row: m.grid){//checks if the grid is empty
-					for(Bubble b : row){
-						if(b != null){
+				for (Bubble[] row : m.grid) {// checks if the grid is empty
+					for (Bubble b : row) {
+						if (b != null) {
 							won = false;
 						}
 					}
 				}
-				for(Bubble b: m.grid[m.gridRows-1]){//checks if there are any bubbles below the line
-					if(b != null){
+				for (Bubble b : m.grid[m.gridRows - 1]) {// checks if there are any bubbles below the line
+					if (b != null) {
 						lost = true;
 					}
 				}
 			}
-			if(won){
+			if (won) {
 				printGrid(m);
 				System.out.print("\n\n\n\n\t\t\t\t\t\t");
 				printGunList(m);
-				if(m.score > highScore){highScore = m.score;}
+				if (m.score > highScore) {
+					highScore = m.score;
+				}
 				System.out.println("You won!! Your score was " + m.score + ".\nThe high score is " + highScore + ".");
 			}
-			if(lost){
+			if (lost) {
 				printGrid(m);
 				System.out.print("\n\n\n\n\t\t\t\t\t\t");
 				printGunList(m);
 				System.out.println("You lost... :'(");
 			}
 			int g = -1;
-			while(g != 0 || g!= 1){
+			while (g != 0 || g != 1) {
 				System.out.println("Do you want to play again? ...\n*(0 = no, 1 = yes)*");
 				g = scn.nextInt();
-				if(g == 0 || g == 1){
+				if (g == 0 || g == 1) {
 					break;
-				}
-				else{
+				} else {
 					System.out.println("Please enter 0 or 1.");
 				}
 			}
-			if(g == 0){
+			if (g == 0) {
 				playAgain = false;
 				System.out.println("Game over.");
 			}
@@ -197,7 +157,7 @@ public class PopController {
 	}
 
 	public void setClicked() {
-		//model.setClicked(clicked);
+		// model.setClicked(clicked);
 	}
 
 	public void getClicked() {
@@ -205,5 +165,3 @@ public class PopController {
 	}
 }
 
-=======
->>>>>>> e77eceb00855875e75d8e4087908f95ac6b59409
