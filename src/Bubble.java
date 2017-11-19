@@ -9,7 +9,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Bubble extends JPanel  {
+public class Bubble /*extends JPanel*/  {//why does this extend JPanel
 
 	public int xCoord;
 	public int yCoord;
@@ -17,9 +17,10 @@ public class Bubble extends JPanel  {
 	public String gunImage;
 	public String gridImage;
 	public Boolean showGunImage = true; // will be used to for if true show the gun image, if false, show grid image
-	public Objective obj;
-
 	public Image image;
+		
+	//////////////////////////////////////////
+	
 	/**
 	 * constructor to be used with the View
 	 * @param x is the x coord of the bubble
@@ -36,32 +37,37 @@ public class Bubble extends JPanel  {
 		gunImage = gunI;
 		gridImage = gridI;
 	}
+	
 	/**
 	 * constructor for running in the Model
 	 * @param x is the x coord
 	 * @param y is the y coord
-	 * @param s is the color
+	 * @param c is the color
 	 */
-	Bubble(int x, int y, String c){
-		xCoord = x;
-		yCoord = y;
+	Bubble(String c, String gun, String grid){
 		color = c;
+		gridImage = grid;
+		gunImage = gun;
 	}
+	
 	Bubble(int x, int y) {
 		xCoord = x;
 		yCoord = y;
 
 		initBubble();
 	}
+	
+	//////////////////////////////////////////////
+	
 	/**
 	 * initializes the bubble for the View
 	 */
 	public void initBubble() {
 		loadImage();
 
-		int w = image.getWidth(this);
-		int h = image.getHeight(this);
-		setPreferredSize(new Dimension(w, h));
+//		int w = image.getWidth(this);//width and height should just be attributes of bubbles
+//		int h = image.getHeight(this);
+//		setPreferredSize(new Dimension(w, h));
 	}
 	/**
 	 * loads the bubble image for the View
@@ -104,21 +110,25 @@ public class Bubble extends JPanel  {
 
 	}
 
-	@Override
+	//@Override
 	/**
 	 * draws the bubble image
 	 * @param g is the graphics for Jpanel
 	 */
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		//super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
 	}
+	
 	/**
 	 * switches the bubble image
 	 */
 	public void switchImage(){
 		showGunImage = false;
 	}
+	
+	///////////////////////////////////////////////
+	
 	/**
 	 * bubbles to string method
 	 * @return the bubbles parameters as a string
@@ -131,7 +141,5 @@ public class Bubble extends JPanel  {
 			return "[" + color + ", " + gridImage + "]";
 		}
 	}
-
-
 }
 
