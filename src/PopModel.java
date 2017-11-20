@@ -20,12 +20,12 @@ public class PopModel {
 	boolean[] objdone = {false,false,false};
 	int[] objectiveTally = {0,0,0};
 	
-	int gridColumns = 5;
+	int gridColumns = 13;
 	int gridRows = 10;
 	int startRows;
 	
 	Bubble[][] grid = new Bubble[gridRows][gridColumns]; //make this connect to view
-	int gunListLength = 5;
+	int gunListLength = 7;
 	Bubble[] gunList = new Bubble[gunListLength]; //make it connect to view
 	
 	int score = 100;
@@ -112,7 +112,7 @@ public class PopModel {
 			for (int j = 0; j < gridColumns; j++) {
 				int r = rand.nextInt(3);
 				grid[i][j] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),o.returnGridImg(objectives[r]));
-				grid[i][j].switchImage();
+				grid[i][j].switchImage(); 
 			} // close for
 		} // close for
 	}//close setGrid
@@ -604,21 +604,19 @@ public class PopModel {
 //	}
 
 	public static void main(String[] args) {
-		/*	JFrame frame = new JFrame();
-			PopModel model = new PopModel(1);// will ask for difficulty
-			PopView view = new PopView(model, frame); // creates the window
-			view.draw();
-			view.setVisible(false);
-			model.setGrid();
-			System.out.println("Grid Set!");
-			model.gunList = new Bubble[5];
-			model.loadGun();
-			System.out.println("Gun Loaded!");
-			model.clicked = true;
-			System.out.println("User Clicked");
-			model.shoot(85, 450, 712);
-			model.clicked = false;
-			System.out.println(); */
+		JFrame frame = new JFrame(); //create frame
+		PopModel m = new PopModel(1); //create model
+		PopView view = new PopView(m, frame); // create view
+		
+		m.chooseObjectives();
+		//printObjectives(m);
+		
+		m.setGrid(); //set model grid 
+		m.loadGun(); //load model gun
+		view.draw(); //draw bubbles/panel/gun/etc all corresponding to model
+		view.setVisible(true);
+		
+		
 
 		}
 }

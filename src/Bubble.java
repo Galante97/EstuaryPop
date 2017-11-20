@@ -9,7 +9,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Bubble /*extends JPanel*/  {//why does this extend JPanel
+public class Bubble extends JPanel {// needs to extend jpanel
 
 	public int xCoord;
 	public int yCoord;
@@ -18,57 +18,75 @@ public class Bubble /*extends JPanel*/  {//why does this extend JPanel
 	public String gridImage;
 	public Boolean showGunImage = true; // will be used to for if true show the gun image, if false, show grid image
 	public Image image;
-		
+
+	int h;
+	int w;
+
 	//////////////////////////////////////////
-	
+
 	/**
 	 * constructor to be used with the View
-	 * @param x is the x coord of the bubble
-	 * @param y is the y coord of the bubble
-	 * @param bool is a boolean if the image is showing or not
-	 * @param c is the color of the bubble
-	 * @param gunI is the gun image
-	 * @param gridI is the grid image
+	 * 
+	 * @param x
+	 *            is the x coord of the bubble
+	 * @param y
+	 *            is the y coord of the bubble
+	 * @param bool
+	 *            is a boolean if the image is showing or not
+	 * @param c
+	 *            is the color of the bubble
+	 * @param gunI
+	 *            is the gun image
+	 * @param gridI
+	 *            is the grid image
 	 */
-	Bubble(int x, int y, String c, String gunI, String gridI) {
-		xCoord = x;
-		yCoord = y;
-		color = c;
-		gunImage = gunI;
-		gridImage = gridI;
-	}
-	
+	/*
+	 * Bubble(int x, int y, String c, String gunI, String gridI) { xCoord = x;
+	 * yCoord = y; color = c; gunImage = gunI; gridImage = gridI; }
+	 */
+
 	/**
 	 * constructor for running in the Model
-	 * @param x is the x coord
-	 * @param y is the y coord
-	 * @param c is the color
+	 * 
+	 * @param x
+	 *            is the x coord
+	 * @param y
+	 *            is the y coord
+	 * @param c
+	 *            is the color
 	 */
-	Bubble(String c, String gun, String grid){
+	Bubble(String c, String gun, String grid) {
 		color = c;
 		gridImage = grid;
 		gunImage = gun;
+
+		xCoord = 0;
+		yCoord = 0;
+
+		initBubble();
 	}
-	
+
 	Bubble(int x, int y) {
 		xCoord = x;
 		yCoord = y;
 
-		initBubble();
 	}
-	
+
 	//////////////////////////////////////////////
-	
+
 	/**
 	 * initializes the bubble for the View
 	 */
 	public void initBubble() {
 		loadImage();
+		this.setOpaque(false);
 
-//		int w = image.getWidth(this);//width and height should just be attributes of bubbles
-//		int h = image.getHeight(this);
-//		setPreferredSize(new Dimension(w, h));
+		w = image.getWidth(this);
+		h = image.getHeight(this);
+
+		setPreferredSize(new Dimension(w, h));
 	}
+
 	/**
 	 * loads the bubble image for the View
 	 */
@@ -110,36 +128,37 @@ public class Bubble /*extends JPanel*/  {//why does this extend JPanel
 
 	}
 
-	//@Override
+	// @Override
 	/**
 	 * draws the bubble image
-	 * @param g is the graphics for Jpanel
+	 * 
+	 * @param g
+	 *            is the graphics for Jpanel
 	 */
 	public void paintComponent(Graphics g) {
-		//super.paintComponent(g);
+		// super.paintComponent(g);
 		g.drawImage(image, 0, 0, null);
 	}
-	
+
 	/**
 	 * switches the bubble image
 	 */
-	public void switchImage(){
+	public void switchImage() {
 		showGunImage = false;
 	}
-	
+
 	///////////////////////////////////////////////
-	
+
 	/**
 	 * bubbles to string method
+	 * 
 	 * @return the bubbles parameters as a string
 	 */
-	public String toString(){
-		if(showGunImage){
+	public String toString() {
+		if (showGunImage) {
 			return "[" + color + ", " + gunImage + "]";
-		}
-		else{
+		} else {
 			return "[" + color + ", " + gridImage + "]";
 		}
 	}
 }
-
