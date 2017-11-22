@@ -64,7 +64,7 @@ public class Bubble extends JPanel {// needs to extend jpanel
 		yCoord = 0;
 
 		//commented because it was causing issues
-		//initBubble();
+		initBubble();
 	}
 
 	Bubble(int x, int y) {
