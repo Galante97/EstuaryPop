@@ -11,7 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -35,6 +39,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
+	JPanel menu;
+	
 	Gun gun;
 
 	JPanel[] gunBubbleArr = new JPanel[8];
@@ -56,6 +62,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	PopModel model;
 	private boolean clicked = false;
+	boolean start = false;
 
 	/**
 	 * Constructor for the PopView class, handles connecting the model and frame
@@ -100,26 +107,25 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void draw() {
+			drawSidePanel();
+			drawGridBubbles();
+			drawGunBubbles();
+			drawGun();
 
-		drawSidePanel();
-		drawGridBubbles();
-		drawGunBubbles();
-		drawGun();
+			// drawObjectives();
 
-		// drawObjectives();
+			drawGridForTesting();
+			drawGamePanel();
 
-		drawGridForTesting();
-		drawGamePanel();
+			setTitle("Estuary Pop!");
+			setSize(1200, 800);
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setLocationRelativeTo(null);
+			getContentPane().setLayout(null);
 
-		setTitle("Estuary Pop!");
-		setSize(1200, 800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-
-		timer = new Timer(DELAY, this);
-		timer.start();
-
+			timer = new Timer(DELAY, this);
+			timer.start();
+		
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
@@ -460,13 +466,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * mouseClicked, is an overrided method from mouseListener that lets the program
 	 * know if the mouse has been clicked
 	 * 
-	 * we do not use this method, but must be overrided from mouseListener
+	 *
 	 * 
 	 * @param none
 	 * @return none
 	 */
 	public void mouseClicked(MouseEvent e) {
-
+		
 	}
 
 	/**
@@ -492,5 +498,41 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	public void mouseExited(MouseEvent e) {
 	} // do nothing
+	
+	public void drawMenu(){
+		JPanel menu = new JPanel();
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		setContentPane(new JLabel(imageIcon));
+		menu.setBounds(375, 400, 450, 50);
+		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		//menu.addMouseListener(this);
+		JButton b1=new JButton("How To Play");     
+	    b1.setBounds(50,100,80,30);    
+	    b1.setBackground(Color.yellow);  
+	    JButton b2=new JButton("Start Game");   
+	    b2.setBounds(100,100,80,30);    
+	    b2.setBackground(Color.green); 
+	    b2.addMouseListener(new MenuCustomMouseListener());
+	    JButton b3=new JButton("View HighScores");     
+	    b3.setBounds(150,100,80,30);    
+	    b3.setBackground(Color.red);   
+	    menu.add(b1);
+	    menu.add(b2); 
+	    menu.add(b3);
+		add(menu);
+		setTitle("Start Menu");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+		
+	}
 
 }

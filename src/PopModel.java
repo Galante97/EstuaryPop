@@ -606,14 +606,18 @@ public class PopModel {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame(); //create frame
 		PopModel m = new PopModel(1); //create model
-		PopView view = new PopView(m, frame); // create view
+		PopView view = new PopView(m, frame); // create view	
+		//m.chooseObjectives();                      // these instances are not used now they are made in MenuCustomMouseListener class-sutton
+		//printObjectives(m);	
+		//m.setGrid(); //set model grid            // these instances are not used now, they are made in MenuCustomMouseListener class  -sutton
+		//m.loadGun(); //load model gun            // these instances are not used now they are made in MenuCustomMouseListener class-sutton
+		view.drawMenu();
+			
 		
-		m.chooseObjectives();
-		//printObjectives(m);
 		
-		m.setGrid(); //set model grid 
-		m.loadGun(); //load model gun
-		view.draw(); //draw bubbles/panel/gun/etc all corresponding to model
+		            //view draw is now called from a mouse listener in MenuCustomMouseListener class
+		//view.draw(); //draw bubbles/panel/gun/etc all corresponding to model
+	
 		view.setVisible(true);
 		
 		
