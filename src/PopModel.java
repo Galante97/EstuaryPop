@@ -62,7 +62,7 @@ public class PopModel {
 	 */
 	public PopModel(int d) {
 		difficulty = d;
-		startRows = 3 + d;
+		startRows = 4 + d;
 	}
 
 	///////////////////////////////////////
@@ -156,17 +156,19 @@ public class PopModel {
 		
 		System.out.println("What #Path would you like to shoot along? ...");
 		int x = scn.nextInt();
-		if(x >= 0 && x <= 18){
+		if(x >= 0 && x <= 28){
 			shoot(x);
 		}
 		else{
-			System.out.println("Choose a path number between 0 and 18!");
+			System.out.println("Choose a path number between 0 and 28!");
 		}
-		int i = 0;
-		for(int n: objectiveTally){
-			if(n >= 5 && !objdone[i]){
+		for(int i = 0; i <= 2; i++){
+			System.out.println(objectiveTally[i] + "Tally");
+			System.out.println(objdone[i] + "Done" );
+			if(objectiveTally[i] >= 5 && !objdone[i]){
 				objdone[i] = true;
-				System.out.println("\t\t" + o.returnCompleteStatement(i));
+				System.out.println(objectives[i]);
+				System.out.println("\t\t" + o.returnCompleteStatement(objectives[i]));
 				System.out.println("Press any number to continue... ");
 				int g = scn.nextInt();//kind of pointless. Just used to pause the game to allow the player to read the complete statement. maybe change to a click to continue
 			}
@@ -241,7 +243,9 @@ public class PopModel {
 	public void shoot(int t){//works with with manual path # input or click to fire
 		System.out.println("Shooting...");
 		String c = gunList[0].color;
-		int[][] finalPositions = {{0,7},{0,6},{0,5},{0,4},{0,3},{0,2},{0,1},{0,0},{1,0},{2,0},{3,0},{4,0},{4,1},{4,2},{4,3},{4,4},{4,5},{4,6},{4,7}};//list of final postions the bubble can be shot to
+		int[][] finalPositions = {{0,8},{0,7},{0,6},{0,5},{0,4},{0,3},{0,2},{0,1},{0,0},
+				{1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0},{9,0},{10,0},{11,0},{12,0},
+				{12,1},{12,2},{12,3},{12,4},{12,5},{12,6},{12,7},{12,8}};//list of final postions the bubble can be shot to
 		Path p = new Path(finalPositions[t][0],finalPositions[t][1]);//creates path based on which direction the bubble is shot
 		p.fillPath();
 		for(int index = 0; index < p.length; index++){//checks through the path. once it finds a position that already has a bubble in it, it places the shot bubble in the previous position in the path

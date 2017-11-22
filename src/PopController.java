@@ -34,25 +34,26 @@ public class PopController {
 	 * @param m
 	 *            is the PopModel instance that this method is printing
 	 */
-	public static void printGrid(PopModel m) {
-		for (int i = 0; i < m.gridRows - 3; i++) {
+	public static void printGrid(PopModel m){
+		for(int i = 0; i < m.gridRows-2 ; i++){
 			System.out.println("");
-			for (int j = 0; j < m.gridColumns; j++) {
-				if (m.grid[i][j] == null) {
-					System.out.print("[  Empty  ]\t\t");
-				} else {
-					System.out.print(m.grid[i][j] + "\t");
+			for(int j = 0; j < m.gridColumns ; j++){
+				if(m.grid[i][j] == null){
+					System.out.print("[ ]\t");
+				}
+				else{
+					System.out.print(m.grid[i][j]+"\t");
 				}
 			}
 		}
 		System.out.println("");
-		System.out.println(
-				"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-		for (Bubble b : m.grid[m.gridRows - 3]) {
-			if (b == null) {
-				System.out.print("[  Empty  ]\t\t");
-			} else {
-				System.out.print(b + "\t");
+		System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+		for(Bubble b: m.grid[m.gridRows-2]){
+			if(b == null){
+				System.out.print("[ ]\t");
+			}
+			else{
+				System.out.print(b+"\t");
 			}
 		}
 	}
@@ -138,7 +139,7 @@ public class PopController {
 			lost = false;
 			while (!won && !lost) {// plays the game until the player has won or lost
 				printGrid(m);
-				System.out.print("\n\n\n\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1]
+				System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1]
 						+ "," + m.objectiveTally[2] + "]" + "\t\t\t\t");
 				printGunList(m);
 				try {
@@ -154,7 +155,7 @@ public class PopController {
 						} // close if
 					} // close for
 				} // close for
-				for (Bubble b : m.grid[m.gridRows - 3]) {// checks to see if there are any bubbles under the dashed
+				for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
 															// line. If so, the player loses
 					if (b != null) {
 						lost = true;

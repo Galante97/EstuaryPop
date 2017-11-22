@@ -10,26 +10,26 @@ public class Path {
 	////////////////////////////////////
 	
 	/**
-	 * constructor
 	 * @param x is the x coord of the final position in the path
 	 * @param y is the y coord of the final poistion in the path
 	 */
 	public Path(int x, int y){//constructor
 		finalXLocation = x;
 		finalYLocation = y;
-		length = (9-y) + Math.abs(2-x);//sets the length of the path (number of positions)
-		pathSpaces = new int [length][2];//initiates the array
+		length = (9-y) + Math.abs(6-x);//sets the length of the path (number of positions)
+		pathSpaces = new int[length][2];//initiates the array
 		this.add(length-1, x, y);//adds the last position
-		this.add(0, 2, 8);//adds the first position
 		
 		double yy = y;//convert x and y to a double to calculate slope
 		double xx = x;
-		if(2-xx == 0){//sets slope to 0 for vertical path rather than (+/-)infinity
+		if(6-xx == 0){//sets slope to 0 for vertical path rather than (+/-)infinity
 			slope = 0;
 		}//close if
 		else{//sets slope to calculated value for all other paths
-			slope = -(9-yy) / (2-xx);
+			slope = -(9-yy) / (6-xx);
 		}//close else
+		
+		this.fillPath();
 	}//close constructor
 	
 	/**
@@ -46,7 +46,6 @@ public class Path {
 	/////////////////////////////////////
 	
 	/**
-	 * adds positions to the path at a certain index
 	 * @param i is the index of the position being added to the path
 	 * @param x is the x coord of the position being added
 	 * @param y is the y coord of the position being added
@@ -58,69 +57,87 @@ public class Path {
 	
 	/**
 	 * fills the array of positions with positions on the path which is based on the final position
-	 * split into three categories, paths right of center, paths left of center and the vertical path
+	 * split into three categories, paths left of center, the vertical path and paths right of center
 	 */
 	public void fillPath(){
 		int index = length - 1;
-		int currentRow = finalYLocation + 1;
-		if(slope > 0){//paths right of center
-			for(int column = finalXLocation; column >= 2; column--){
-				currentRow--;
-				for(double n1 = 1.0; n1 <= slope+1; n1++){
-					this.add(index, column, currentRow);
-					currentRow++;
-					index--;
-					if(index <= 0){//ends the loop once all positions are filled in the path
-						break;
-					}//close if
-				}//close for
-			}//close for
-		}//close if
+		double currentRow = finalYLocation;
+		double currentColumn = finalXLocation;
 		if(slope < 0){//paths left of center
-			for(int column = finalXLocation; column <= 2; column++){
-				currentRow--;
-				for(double n1 = -1.0; n1 >= slope - 1; n1--){
-					this.add(index, column, currentRow);
-					currentRow++;
-					index--;
-					if(index <= 0){
-						break;
-					}//close if
-				}//close for
-			}//close for
-		}//close if
-		else{//vertical path
+			this.add(0, 5, 9);//add first
+			while(index > 0){
+				this.add(index, (int)currentColumn, (int)currentRow);
+				index--;
+				currentColumn -= (1/(slope-1));
+				if((int)currentColumn == this.pathSpaces[index+1][0]){//if the column changes, the row will stay the same to attain the step pattern
+					currentRow += 1;
+				}
+			}
+		}
+		if(slope == 0){//vertical path
+			this.add(0, 6, 8);//add first
 			for(;index > 0; index--){
-				this.add(index, 2, currentRow - 1);
-				currentRow++;
-			}//close for
+				this.add(index, 6, (int)currentRow);
+				currentRow += 1.0;
+			}
 		}//close else
+		if(slope > 0){//paths right of center
+			this.add(0, 7, 9);//add first
+			while(index > 0){
+				this.add(index, (int)Math.ceil(currentColumn), (int)currentRow);
+				index--;
+				currentColumn -= (1/(slope+1));
+				if((int)Math.ceil(currentColumn) == this.pathSpaces[index+1][0]){
+					currentRow += 1;
+				}
+			}
+		}
+		
 	}//close fillPath
+	
+	public void drawPath(){//just used to display what a path looks like (better than toString())
+		String[][] grid = new String[10][13];
+		for(int y = 0; y <= 9; y++){
+			for(int x = 0; x <= 12; x++){
+				grid[y][x] = "[ ]";
+			}
+		}
+		grid[9][6] = "[G]";
+		for(int[] p: pathSpaces){
+			grid[p[1]][p[0]] = "[X]";
+		}
+		for(String[] j: grid){
+			for(String i: j){
+				System.out.print(i);
+			}
+			System.out.println();
+		}
+	}
 	
 	/////////////////////////////////////
 	
 	public static void main(String[] args) {
-
-		Path b9 = new Path(0,7);b9.fillPath();System.out.println(b9);
-		Path b8 = new Path(0,6);b8.fillPath();System.out.println(b8);
-		Path b7 = new Path(0,5);b7.fillPath();System.out.println(b7);
-		Path b6 = new Path(0,4);b6.fillPath();System.out.println(b6);
-		Path b5 = new Path(0,3);b5.fillPath();System.out.println(b5);
-		Path b4 = new Path(0,2);b4.fillPath();System.out.println(b4);
-		Path b3 = new Path(0,1);b3.fillPath();System.out.println(b3);
-		Path b2 = new Path(0,0);b2.fillPath();System.out.println(b2);
-		Path b1 = new Path(1,0);b1.fillPath();System.out.println(b1);
 		
-		Path a = new Path(2,0);a.fillPath();System.out.println(a);
-		
-		Path i1 = new Path(3,0);i1.fillPath();System.out.println(i1);
-		Path i2 = new Path(4,0);i2.fillPath();System.out.println(i2);
-		Path i3 = new Path(4,1);i3.fillPath();System.out.println(i3);
-		Path i4 = new Path(4,2);i4.fillPath();System.out.println(i4);
-		Path i5 = new Path(4,3);i5.fillPath();System.out.println(i5);
-		Path i6 = new Path(4,4);i6.fillPath();System.out.println(i6);
-		Path i7 = new Path(4,5);i7.fillPath();System.out.println(i7);
-		Path i8 = new Path(4,6);i8.fillPath();System.out.println(i8);
-		Path i9 = new Path(4,7);i9.fillPath();System.out.println(i9);
+		//test. Run this to see what all the paths look like
+		Path[] paths = new Path[29];
+		int c = 0;
+		int r = 8;
+		for(int i = 0; i <= 28; i++){
+			paths[i] = new Path(c,r);
+			if(r == 0 && c < 12){
+				c++;
+			}
+			else if(c == 12){
+				r++;
+			}
+			else{
+				r--; 
+			}
+		}
+		for(Path p: paths){
+			System.out.println(p.toString());
+			p.drawPath();
+			System.out.println();
+		}
 	}
 }
