@@ -63,7 +63,8 @@ public class Bubble extends JPanel {// needs to extend jpanel
 		xCoord = 0;
 		yCoord = 0;
 
-		initBubble();
+		//commented because it was causing issues
+		//initBubble();
 	}
 
 	Bubble(int x, int y) {
@@ -90,35 +91,36 @@ public class Bubble extends JPanel {// needs to extend jpanel
 	/**
 	 * loads the bubble image for the View
 	 */
-	private void loadImage() {
+	private void loadImage() {//the bubble already have colors
 		ImageIcon blue = new ImageIcon("src/blueBubble.png");
 		ImageIcon green = new ImageIcon("src/greenBubble.png");
 		ImageIcon red = new ImageIcon("src/redBubble.png");
 		ImageIcon yellow = new ImageIcon("src/yellowBubble.png");
-		ImageIcon black = new ImageIcon("src/blackBubble.png");
-
+		ImageIcon black = new ImageIcon("src/blackBubble.png");//need purple
+		//need orange
+		
 		Random rand = new Random();
 		int colorChoose = rand.nextInt(5) + 1; // 5 is the maximum and the 1 is our minimum
 
 		switch (colorChoose) {
 		case 1:
-			color = "blue";
+			//color = "Blue";
 			image = blue.getImage();
 			break;
 		case 2:
-			color = "green";
+			//color = "Green";
 			image = green.getImage();
 			break;
 		case 3:
-			color = "red";
+			//color = "Red";
 			image = red.getImage();
 			break;
 		case 4:
-			color = "yellow";
+			//color = "Yellow";
 			image = yellow.getImage();
 			break;
 		case 5:
-			color = "black";
+			//color = "Purple";
 			image = black.getImage();
 			break;
 
@@ -156,9 +158,9 @@ public class Bubble extends JPanel {// needs to extend jpanel
 	 */
 	public String toString() {
 		if (showGunImage) {
-			return "[" + color + ", " + gunImage + "]";
+			return "[" + color /*+ ", " + gunImage */+ "]";
 		} else {
-			return "[" + color + ", " + gridImage + "]";
+			return "[" + color /*+ ", " + gridImage */+ "]";
 		}
 	}
 }

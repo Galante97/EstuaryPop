@@ -7,6 +7,7 @@
 public class Objective {
 
 	public String[] colors = {"red   ","orange","yellow","green ","blue  ","purple"};
+	public String[] colorsTester = {"R","O","Y","G","B","P"};//for printing larger array in console
 	public String[] gunImages = {"crabegg","trash ","Ameboc.","fish   ","fly    ","oyster "};
 	public String[] gridImages = {"birds  ","recyleB","Hshoecrab","fisher ","frog   ","otter  "};
 	public String[] statements = {"Help feed the birds by giving them crab eggs!",
@@ -38,7 +39,8 @@ public class Objective {
 	 * @return returns a String that is the color of the objective in question
 	 */
 	public String returnColor(int i){
-		return colors[i];
+		//return colors[i];
+		return colorsTester[i];
 	}
 	
 	/**
@@ -47,7 +49,8 @@ public class Objective {
 	 * @return returns a String that is the gun Image of the objective in question
 	 */
 	public String returnGunImg(int i){
-		return gunImages[i];
+		//return gunImages[i];
+		return "";
 	}
 	
 	 /**
@@ -56,7 +59,8 @@ public class Objective {
 	  * @return returns a String that is the grid Image of the objective in question
 	  */
 	public String returnGridImg(int i){
-		return gridImages[i];
+		//return gridImages[i];
+		return "";
 	}
 	
 	/**
@@ -74,7 +78,7 @@ public class Objective {
 	 * @return returns the statement which tells the player what objective they completed
 	 */
 	public String returnCompleteStatement(int i){
-		return completeStatements[1];
+		return completeStatements[i];
 	}
 	
 	/////////////////////////////////////////////
