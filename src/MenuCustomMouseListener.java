@@ -3,6 +3,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
+/**
+ * 
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ *
+ *class holds a custom mouse listener to fire the actual gameplay
+ */
 public class MenuCustomMouseListener implements MouseListener {
 	
 	boolean isStartClicked= false;
@@ -20,10 +27,6 @@ public class MenuCustomMouseListener implements MouseListener {
 		
 		m.setGrid(); //set model grid 
 		m.loadGun(); //load model gun
-		
-		//view.drawMenu();
-			
-			
 		view.draw(); //draw bubbles/panel/gun/etc all corresponding to model
 	
 		view.setVisible(true);

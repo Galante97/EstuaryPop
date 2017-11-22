@@ -612,7 +612,7 @@ public class PopModel {
 		//m.setGrid(); //set model grid            // these instances are not used now, they are made in MenuCustomMouseListener class  -sutton
 		//m.loadGun(); //load model gun            // these instances are not used now they are made in MenuCustomMouseListener class-sutton
 		view.drawMenu();
-			
+		//view.drawHowToPlay();	
 		
 		
 		            //view draw is now called from a mouse listener in MenuCustomMouseListener class

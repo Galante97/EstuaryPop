@@ -499,6 +499,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	public void mouseExited(MouseEvent e) {
 	} // do nothing
 	
+	
+	
+	/**
+	 * method is the entry point for the game and brings the user to the menu screen.
+	 * MouseListeners are watching buttons to fire off intended action at the home screen
+	 * 
+	 */
 	public void drawMenu(){
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -515,7 +522,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		//menu.addMouseListener(this);
 		JButton b1=new JButton("How To Play");     
 	    b1.setBounds(50,100,80,30);    
-	    b1.setBackground(Color.yellow);  
+	    b1.setBackground(Color.yellow);
+	    b1.addMouseListener(new HowToPlayMouseListener());
 	    JButton b2=new JButton("Start Game");   
 	    b2.setBounds(100,100,80,30);    
 	    b2.setBackground(Color.green); 
@@ -534,5 +542,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 		
 	}
+	
+	
+	
+	
 
 }
