@@ -63,6 +63,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	PopModel model;
 	private boolean clicked = false;
 	boolean start = false;
+	
+	MenuCustomMouseListener menuView; // mouselistener used to switch views between menu and game
+	HowToPlayMouseListener howToPlay; // mouselistener used to switch views between menu and howToPLay
 
 	/**
 	 * Constructor for the PopView class, handles connecting the model and frame
@@ -519,15 +522,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		setContentPane(new JLabel(imageIcon));
 		menu.setBounds(375, 400, 450, 50);
 		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		//menu.addMouseListener(this);
 		JButton b1=new JButton("How To Play");     
 	    b1.setBounds(50,100,80,30);    
 	    b1.setBackground(Color.yellow);
-	    b1.addMouseListener(new HowToPlayMouseListener());
+	    b1.addMouseListener(howToPlay);
 	    JButton b2=new JButton("Start Game");   
 	    b2.setBounds(100,100,80,30);    
 	    b2.setBackground(Color.green); 
-	    b2.addMouseListener(new MenuCustomMouseListener());
+	    b2.addMouseListener(menuView);
 	    JButton b3=new JButton("View HighScores");     
 	    b3.setBounds(150,100,80,30);    
 	    b3.setBackground(Color.red);   
@@ -543,7 +545,38 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		
 	}
 	
-	
+	public void drawHowToPlay(){
+		JPanel menu = new JPanel();
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		setContentPane(new JLabel(imageIcon));
+		menu.setBounds(200, 400, 800, 150);
+		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	    JLabel jlabel = new JLabel("<html>The gun moves automatically from side to side.<br> "
+	    		+ " Use the left mouse button to fire! <br>"
+	    		+ "Take some shots at matching bubbles above<br>"
+	    		+ " to pop them!</html");
+		jlabel.setFont(new Font("Verdana",1,20));
+		menu.add(jlabel);
+		JButton b1=new JButton("OK, Start Game!");     
+	    b1.setBounds(0,100,80,30);    
+	    b1.setBackground(Color.yellow);
+	    b1.addMouseListener(new MenuCustomMouseListener());
+	    menu.add(b1);
+		add(menu);
+		setTitle("How to Play");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+		
+	}
 	
 	
 

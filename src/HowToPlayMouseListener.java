@@ -16,43 +16,55 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HowToPlayMouseListener implements MouseListener {
+	public static PopView view;
+	public static PopView menu;
+    public static PopView howToPlay;
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
-		JFrame frame = new JFrame();
-		PopModel m = new PopModel(1); //create model
-		PopView view = new PopView(m, frame); // create view
-		JPanel menu = new JPanel();
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		view.setContentPane(new JLabel(imageIcon));
-		menu.setBounds(200, 400, 800, 150);
-		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-	    JLabel jlabel = new JLabel("<html>The gun moves automatically from side to side.<br> "
-	    		+ " Use the left mouse button to fire! <br>"
-	    		+ "Take some shots at matching bubbles above<br>"
-	    		+ " to pop them!</html");
-		jlabel.setFont(new Font("Verdana",1,20));
-		menu.add(jlabel);
-		JButton b1=new JButton("OK, Start Game!");     
-	    b1.setBounds(0,100,80,30);    
-	    b1.setBackground(Color.yellow);
-	    b1.addMouseListener(new MenuCustomMouseListener());
-	    menu.add(b1);
-		view.add(menu);
-		view.setTitle("How to Play");
-		view.setSize(1200, 800);
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		view.setLocationRelativeTo(null);
-		view.getContentPane().setLayout(null);
-		view.setVisible(true);
+		menu.setVisible(false);
+		howToPlay.setVisible(true);
+		
+		
+		
+		
+		
+//		JFrame frame = new JFrame();
+//		PopModel m = new PopModel(1); //create model
+//		PopView view = new PopView(m, frame); // create view
+//		JPanel menu = new JPanel();
+//		BufferedImage img = null;
+//		try {
+//		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}
+//		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+//		ImageIcon imageIcon = new ImageIcon(dimg);
+//		view.setContentPane(new JLabel(imageIcon));
+//		menu.setBounds(200, 400, 800, 150);
+//		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//	    JLabel jlabel = new JLabel("<html>The gun moves automatically from side to side.<br> "
+//	    		+ " Use the left mouse button to fire! <br>"
+//	    		+ "Take some shots at matching bubbles above<br>"
+//	    		+ " to pop them!</html");
+//		jlabel.setFont(new Font("Verdana",1,20));
+//		menu.add(jlabel);
+//		JButton b1=new JButton("OK, Start Game!");     
+//	    b1.setBounds(0,100,80,30);    
+//	    b1.setBackground(Color.yellow);
+//	    b1.addMouseListener(new MenuCustomMouseListener());
+//	    menu.add(b1);
+//		view.add(menu);
+//		view.setTitle("How to Play");
+//		view.setSize(1200, 800);
+//		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		view.setLocationRelativeTo(null);
+//		view.getContentPane().setLayout(null);
+//		view.setVisible(true);
 	}
 
 	@Override
@@ -79,4 +91,13 @@ public class HowToPlayMouseListener implements MouseListener {
 
 	}
 
+	
+	public static void sendInstancesToHowToPlayMouseListener(PopView view, PopView menu, PopView howToPlay){
+		HowToPlayMouseListener.view= view;
+		HowToPlayMouseListener.menu=menu;
+		HowToPlayMouseListener.howToPlay=howToPlay;
+	}
+	
+	
+	
 }
