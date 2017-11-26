@@ -63,7 +63,7 @@ public class Bubble extends JPanel {// needs to extend jpanel
 		xCoord = 0;
 		yCoord = 0;
 
-		//commented because it was causing issues
+		// commented because it was causing issues
 		initBubble();
 	}
 
@@ -91,41 +91,26 @@ public class Bubble extends JPanel {// needs to extend jpanel
 	/**
 	 * loads the bubble image for the View
 	 */
-	private void loadImage() {//the bubble already have colors
-		ImageIcon blue = new ImageIcon("src/blueBubble.png");
-		ImageIcon green = new ImageIcon("src/greenBubble.png");
+	private void loadImage() {// the bubble already have colors
 		ImageIcon red = new ImageIcon("src/redBubble.png");
+		ImageIcon orange = new ImageIcon("src/orangeBubble.png");
 		ImageIcon yellow = new ImageIcon("src/yellowBubble.png");
-		ImageIcon black = new ImageIcon("src/blackBubble.png");//need purple
-		//need orange
-		
-		Random rand = new Random();
-		int colorChoose = rand.nextInt(5) + 1; // 5 is the maximum and the 1 is our minimum
+		ImageIcon green = new ImageIcon("src/greenBubble.png");
+		ImageIcon blue = new ImageIcon("src/blueBubble.png");
+		ImageIcon purple = new ImageIcon("src/purpleBubble.png");
 
-		switch (colorChoose) {
-		case 1:
-			//color = "Blue";
-			image = blue.getImage();
-			break;
-		case 2:
-			//color = "Green";
-			image = green.getImage();
-			break;
-		case 3:
-			//color = "Red";
+		if (color == "R") {
 			image = red.getImage();
-			break;
-		case 4:
-			//color = "Yellow";
+		} else if (color == "O") {
+			image = orange.getImage();
+		} else if (color == "Y") {
 			image = yellow.getImage();
-			break;
-		case 5:
-			//color = "Purple";
-			image = black.getImage();
-			break;
-
-		default:
-			break;
+		} else if (color == "G") {
+			image = green.getImage();
+		} else if (color == "B") {
+			image = blue.getImage();
+		} else if (color == "P") {
+			image = purple.getImage();
 		}
 
 	}
@@ -158,9 +143,9 @@ public class Bubble extends JPanel {// needs to extend jpanel
 	 */
 	public String toString() {
 		if (showGunImage) {
-			return "[" + color /*+ ", " + gunImage */+ "]";
+			return "[" + color /* + ", " + gunImage */ + "]";
 		} else {
-			return "[" + color /*+ ", " + gridImage */+ "]";
+			return "[" + color /* + ", " + gridImage */ + "]";
 		}
 	}
 }

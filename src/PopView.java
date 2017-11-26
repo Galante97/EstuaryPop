@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MouseInfo;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -40,15 +42,24 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JPanel sidePanel;
 	JPanel gamePanel;
 	JPanel menu;
-	
+
 	Gun gun;
 
-	JPanel[] gunBubbleArr = new JPanel[8];
+	int gunAmmoLength = 8;
+	JPanel[] gunBubbleArr = new JPanel[gunAmmoLength];
+	JPanel[][] gridBubbleArr = new JPanel[10][13];
 	int curBubbleArrNum = 0;
 
 	JPanel BubbleInGun;
-	int BubbleInGunX = 450;
-	int BubbleInGunY = 712;
+	int BubbleInGunX = 450; // for shooting
+	int BubbleInGunY = 712; // for shooting
+	int bubbleMovingPosX = 465; // for shooting
+	int bubbleMovingPosY = 712; // for shooting
+	double error = 0;
+
+	int finalShootigPosX;
+	int finalShootigPosY;
+
 	int mouseX;
 	int mouseY;
 	Double slope;
@@ -57,13 +68,18 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	Double oscillationFactor = 5.5;
 	int CurrPath;
 
+	int bubbleShootPosX = 885;
+	int bubbleShootPosY = 362;
+
 	Timer timer;
-	private final int DELAY = 50;
+	private final int DELAY = 1;
+	int OcilationDelay = 0;
 
 	PopModel model;
 	private boolean clicked = false;
 	boolean start = false;
-	
+	boolean BubbleMoving = false;
+
 	MenuCustomMouseListener menuView; // mouselistener used to switch views between menu and game
 	HowToPlayMouseListener howToPlay; // mouselistener used to switch views between menu and howToPLay
 
@@ -79,7 +95,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	public PopView(PopModel Model, JFrame frame) {
 		this.model = Model;
 		this.frame = frame;
-
 	}
 
 	/**
@@ -110,25 +125,25 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void draw() {
-			drawSidePanel();
-			drawGridBubbles();
-			drawGunBubbles();
-			drawGun();
+		drawSidePanel();
+		drawGridBubbles();
+		drawGunBubbles();
+		drawGun();
 
-			// drawObjectives();
+		// drawObjectives();
 
-			drawGridForTesting();
-			drawGamePanel();
+		// drawGridForTesting();
+		drawGamePanel();
 
-			setTitle("Estuary Pop!");
-			setSize(1200, 800);
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setLocationRelativeTo(null);
-			getContentPane().setLayout(null);
+		setTitle("Estuary Pop!");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
 
-			timer = new Timer(DELAY, this);
-			timer.start();
-		
+		timer = new Timer(DELAY, this);
+		timer.start();
+
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
@@ -137,12 +152,31 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel gridPanel = new JPanel();
 
-				gridPanel.setBounds(j * bubbleWH + 45, i * bubbleWH + 17, bubbleWH, bubbleWH);
+				// System.out.print("["+j+","+i+"]" + " ");
+				// System.out.print(" ");
+				
+				
+				if (i == 0) { //set first row
+					gridPanel.setBounds(j * bubbleWH + 30, i * bubbleWH + 17, bubbleWH, bubbleWH);
+				} else {
+					if (i % 2 == 0) { // stagering if statement
+						gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
+						 System.out.print("["+ (j * bubbleWH + 30) +","+ (i * (bubbleWH - 10)) + 17 +"]" + " ");
+					} else {
+						gridPanel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
+						 System.out.print("["+ (j * bubbleWH + 65) +","+ (i * (bubbleWH - 10)) + 17 +"]" +" ");
+					}
+				}
+
+				
+
 				gridPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				gridPanel.setOpaque(false);
 				add(gridPanel);
-
 			}
+
+			System.out.println();
+
 		}
 
 	}
@@ -155,21 +189,87 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGridBubbles() {
-		for (int i = 0; i < model.startRows; i++) {
+		int indentNum = 0;
+		int columns = model.gridColumns;
+		for (int i = 0; i < model.startRows + 5; i++) {
+			if (i % 2 != 0) {
+				indentNum = bubbleWH / 2;
+				columns = columns - 1;
+			}
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel panel = new JPanel();
 
-				model.grid[i][j].xCoord = i * bubbleWH;
-				model.grid[i][j].yCoord = j * bubbleWH;
+				if (model.grid[i][j] != null) {
+					model.grid[i][j].xCoord = i * bubbleWH;
+					model.grid[i][j].yCoord = j * bubbleWH;
 
-				panel.setBounds(j * bubbleWH + 45, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
+					panel.add(model.grid[i][j], BorderLayout.NORTH);
+
+				}
+
+				indentNum = 0;
+				columns = model.gridColumns;
+
+				if (i == 0) {
+					panel.setBounds(j * bubbleWH + 30, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
+				} else {
+					if (i % 2 == 0) { // staggering if statement
+						
+						panel.setBounds(j * bubbleWH + 30, (i * (bubbleWH-10)) + 12, bubbleWH, bubbleWH + 6);
+					} else {
+						panel.setBounds(j * bubbleWH + 65, (i * (bubbleWH-10)) + 12, bubbleWH, bubbleWH + 6);
+					}
+				}
+				
+				
+				/*
+				
+				if (i == 0) { //set first row
+					gridPanel.setBounds(j * bubbleWH + 30, i * bubbleWH + 17, bubbleWH, bubbleWH);
+				} else {
+					if (i % 2 == 0) { // stagering if statement
+						gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
+						// System.out.print("["+ (j * bubbleWH + 30) +","+ (bubbleWH + 17) +"]" + " ");
+					} else {
+						gridPanel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
+						// System.out.print("["+ (j * bubbleWH + 65) +","+ (bubbleWH + 17) +"]" +" ");
+					}
+				} */
+				
+				
+				
+			
+				
+
 				panel.setOpaque(false);
 				add(panel);
-				panel.add(model.grid[i][j], BorderLayout.NORTH);
+
+				gridBubbleArr[i][j] = panel;
+				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
 		}
+	}
 
-		System.out.println("Draw grid bubbles");
+	public void updateGrid() {
+		System.out.println("-Update grid-");
+
+		System.out.println("gridX: " + model.gridX + " GridY: " + model.gridY);
+
+		for (int i = 0; i < model.startRows + 5; i++) {
+			for (int j = 0; j < model.gridColumns; j++) {
+				// System.out.print("[" + i + "," + j + "]");
+				if (model.grid[i][j] == null) {
+					gridBubbleArr[i][j].removeAll();
+					gridBubbleArr[i][j].repaint();
+
+				} else {
+					gridBubbleArr[i][j].add(model.grid[i][j], BorderLayout.NORTH);
+					gridBubbleArr[i][j].repaint();
+
+				}
+			}
+			// System.out.println();
+		}
 
 	}
 
@@ -182,7 +282,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	public void drawGun() {
 		JPanel panel = new JPanel();
 		gun = new Gun();
-		panel.setBounds(350, 550, gun.w + 50, gun.h);
+		panel.setBounds(BubbleInGunX - 92, BubbleInGunY - 150, gun.w + 50, gun.h);
 		// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel.setOpaque(false);
 		add(panel);
@@ -207,7 +307,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 			if (i == 0) {
 				BubbleInGun = panel;
-				panel.setBounds(i * bubbleWH + 442, 690, bubbleWH, bubbleWH + 6);
+				panel.setBounds(i * bubbleWH + BubbleInGunX, BubbleInGunY, bubbleWH, bubbleWH + 6);
 				panel.setOpaque(false);
 				add(panel);
 				panel.add(bub, BorderLayout.NORTH);
@@ -227,21 +327,23 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	}
 
 	/**
-	 * newShooter, reloads the gun allowing the user to shoot again it changes the
-	 * Position of the bubble and updates the back-end array
+	 * updateGunBubbles(), reloads the gun allowing the user to shoot again it
+	 * changes the Position of the bubble and updates the back-end array
 	 * 
 	 * @param none
 	 * @return none
 	 */
-	public void newShooter() {
-		System.out.println("Reload");
-		BubbleInGunX = 442;
-		BubbleInGunY = 690;
-		// if (curBubbleArrNum == 1) {
-		// curBubbleArrNum++;
-		// }
-		gunBubbleArr[curBubbleArrNum].setBounds(442, 690, bubbleWH, bubbleWH + 6);
-		BubbleInGun = gunBubbleArr[curBubbleArrNum];
+	public void updateGunBubbles() {
+		System.out.println("-Reload-");
+		gunBubbleArr[0].setBounds(BubbleInGunX, BubbleInGunY, bubbleWH, bubbleWH + 6);
+
+		for (int i = 0; i < 6; i++) {
+			gunBubbleArr[i].removeAll();
+			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
+			gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			gunBubbleArr[i].repaint();
+
+		}
 
 	}
 
@@ -255,36 +357,59 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (gun.degree > 80) {
-			oscillationFactor = -oscillationFactor;
+		OcilationDelay++;
+
+		if (OcilationDelay % 50 == 0) { // slows down thre speed of the arrow
+			if (gun.degree > 80) {
+				oscillationFactor = -oscillationFactor;
+			}
+
+			if (gun.degree < -80) {
+				oscillationFactor = -oscillationFactor;
+			}
+
+			gun.degree += oscillationFactor;
+			gun.repaint();
 		}
 
-		if (gun.degree < -80) {
-			oscillationFactor = -oscillationFactor;
+		if (clicked == true) {
+			bubbleMovingPosX = BubbleInGunX;
+			bubbleMovingPosY = BubbleInGunY;
+			// curBubbleArrNum++;
+			clicked = false;
+
 		}
 
-		gun.degree += oscillationFactor;
-		gun.repaint();
+		if (BubbleMoving == true) {
+			finalShootigPosY = model.pathY;
+			finalShootigPosX = model.pathX;
 
-		
+			// condition to see if
+			// bubble has made
+			if (bubbleMovingPosX <= finalShootigPosX) { // changing bubble x //contact with other bubbles
+				bubbleMovingPosX += 1;
+			}
 
-		if (clicked == true) { 
-			//SHOOT BUBBLE TO GRID SQUARE BASED ON PATH (CurrPath) which is set in mousePressed in the big if else statement
-			
-			/* THIS IS THE OLD CLICK MOVEMENT
-			 * if (slope < 0) { BubbleInGunX++; } else { BubbleInGunX--; }
-			 * 
-			 * Double aSlope = Math.abs(slope);
-			 * 
-			 * // BubbleInGunX++; BubbleInGunY = (int) (BubbleInGunY - aSlope);
-			 * 
-			 * if (BubbleInGunY > 262) { BubbleInGun.setBounds(BubbleInGunX, BubbleInGunY,
-			 * bubbleWH, bubbleWH + 6); } else { clicked = false;
-			 * 
-			 * curBubbleArrNum++;
-			 * 
-			 * if (curBubbleArrNum < 8) { newShooter(); } }
-			 */
+			if (bubbleMovingPosX >= finalShootigPosX) { // changing bubble x
+				bubbleMovingPosX -= 1;
+			}
+
+			if (bubbleMovingPosY >= finalShootigPosY) { // changing bubble y
+				bubbleMovingPosY -= 1;
+			}
+
+			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, bubbleWH, bubbleWH + 6); // reseting bubble
+																								// bounds
+
+			if (bubbleMovingPosY <= finalShootigPosY) { // bubble made contact NEEDS BETTER METHOD
+
+				 updateGunBubbles(); // update
+				 updateGrid(); // update grid first then gun bubbles
+
+				BubbleMoving = false;
+
+			}
+
 		}
 
 	}
@@ -367,89 +492,131 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		clicked = true;
+		BubbleMoving = true;
+
 		if (clicked) {
 			mouseX = e.getX();
 			mouseY = e.getY();
 			
 			if (gun.degree >= -80 && gun.degree < -74.5) {
+				System.out.println("PATH 0");
+				model.clickedPath = 0;
+				model.userClicked = true;
+			} else if (gun.degree >= -74.5 && gun.degree < -69) {
 				System.out.println("PATH 1");
+				model.clickedPath = 1;
+				model.userClicked = true;
 			} else if (gun.degree >= -74.5 && gun.degree < -69) {
 				System.out.println("PATH 2");
-			} else if (gun.degree >= -74.5 && gun.degree < -69) {
-				System.out.println("PATH 3");
+				model.clickedPath = 2;
+				model.userClicked = true;
 			} else if (gun.degree >= -69 && gun.degree < -63.5) {
-				System.out.println("PATH 4");
+				System.out.println("PATH 3");
+				model.clickedPath = 3;
+				model.userClicked = true;
 			} else if (gun.degree >= -63.5 && gun.degree < -58) {
-				System.out.println("PATH 5");
+				System.out.println("PATH 4");
+				model.clickedPath = 4;
+				model.userClicked = true;
 			} else if (gun.degree >= -58 && gun.degree < -52.5) {
-				System.out.println("PATH 6");
+				System.out.println("PATH 5");
+				model.clickedPath = 5;
+				model.userClicked = true;
 			} else if (gun.degree >= -52.5 && gun.degree < -47) {
-				System.out.println("PATH 7");
+				System.out.println("PATH 6");
+				model.clickedPath = 6;
+				model.userClicked = true;
 			} else if (gun.degree >= -47 && gun.degree < -41.5) {
-				System.out.println("PATH 8");
+				System.out.println("PATH 7");
+				model.clickedPath = 7;
+				model.userClicked = true;
 			} else if (gun.degree >= -41.5 && gun.degree < -36) {
-				System.out.println("PATH 9");
+				System.out.println("PATH 8");
+				model.clickedPath = 8;
+				model.userClicked = true;
 			} else if (gun.degree >= -36 && gun.degree < -30.5) {
-				System.out.println("PATH 10");
+				System.out.println("PATH 9");
+				model.clickedPath = 9;
+				model.userClicked = true;
 			} else if (gun.degree >= -30.5 && gun.degree < -25) {
-				System.out.println("PATH 11");
+				System.out.println("PATH 10");
+				model.clickedPath = 10;
+				model.userClicked = true;
 			} else if (gun.degree >= -25 && gun.degree < -19.5) {
-				System.out.println("PATH 12");
+				System.out.println("PATH 11");
+				model.clickedPath = 11;
+				model.userClicked = true;
 			} else if (gun.degree >= -19.5 && gun.degree < -14) {
-				System.out.println("PATH 13");
+				System.out.println("PATH 12");
+				model.clickedPath = 12;
+				model.userClicked = true;
 			} else if (gun.degree >= -14 && gun.degree < -8.5) {
-				System.out.println("PATH 14");
+				System.out.println("PATH 13");
+				model.clickedPath = 13;
+				model.userClicked = true;
 			} else if (gun.degree >= -8.5 && gun.degree < -3) {
-				System.out.println("PATH 15");
+				System.out.println("PATH 14");
+				model.clickedPath = 14;
+				model.userClicked = true;
 			} else if (gun.degree >= -3 && gun.degree < 2.5) {
-				System.out.println("PATH 16");
+				System.out.println("PATH 15");
+				model.clickedPath = 15;
+				model.userClicked = true;
 			} else if (gun.degree >= 2.5 && gun.degree < 8) {
-				System.out.println("PATH 17");
+				System.out.println("PATH 16");
+				model.clickedPath = 16;
+				model.userClicked = true;
 			} else if (gun.degree >= 8 && gun.degree < 13.5) {
-				System.out.println("PATH 18");
+				System.out.println("PATH 17");
+				model.clickedPath = 17;
+				model.userClicked = true;
 			} else if (gun.degree >= 13.5 && gun.degree < 19) {
-				System.out.println("PATH 19");
+				System.out.println("PATH 18");
+				model.clickedPath = 18;
+				model.userClicked = true;
 			} else if (gun.degree >= 19 && gun.degree < 24.5) {
-				System.out.println("PATH 20");
+				System.out.println("PATH 19");
+				model.clickedPath = 19;
+				model.userClicked = true;
 			} else if (gun.degree >= 24.5 && gun.degree < 30) {
-				System.out.println("PATH 21");
+				System.out.println("PATH 20");
+				model.clickedPath = 20;
+				model.userClicked = true;
 			} else if (gun.degree >= 30 && gun.degree < 35.5) {
-				System.out.println("PATH 22");
+				System.out.println("PATH 21");
+				model.clickedPath = 21;
+				model.userClicked = true;
 			} else if (gun.degree >= 35.5 && gun.degree < 41) {
-				System.out.println("PATH 23");
+				System.out.println("PATH 22");
+				model.clickedPath = 22;
+				model.userClicked = true;
 			} else if (gun.degree >= 41 && gun.degree < 46.5) {
-				System.out.println("PATH 24");
+				System.out.println("PATH 23");
+				model.clickedPath = 23;
+				model.userClicked = true;
 			} else if (gun.degree >= 46.5 && gun.degree < 52) {
-				System.out.println("PATH 25");
+				System.out.println("PATH 24");
+				model.clickedPath = 24;
+				model.userClicked = true;
 			} else if (gun.degree >= 52 && gun.degree < 57.5) {
-				System.out.println("PATH 26");
+				System.out.println("PATH 25");
+				model.clickedPath = 25;
+				model.userClicked = true;
 			} else if (gun.degree >= 57.5 && gun.degree < 63) {
-				System.out.println("PATH 27");
+				System.out.println("PATH 26");
+				model.clickedPath = 26;
+				model.userClicked = true;
 			} else if (gun.degree >= 63 && gun.degree < 68.5) {
-				System.out.println("PATH 28");
+				System.out.println("PATH 27");
+				model.clickedPath = 27;
+				model.userClicked = true;
 			} else if (gun.degree >= 74 && gun.degree < 80) {
-				System.out.println("PATH 29");
-			}
+				System.out.println("PATH 28");
+				model.clickedPath = 28;
+				model.userClicked = true;
+			} 
 
 		}
-		
-		/*
-		 * System.out.println("Fire!");
-		 * 
-		 * System.out.println(mouseX + "," + mouseY);// these co-ords are relative to //
-		 * the component
-		 * 
-		 * Double y2 = (double) mouseY; Double y1 = (double) BubbleInGunY;
-		 * 
-		 * Double x2 = (double) mouseX; Double x1 = (double) BubbleInGunX;
-		 * 
-		 * System.out.println("mouseY: " + y2); System.out.println("MouseX: " + x2); //
-		 * System.out.println("BubbleInGunY: " + y1); System.out.println();
-		 * 
-		 * // System.out.println("BubbleInGunX: " + y1);
-		 * 
-		 * slope = (double) ((y2 - y1) / (x2 - x1));
-		 */
 
 	}
 
@@ -475,7 +642,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 	/**
@@ -501,83 +668,79 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	public void mouseExited(MouseEvent e) {
 	} // do nothing
-	
-	
-	
+
 	/**
-	 * method is the entry point for the game and brings the user to the menu screen.
-	 * MouseListeners are watching buttons to fire off intended action at the home screen
+	 * method is the entry point for the game and brings the user to the menu
+	 * screen. MouseListeners are watching buttons to fire off intended action at
+	 * the home screen
 	 * 
 	 */
-	public void drawMenu(){
+	public void drawMenu() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
 		menu.setBounds(375, 400, 450, 50);
 		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JButton b1=new JButton("How To Play");     
-	    b1.setBounds(50,100,80,30);    
-	    b1.setBackground(Color.yellow);
-	    b1.addMouseListener(howToPlay);
-	    JButton b2=new JButton("Start Game");   
-	    b2.setBounds(100,100,80,30);    
-	    b2.setBackground(Color.green); 
-	    b2.addMouseListener(menuView);
-	    JButton b3=new JButton("View HighScores");     
-	    b3.setBounds(150,100,80,30);    
-	    b3.setBackground(Color.red);   
-	    menu.add(b1);
-	    menu.add(b2); 
-	    menu.add(b3);
+		JButton b1 = new JButton("How To Play");
+		b1.setBounds(50, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(howToPlay);
+		JButton b2 = new JButton("Start Game");
+		b2.setBounds(100, 100, 80, 30);
+		b2.setBackground(Color.green);
+		b2.addMouseListener(menuView);
+		JButton b3 = new JButton("View HighScores");
+		b3.setBounds(150, 100, 80, 30);
+		b3.setBackground(Color.red);
+		menu.add(b1);
+		menu.add(b2);
+		menu.add(b3);
 		add(menu);
 		setTitle("Start Menu");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-		
+
 	}
-	
-	public void drawHowToPlay(){
+
+	public void drawHowToPlay() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-		    img = ImageIO.read(new File("src/estMenu.jpg")); //https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
 		menu.setBounds(200, 400, 800, 150);
 		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-	    JLabel jlabel = new JLabel("<html>The gun moves automatically from side to side.<br> "
-	    		+ " Use the left mouse button to fire! <br>"
-	    		+ "Take some shots at matching bubbles above<br>"
-	    		+ " to pop them!</html");
-		jlabel.setFont(new Font("Verdana",1,20));
+		JLabel jlabel = new JLabel(
+				"<html>The gun moves automatically from side to side.<br> " + " Use the left mouse button to fire! <br>"
+						+ "Take some shots at matching bubbles above<br>" + " to pop them!</html");
+		jlabel.setFont(new Font("Verdana", 1, 20));
 		menu.add(jlabel);
-		JButton b1=new JButton("OK, Start Game!");     
-	    b1.setBounds(0,100,80,30);    
-	    b1.setBackground(Color.yellow);
-	    b1.addMouseListener(new MenuCustomMouseListener());
-	    menu.add(b1);
+		JButton b1 = new JButton("OK, Start Game!");
+		b1.setBounds(0, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(new MenuCustomMouseListener());
+		menu.add(b1);
 		add(menu);
 		setTitle("How to Play");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-		
+
 	}
-	
-	
 
 }

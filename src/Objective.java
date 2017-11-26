@@ -6,7 +6,8 @@
  */
 public class Objective {
 
-	public String[] colors = {"red   ","orange","yellow","green ","blue  ","purple"};
+	public String[] colors = {"red","orange","yellow","green","blue","purple"};
+	//public String[] colors = {"red   ","orange","yellow","green ","blue  ","purple"};
 	public String[] colorsTester = {"R","O","Y","G","B","P"};//for printing larger array in console
 	public String[] gunImages = {"crabegg","trash ","Ameboc.","fish   ","fly    ","oyster "};
 	public String[] gridImages = {"birds  ","recyleB","Hshoecrab","fisher ","frog   ","otter  "};
