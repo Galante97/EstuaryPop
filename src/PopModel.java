@@ -146,11 +146,11 @@ public class PopModel {
 		System.out.println("Shifting grid...");
 		for (int i = startRows; i >= 0; i--) {
 			if (i == 0) {
-				if (shifts % 2 == 0) {
-					columns = gridColumns - 1; // add indented row
+				/*if (shifts % 2 == 0) {
+					columns = gridColumns; // add indented row
 					//System.out.println("columns" + columns);
 					grid[i][columns] = null; // maintain staggering
-				}
+				} */
 				for (int j = 0; j < columns; j++) {
 					int r = rand.nextInt(3);
 					grid[i][j] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),

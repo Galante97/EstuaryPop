@@ -47,7 +47,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	int gunAmmoLength = 8;
 	JPanel[] gunBubbleArr = new JPanel[gunAmmoLength];
-	JPanel[][] gridBubbleArr = new JPanel[10][13];
+	JPanel[][] gridBubbleArr = new JPanel[12][13];
 	int curBubbleArrNum = 0;
 
 	JPanel timerPanel;
@@ -196,26 +196,26 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGridBubbles() {
-		int indentNum = 0;
-		int columns = model.gridColumns;
-		for (int i = 0; i < model.startRows + 5; i++) {
-			if (i % 2 != 0) {
-				indentNum = bubbleWH / 2;
-				columns = columns - 1;
-			}
+		int rowAdder = 5;
+		if (model.difficulty == 0) // handles array out of index errors
+			rowAdder = 5;
+		else if (model.difficulty == 1)
+			rowAdder = 4;
+		else if (model.difficulty == 2)
+			rowAdder = 3;
+
+		for (int i = 0; i < model.startRows + rowAdder; i++) {
+
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel panel = new JPanel();
 
-				if (model.grid[i][j] != null) {
+				if (i < 10 && model.grid[i][j] != null) {
 					model.grid[i][j].xCoord = i * bubbleWH;
 					model.grid[i][j].yCoord = j * bubbleWH;
-
+					System.out.print(" [nil] ");
 					panel.add(model.grid[i][j], BorderLayout.NORTH);
 
-				}
-
-				indentNum = 0;
-				columns = model.gridColumns;
+				} 
 
 				if (i == 0) {
 					panel.setBounds(j * bubbleWH + 30, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
@@ -228,39 +228,34 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 					}
 				}
 
-				/*
-				 * 
-				 * if (i == 0) { //set first row gridPanel.setBounds(j * bubbleWH + 30, i *
-				 * bubbleWH + 17, bubbleWH, bubbleWH); } else { if (i % 2 == 0) { // stagering
-				 * if statement gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) +
-				 * 17, bubbleWH, bubbleWH); // System.out.print("["+ (j * bubbleWH + 30) +","+
-				 * (bubbleWH + 17) +"]" + " "); } else { gridPanel.setBounds(j * bubbleWH + 65,
-				 * (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH); // System.out.print("["+ (j
-				 * * bubbleWH + 65) +","+ (bubbleWH + 17) +"]" +" "); } }
-				 */
-
 				panel.setOpaque(false);
 				add(panel);
 
+				System.out.print(" i: " + i + " j: " + j);
 				gridBubbleArr[i][j] = panel;
 				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
+			System.out.println("");
 		}
 	}
 
 	public void updateGrid() {
-		System.out.println("-Update grid-");
+		int rowAdder = 5;
+		if (model.difficulty == 0) // handles array out of index errors
+			rowAdder = 5;
+		else if (model.difficulty == 1)
+			rowAdder = 4;
+		else if (model.difficulty == 2)
+			rowAdder = 3;
 
-		System.out.println("gridX: " + model.gridX + " GridY: " + model.gridY);
-
-		for (int i = 0; i < model.startRows + 5; i++) {
+		for (int i = 0; i < model.startRows + rowAdder; i++) {
 			for (int j = 0; j < model.gridColumns; j++) {
 				// System.out.print("[" + i + "," + j + "]");
-				if (model.grid[i][j] == null) {
+				if (i < 10 && model.grid[i][j] == null) {
 					gridBubbleArr[i][j].removeAll();
 					gridBubbleArr[i][j].repaint();
 
-				} else {
+				} else if (i < 10) {
 					gridBubbleArr[i][j].add(model.grid[i][j], BorderLayout.NORTH);
 					gridBubbleArr[i][j].repaint();
 
@@ -338,7 +333,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		for (int i = 0; i < 6; i++) {
 			gunBubbleArr[i].removeAll();
 			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
-			//gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			// gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			gunBubbleArr[i].repaint();
 
 		}
@@ -390,10 +385,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			double y1 = bubbleMovingPosY;
 			double x2 = finalShootigPosX;
 			double y2 = finalShootigPosY;
-			
-			m = ((y2 - y1) / (x2- x1)); // slope
-			m = Math.abs(m); 
-	
+
+			m = ((y2 - y1) / (x2 - x1)); // slope
+			m = Math.abs(m);
+
 			// condition to see if
 			// bubble has made
 			if (bubbleMovingPosX <= finalShootigPosX) { // changing bubble x //contact with other bubbles
@@ -482,7 +477,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
-		
 
 		oPanel = new JPanel(new BorderLayout());
 
