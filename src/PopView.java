@@ -372,6 +372,21 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			timerLabel.setText((delay + " seconds"));
 			timerLabel.repaint();
 		}
+		
+		if(model.objdone[0] == true) {
+			objLabel1.setIcon(checkboxdone);
+			objLabel1.repaint();
+		}
+		if(model.objdone[1] == true) {
+			objLabel2.setIcon(checkboxdone);
+			objLabel2.repaint();
+		}
+		if(model.objdone[2] == true) {
+			objLabel3.setIcon(checkboxdone);
+			objLabel3.repaint();
+		}
+				
+		
 
 		OcilationDelay++;
 		if (OcilationDelay % 50 == 0) { // slows down thre speed of the arrow

@@ -13,7 +13,7 @@ public class Objective {
 	public String[] gridImages = {"birds  ","recyleB","Hshoecrab","fisher ","frog   ","otter  "};
 	public String[] statements = {"Help feed the birds by giving them crab eggs!",
 			"Clean up the estuary by putting trash in the recyle bin!",
-			"Scientists are coming to collect amebocytes from horseshoe crabs to make limulus amebocyte lysate which is used\n\t\tfor cleaning medical utensils, help connect them with the horseshoe crabs!",
+			"Scientists are collecting amebocytes from horseshoe crabs to use for\n\t\tfor cleaning medical utensils, connect them with the horseshoe crabs!",
 			"Help the fisherman find his daily catch!",
 			"Help the frogs find flies to eat!",
 			"Show the otters where the oysters are to help them feed!"};
