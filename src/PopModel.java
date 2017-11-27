@@ -145,7 +145,7 @@ public class PopModel {
 		int columns = gridColumns;
 		System.out.println("Shifting grid...");
 		for (int i = startRows; i >= 0; i--) {
-			if (i == 0) {
+			if (i == 0 || i == 1) {
 				/*if (shifts % 2 == 0) {
 					columns = gridColumns; // add indented row
 					//System.out.println("columns" + columns);
@@ -159,9 +159,9 @@ public class PopModel {
 					//System.out.println("columns" + j);
 				}
 			}
-			if (i > 0) {
+			if (i > 1) {
 				for (int j = 0; j < gridColumns; j++) {
-					grid[i][j] = grid[i - 1][j];
+					grid[i][j] = grid[i - 2][j];
 				}
 			} // close for
 		} // close for
@@ -335,7 +335,7 @@ public class PopModel {
 		} // close for
 
 		shotsFired++;
-		if (shotsFired > 2) { //every 3rd
+		if (shotsFired > 5) { //every 3rd
 			System.out.println("------Shift----");
 			shiftGrid();
 			shifts++;

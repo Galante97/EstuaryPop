@@ -139,6 +139,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		drawGridBubbles();
 		drawGunBubbles();
 		drawGun();
+		drawLoseBar();
 
 		// drawObjectives();
 
@@ -156,6 +157,17 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
+	
+	
+	public void drawLoseBar() {
+		JPanel loseBar = new JPanel();
+		loseBar.setBounds(10, 508, 975, 5);
+		loseBar.setBackground(Color.RED);
+		loseBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		loseBar.addMouseListener(this);
+		add(loseBar);
+	}
+	
 
 	public void drawGridForTesting() { // this is strictly for visuals and will be removed later on
 		for (int i = 0; i < model.startRows + 6; i++) {
@@ -197,6 +209,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	public void drawGridBubbles() {
 		int rowAdder = 5;
+
 		if (model.difficulty == 0) // handles array out of index errors
 			rowAdder = 5;
 		else if (model.difficulty == 1)
@@ -233,7 +246,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 				System.out.print(" i: " + i + " j: " + j);
 				gridBubbleArr[i][j] = panel;
-				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+				 gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
 			System.out.println("");
 		}
@@ -429,8 +442,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGamePanel() {
-		System.out.println("Draw game panel");
-
 		gamePanel = new JPanel();
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -504,34 +515,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	}
 
-	/**
-	 * drawObjectives, gets the objectives from the model and displays them on the
-	 * screen
-	 * 
-	 * @param none
-	 * @return none
-	 */
-	public void drawObjectives() {
-		System.out.println("Draw Objectives");
-
-		JLabel objLabel1 = new JLabel(model.objectives.get(0), null, JLabel.CENTER);
-		JLabel objLabel2 = new JLabel(model.objectives.get(1), null, JLabel.CENTER);
-		JLabel objLabel3 = new JLabel(model.objectives[2], null, JLabel.CENTER);
-
-		sidePanel.add(objLabel1);
-		sidePanel.add(objLabel2);
-		sidePanel.add(objLabel3);
-
-		objLabel1.setBounds(100, 0, 100, 15);
-		objLabel2.setBounds(100, 120, 100, 15);
-		objLabel3.setBounds(100, 150, 100, 15);
-
-		Font font = new Font("Verdana", Font.ITALIC, 14);
-		objLabel1.setFont(font);
-		objLabel2.setFont(font);
-		objLabel3.setFont(font);
-
-	}
 
 	/**
 	 * mouseReleased, is an overrided method from mouseListener that lets the
