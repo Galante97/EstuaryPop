@@ -50,6 +50,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JPanel[][] gridBubbleArr = new JPanel[10][13];
 	int curBubbleArrNum = 0;
 
+	JPanel timerPanel;
+	JLabel timerLabel;
+	JLabel scoreLabel;
+	JPanel scorePanel;
+	JPanel oPanel;
+	JLabel objLabel1;
+	int counter = 0;
+
 	JPanel BubbleInGun;
 	int BubbleInGunX = 450; // for shooting
 	int BubbleInGunY = 712; // for shooting
@@ -154,21 +162,18 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 				// System.out.print("["+j+","+i+"]" + " ");
 				// System.out.print(" ");
-				
-				
-				if (i == 0) { //set first row
+
+				if (i == 0) { // set first row
 					gridPanel.setBounds(j * bubbleWH + 30, i * bubbleWH + 17, bubbleWH, bubbleWH);
 				} else {
 					if (i % 2 == 0) { // stagering if statement
 						gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
-						 System.out.print("["+ (j * bubbleWH + 30) +","+ (i * (bubbleWH - 10)) + 17 +"]" + " ");
+						System.out.print("[" + (j * bubbleWH + 30) + "," + (i * (bubbleWH - 10)) + 17 + "]" + " ");
 					} else {
 						gridPanel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
-						 System.out.print("["+ (j * bubbleWH + 65) +","+ (i * (bubbleWH - 10)) + 17 +"]" +" ");
+						System.out.print("[" + (j * bubbleWH + 65) + "," + (i * (bubbleWH - 10)) + 17 + "]" + " ");
 					}
 				}
-
-				
 
 				gridPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				gridPanel.setOpaque(false);
@@ -214,32 +219,23 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 					panel.setBounds(j * bubbleWH + 30, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
 				} else {
 					if (i % 2 == 0) { // staggering if statement
-						
-						panel.setBounds(j * bubbleWH + 30, (i * (bubbleWH-10)) + 12, bubbleWH, bubbleWH + 6);
+
+						panel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 12, bubbleWH, bubbleWH + 6);
 					} else {
-						panel.setBounds(j * bubbleWH + 65, (i * (bubbleWH-10)) + 12, bubbleWH, bubbleWH + 6);
+						panel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 12, bubbleWH, bubbleWH + 6);
 					}
 				}
-				
-				
+
 				/*
-				
-				if (i == 0) { //set first row
-					gridPanel.setBounds(j * bubbleWH + 30, i * bubbleWH + 17, bubbleWH, bubbleWH);
-				} else {
-					if (i % 2 == 0) { // stagering if statement
-						gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
-						// System.out.print("["+ (j * bubbleWH + 30) +","+ (bubbleWH + 17) +"]" + " ");
-					} else {
-						gridPanel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH);
-						// System.out.print("["+ (j * bubbleWH + 65) +","+ (bubbleWH + 17) +"]" +" ");
-					}
-				} */
-				
-				
-				
-			
-				
+				 * 
+				 * if (i == 0) { //set first row gridPanel.setBounds(j * bubbleWH + 30, i *
+				 * bubbleWH + 17, bubbleWH, bubbleWH); } else { if (i % 2 == 0) { // stagering
+				 * if statement gridPanel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) +
+				 * 17, bubbleWH, bubbleWH); // System.out.print("["+ (j * bubbleWH + 30) +","+
+				 * (bubbleWH + 17) +"]" + " "); } else { gridPanel.setBounds(j * bubbleWH + 65,
+				 * (i * (bubbleWH - 10)) + 17, bubbleWH, bubbleWH); // System.out.print("["+ (j
+				 * * bubbleWH + 65) +","+ (bubbleWH + 17) +"]" +" "); } }
+				 */
 
 				panel.setOpaque(false);
 				add(panel);
@@ -357,21 +353,27 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		OcilationDelay++;
 
+		counter++;
+		int delay = counter / 675; //ONE SECOND
+		
+		if (counter % 675 == 0) { //avoid repaint issues
+			timerLabel.setText((delay + " seconds"));
+			timerLabel.repaint();
+		}
+	
+
+		OcilationDelay++;
 		if (OcilationDelay % 50 == 0) { // slows down thre speed of the arrow
 			if (gun.degree > 80) {
 				oscillationFactor = -oscillationFactor;
 			}
-
 			if (gun.degree < -80) {
 				oscillationFactor = -oscillationFactor;
 			}
-
 			gun.degree += oscillationFactor;
 			gun.repaint();
 		}
-
 		if (clicked == true) {
 			bubbleMovingPosX = BubbleInGunX;
 			bubbleMovingPosY = BubbleInGunY;
@@ -379,7 +381,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			clicked = false;
 
 		}
-
 		if (BubbleMoving == true) {
 			finalShootigPosY = model.pathY;
 			finalShootigPosX = model.pathX;
@@ -393,25 +394,20 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			if (bubbleMovingPosX >= finalShootigPosX) { // changing bubble x
 				bubbleMovingPosX -= 1;
 			}
-
 			if (bubbleMovingPosY >= finalShootigPosY) { // changing bubble y
 				bubbleMovingPosY -= 1;
 			}
-
 			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, bubbleWH, bubbleWH + 6); // reseting bubble
 																								// bounds
-
 			if (bubbleMovingPosY <= finalShootigPosY) { // bubble made contact NEEDS BETTER METHOD
-
-				 updateGunBubbles(); // update
-				 updateGrid(); // update grid first then gun bubbles
-
+				updateGunBubbles(); // update
+				updateGrid(); // update grid first then gun bubbles
+				
+				scoreLabel.setText("Score: " + model.score);
+				scoreLabel.repaint();
 				BubbleMoving = false;
-
 			}
-
 		}
-
 	}
 
 	/**
@@ -447,8 +443,44 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		sidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		sidePanel.setBackground(Color.LIGHT_GRAY);
 
-		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-		add(sidePanel);
+		sidePanel.setLayout(null);
+		// add(sidePanel);
+		// new code starts here, copy somewhere else before pulling/pushing
+		// timer
+		timerPanel = new JPanel();
+		timerPanel.setBounds(988, 10, 190, 200);
+		timerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		timerPanel.setBackground(Color.LIGHT_GRAY);
+		timerLabel = new JLabel();
+		timerLabel.setText("");
+		timerLabel.setFont(timerLabel.getFont().deriveFont(32.0f));
+		timerPanel.add(timerLabel);
+		add(timerPanel);
+
+		scorePanel = new JPanel();
+		scorePanel.setBounds(988, 210, 190, 200);
+		scorePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		scorePanel.setBackground(Color.LIGHT_GRAY);
+		scoreLabel = new JLabel();
+		scoreLabel.setText("");
+		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
+		scorePanel.add(scoreLabel);
+		add(scorePanel);
+		Objective o = new Objective();
+
+		oPanel = new JPanel(new BorderLayout());
+
+		oPanel.setBounds(988, 410, 190, 332);
+		oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		oPanel.setBackground(Color.LIGHT_GRAY);
+		objLabel1 = new JLabel();
+		oPanel.add(objLabel1, BorderLayout.NORTH);
+		objLabel1.setText("<html>" + o.statements[0] + "</html>");
+		objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
+		objLabel1.setSize(10, 10);
+		oPanel.add(objLabel1);
+		add(oPanel);
+
 	}
 
 	/**
@@ -497,7 +529,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		if (clicked) {
 			mouseX = e.getX();
 			mouseY = e.getY();
-			
+
 			if (gun.degree >= -80 && gun.degree < -74.5) {
 				System.out.println("PATH 0");
 				model.clickedPath = 0;
@@ -614,7 +646,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 				System.out.println("PATH 28");
 				model.clickedPath = 28;
 				model.userClicked = true;
-			} 
+			}
 
 		}
 
