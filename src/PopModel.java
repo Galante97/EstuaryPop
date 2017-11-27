@@ -148,7 +148,7 @@ public class PopModel {
 			if (i == 0) {
 				if (shifts % 2 == 0) {
 					columns = gridColumns - 1; // add indented row
-					System.out.println("columns" + columns);
+					//System.out.println("columns" + columns);
 					grid[i][columns] = null; // maintain staggering
 				}
 				for (int j = 0; j < columns; j++) {
@@ -156,7 +156,7 @@ public class PopModel {
 					grid[i][j] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
 							o.returnGridImg(objectives[r]));
 					grid[i][j].switchImage();
-					System.out.println("columns" + j);
+					//System.out.println("columns" + j);
 				}
 			}
 			if (i > 0) {
@@ -334,6 +334,14 @@ public class PopModel {
 			} // close if
 		} // close for
 
+		shotsFired++;
+		if (shotsFired > 2) { //every 3rd
+			System.out.println("------Shift----");
+			shiftGrid();
+			shifts++;
+			shotsFired = 0;
+		}
+		
 	}// close shoot
 
 	/**
