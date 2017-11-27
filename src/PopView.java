@@ -56,21 +56,23 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JPanel scorePanel;
 	JPanel oPanel;
 	JLabel objLabel1;
+	JLabel objLabel2;
+	JLabel objLabel3;
 	int counter = 0;
 
 	JPanel BubbleInGun;
 	int BubbleInGunX = 450; // for shooting
 	int BubbleInGunY = 712; // for shooting
-	int bubbleMovingPosX = 465; // for shooting
+	int bubbleMovingPosX = 450; // for shooting
 	int bubbleMovingPosY = 712; // for shooting
-	double error = 0;
+	double lineErrorHandlerY = BubbleInGunY;
+	double m;
 
 	int finalShootigPosX;
 	int finalShootigPosY;
 
 	int mouseX;
 	int mouseY;
-	Double slope;
 
 	int bubbleWH = 70;
 	Double oscillationFactor = 5.5;
@@ -336,7 +338,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		for (int i = 0; i < 6; i++) {
 			gunBubbleArr[i].removeAll();
 			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
-			gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			//gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			gunBubbleArr[i].repaint();
 
 		}
@@ -353,15 +355,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		counter++;
-		int delay = counter / 675; //ONE SECOND
-		
-		if (counter % 675 == 0) { //avoid repaint issues
+		int delay = (counter / 675) * DELAY; // ONE SECOND
+
+		if (counter % 675 == 0) { // avoid repaint issues
 			timerLabel.setText((delay + " seconds"));
 			timerLabel.repaint();
 		}
-	
 
 		OcilationDelay++;
 		if (OcilationDelay % 50 == 0) { // slows down thre speed of the arrow
@@ -377,14 +377,23 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		if (clicked == true) {
 			bubbleMovingPosX = BubbleInGunX;
 			bubbleMovingPosY = BubbleInGunY;
-			// curBubbleArrNum++;
 			clicked = false;
 
 		}
 		if (BubbleMoving == true) {
-			finalShootigPosY = model.pathY;
-			finalShootigPosX = model.pathX;
+			finalShootigPosX = model.pathX;// 695;
+			finalShootigPosY = model.pathY;// 312;
+			// BubbleInGunX = 450;
+			// BubbleInGunY = 712;
 
+			double x1 = bubbleMovingPosX;
+			double y1 = bubbleMovingPosY;
+			double x2 = finalShootigPosX;
+			double y2 = finalShootigPosY;
+			
+			m = ((y2 - y1) / (x2- x1)); // slope
+			m = Math.abs(m); 
+	
 			// condition to see if
 			// bubble has made
 			if (bubbleMovingPosX <= finalShootigPosX) { // changing bubble x //contact with other bubbles
@@ -393,19 +402,26 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 			if (bubbleMovingPosX >= finalShootigPosX) { // changing bubble x
 				bubbleMovingPosX -= 1;
+
 			}
 			if (bubbleMovingPosY >= finalShootigPosY) { // changing bubble y
-				bubbleMovingPosY -= 1;
+				lineErrorHandlerY -= m; // since grid is double this is needed
+				bubbleMovingPosY = (int) lineErrorHandlerY;
+
 			}
-			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, bubbleWH, bubbleWH + 6); // reseting bubble
-																								// bounds
-			if (bubbleMovingPosY <= finalShootigPosY) { // bubble made contact NEEDS BETTER METHOD
+
+			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, bubbleWH, bubbleWH + 6); // reseting bubble bounds
+
+			if (bubbleMovingPosY <= finalShootigPosY) { // bubble made contact
+				lineErrorHandlerY = BubbleInGunY; // reset
 				updateGunBubbles(); // update
 				updateGrid(); // update grid first then gun bubbles
-				
+
 				scoreLabel.setText("Score: " + model.score);
 				scoreLabel.repaint();
 				BubbleMoving = false;
+
+				System.out.println("+++_+_+_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+");
 			}
 		}
 	}
@@ -466,19 +482,30 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
-		Objective o = new Objective();
+		
 
 		oPanel = new JPanel(new BorderLayout());
 
 		oPanel.setBounds(988, 410, 190, 332);
 		oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		oPanel.setBackground(Color.LIGHT_GRAY);
+		oPanel.setBackground(Color.WHITE);
 		objLabel1 = new JLabel();
 		oPanel.add(objLabel1, BorderLayout.NORTH);
-		objLabel1.setText("<html>" + o.statements[0] + "</html>");
+		objLabel1.setText("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>");
 		objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
 		objLabel1.setSize(10, 10);
-		oPanel.add(objLabel1);
+		objLabel2 = new JLabel();
+		oPanel.add(objLabel2, BorderLayout.WEST);
+		objLabel2.setText("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>");
+		objLabel2.setFont(objLabel2.getFont().deriveFont(16.0f));
+		objLabel2.setSize(10, 10);
+		oPanel.add(objLabel2);
+		objLabel3 = new JLabel();
+		oPanel.add(objLabel2, BorderLayout.SOUTH);
+		objLabel3.setText("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>");
+		objLabel3.setFont(objLabel3.getFont().deriveFont(16.0f));
+		objLabel3.setSize(10, 10);
+		oPanel.add(objLabel3);
 		add(oPanel);
 
 	}

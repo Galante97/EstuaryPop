@@ -41,7 +41,7 @@ public class PopModel {
 	int shifts = 0; // keeps track of number of shifts so we know when the gridBubbles are indented
 	int shotsFired = 0; // updates with every shot, more than 4 the grid shifts
 
-	int score = 100;
+	int score = 0;
 
 	boolean userClicked;
 
@@ -193,7 +193,7 @@ public class PopModel {
 	 *             when dealing with the time delay for click to fire
 	 */
 	public void moveGun() throws InterruptedException {
-		score--;
+		 score--;
 
 		// Use dummyShoot (for testing)
 		/*
@@ -357,6 +357,7 @@ public class PopModel {
 				grid[y][x] = null;
 				checkMatch(x + 1, y);
 				grid[y][x + 1] = null;
+				score++;
 			}
 		}
 		if (x - 1 >= 0) {// check left
@@ -364,6 +365,7 @@ public class PopModel {
 				grid[y][x] = null;
 				checkMatch(x - 1, y);
 				grid[y][x - 1] = null;
+				score++;
 			}
 		}
 		if (y + 1 <= gridRows - 1) {// check down (notice the sign)
@@ -371,12 +373,14 @@ public class PopModel {
 				grid[y][x] = null;
 				checkMatch(x, y + 1);
 				grid[y + 1][x] = null;
+				score++;
 			}
 			if (xIndent >= 0 && xIndent <= gridColumns - 1) {
 				if (grid[y + 1][xIndent] != null && c.equals(grid[y + 1][xIndent].color)) {
 					grid[y][x] = null;
 					checkMatch(xIndent, y + 1);
 					grid[y + 1][xIndent] = null;
+					score++;
 				}
 			}
 		}
@@ -385,12 +389,14 @@ public class PopModel {
 				grid[y][x] = null;
 				checkMatch(x, y - 1);
 				grid[y - 1][x] = null;
+				score++;
 			}
 			if (xIndent >= 0 && xIndent <= gridColumns - 1) {
 				if (grid[y - 1][xIndent] != null && c.equals(grid[y - 1][xIndent].color)) {
 					grid[y][x] = null;
 					checkMatch(xIndent, y - 1);
 					grid[y - 1][xIndent] = null;
+					score++;
 				}
 			}
 		}
