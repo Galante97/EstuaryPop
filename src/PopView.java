@@ -42,7 +42,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JPanel sidePanel;
 	JPanel gamePanel;
 	JPanel menu;
-
+	ImageIcon checkbox = createImageIcon("checkbox.png", "");
+	ImageIcon checkboxdone = createImageIcon("checkboxdone.png", "");
+			
 	Gun gun;
 
 	int gunAmmoLength = 8;
@@ -449,6 +451,15 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		add(gamePanel);
 
 	}
+	protected ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
 
 	/**
 	 * drawSidePanel, draws a boarder (made with borderFactory) around the side of
@@ -488,31 +499,36 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
+		
 
 		oPanel = new JPanel(new BorderLayout());
+
 
 		oPanel.setBounds(988, 410, 190, 332);
 		oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		oPanel.setBackground(Color.WHITE);
-		objLabel1 = new JLabel();
+		
+		objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>", checkbox, JLabel.CENTER);
+		//objLabel1.setVerticalTextPosition(JLabel.EAST);
+		//objLabel1.setHorizontalTextPosition(JLabel.EAST);
 		oPanel.add(objLabel1, BorderLayout.NORTH);
-		objLabel1.setText("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>");
+		//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>");
 		objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
 		objLabel1.setSize(10, 10);
-		objLabel2 = new JLabel();
+		
+		objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>", checkbox, JLabel.CENTER);
 		oPanel.add(objLabel2, BorderLayout.WEST);
-		objLabel2.setText("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>");
+		//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>");
 		objLabel2.setFont(objLabel2.getFont().deriveFont(16.0f));
 		objLabel2.setSize(10, 10);
 		oPanel.add(objLabel2);
-		objLabel3 = new JLabel();
+		objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>", checkbox, JLabel.CENTER);
 		oPanel.add(objLabel2, BorderLayout.SOUTH);
-		objLabel3.setText("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>");
+		//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>");
 		objLabel3.setFont(objLabel3.getFont().deriveFont(16.0f));
 		objLabel3.setSize(10, 10);
 		oPanel.add(objLabel3);
 		add(oPanel);
-
 	}
 
 
