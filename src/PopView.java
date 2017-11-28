@@ -42,14 +42,12 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JPanel sidePanel;
 	JPanel gamePanel;
 	JPanel menu;
-	ImageIcon checkbox = createImageIcon("checkbox.png", "");
-	ImageIcon checkboxdone = createImageIcon("checkboxdone.png", "");
-			
+
 	Gun gun;
 
 	int gunAmmoLength = 8;
 	JPanel[] gunBubbleArr = new JPanel[gunAmmoLength];
-	JPanel[][] gridBubbleArr = new JPanel[12][13];
+	JPanel[][] gridBubbleArr = new JPanel[15][13];
 	int curBubbleArrNum = 0;
 
 	JPanel timerPanel;
@@ -60,6 +58,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JLabel objLabel1;
 	JLabel objLabel2;
 	JLabel objLabel3;
+	JLabel objLabel4;
+	JLabel objLabel5;
 	int counter = 0;
 
 	JPanel BubbleInGun;
@@ -91,6 +91,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	private boolean clicked = false;
 	boolean start = false;
 	boolean BubbleMoving = false;
+	
+	ImageIcon checkbox = createImageIcon("checkbox.png", "");
+	ImageIcon checkboxdone = createImageIcon("checkboxdone.png", "");
 
 	MenuCustomMouseListener menuView; // mouselistener used to switch views between menu and game
 	HowToPlayMouseListener howToPlay; // mouselistener used to switch views between menu and howToPLay
@@ -159,17 +162,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
-	
-	
-	public void drawLoseBar() {
-		JPanel loseBar = new JPanel();
-		loseBar.setBounds(10, 508, 975, 5);
-		loseBar.setBackground(Color.RED);
-		loseBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		loseBar.addMouseListener(this);
-		add(loseBar);
-	}
-	
 
 	public void drawGridForTesting() { // this is strictly for visuals and will be removed later on
 		for (int i = 0; i < model.startRows + 6; i++) {
@@ -210,21 +202,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGridBubbles() {
-		int rowAdder = 5;
+		int rowAdder = 6;
 
-		if (model.difficulty == 0) // handles array out of index errors
-			rowAdder = 5;
-		else if (model.difficulty == 1)
-			rowAdder = 4;
-		else if (model.difficulty == 2)
-			rowAdder = 3;
-
-		for (int i = 0; i < model.startRows + rowAdder; i++) {
+		for (int i = 0; i < model.startRows+rowAdder; i++) {
 
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel panel = new JPanel();
 
-				if (i < 10 && model.grid[i][j] != null) {
+				if (i < 6 && model.grid[i][j] != null) {
 					model.grid[i][j].xCoord = i * bubbleWH;
 					model.grid[i][j].yCoord = j * bubbleWH;
 					System.out.print(" [nil] ");
@@ -248,22 +233,16 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 				System.out.print(" i: " + i + " j: " + j);
 				gridBubbleArr[i][j] = panel;
-				 gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
 			System.out.println("");
 		}
 	}
 
-	public void updateGrid() {
-		int rowAdder = 5;
-		if (model.difficulty == 0) // handles array out of index errors
-			rowAdder = 5;
-		else if (model.difficulty == 1)
-			rowAdder = 4;
-		else if (model.difficulty == 2)
-			rowAdder = 3;
 
-		for (int i = 0; i < model.startRows + rowAdder; i++) {
+	public void updateGrid() {
+		int rowAdder = 6;
+		for (int i = 0; i < model.startRows+rowAdder; i++) {
 			for (int j = 0; j < model.gridColumns; j++) {
 				// System.out.print("[" + i + "," + j + "]");
 				if (i < 10 && model.grid[i][j] == null) {
@@ -280,7 +259,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 
 	}
-
 	/**
 	 * drawGun, draws the gun where the bubbles will be shot out of
 	 * 
@@ -348,11 +326,30 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		for (int i = 0; i < 6; i++) {
 			gunBubbleArr[i].removeAll();
 			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
-			// gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			//gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			gunBubbleArr[i].repaint();
 
 		}
 
+	}
+	
+	protected ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = getClass().getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} else {
+			System.err.println("Couldn't find file: " + path);
+			return null;
+		}
+	}
+	
+	public void drawLoseBar() {
+		JPanel loseBar = new JPanel();
+		loseBar.setBounds(10, 508, 975, 5);
+		loseBar.setBackground(Color.RED);
+		loseBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		loseBar.addMouseListener(this);
+		add(loseBar);
 	}
 
 	/**
@@ -459,21 +456,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGamePanel() {
+		System.out.println("Draw game panel");
+
 		gamePanel = new JPanel();
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		gamePanel.addMouseListener(this);
 		add(gamePanel);
 
-	}
-	protected ImageIcon createImageIcon(String path, String description) {
-		java.net.URL imgURL = getClass().getResource(path);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL, description);
-		} else {
-			System.err.println("Couldn't find file: " + path);
-			return null;
-		}
 	}
 
 	/**
@@ -514,38 +504,203 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
-		
 
-		oPanel = new JPanel(new BorderLayout());
+		if (model.difficulty == 1) {
+
+			oPanel = new JPanel(new BorderLayout());
+
+			oPanel.setBounds(988, 410, 190, 332);
+			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			oPanel.setBackground(Color.WHITE);
+			
+			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[0]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel1, BorderLayout.NORTH);
+			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives1[0]) + "</html>");
+			objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
+			objLabel1.setSize(10, 10);
+			
+			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[1]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel2, BorderLayout.WEST);
+			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives1[1]) + "</html>");
+			objLabel2.setFont(objLabel2.getFont().deriveFont(16.0f));
+			objLabel2.setSize(10, 10);
+			oPanel.add(objLabel2);
+			
+			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[2]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel3, BorderLayout.SOUTH);
+			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives1[2]) + "</html>");
+			objLabel3.setFont(objLabel3.getFont().deriveFont(16.0f));
+			objLabel3.setSize(10, 10);
+			oPanel.add(objLabel3);
+			add(oPanel);
+		}
+
+		if (model.difficulty == 2) {
+
+			oPanel = new JPanel(new BorderLayout());
+
+			oPanel.setBounds(988, 410, 190, 332);
+			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			oPanel.setBackground(Color.WHITE);
+			
+			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[0]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel1, BorderLayout.NORTH);
+			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives2[0]) + "</html>");
+			objLabel1.setFont(objLabel1.getFont().deriveFont(14.0f));
+			objLabel1.setSize(8, 8);
+			
+			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[1]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel2, BorderLayout.WEST);
+			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives2[1]) + "</html>");
+			objLabel2.setFont(objLabel2.getFont().deriveFont(14.0f));
+			objLabel2.setSize(8, 8);
+			oPanel.add(objLabel2);
+			
+			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[2]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel3, BorderLayout.SOUTH);
+			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives2[2]) + "</html>");
+			objLabel3.setFont(objLabel3.getFont().deriveFont(14.0f));
+			objLabel3.setSize(8, 8);
+			oPanel.add(objLabel3);
+			
+			objLabel4 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[3]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel4, BorderLayout.SOUTH);
+			//objLabel4.setText("<html>" + model.o.returnStatements(model.objectives2[3]) + "</html>");
+			objLabel4.setFont(objLabel4.getFont().deriveFont(14.0f));
+			objLabel4.setSize(8, 8);
+			oPanel.add(objLabel4);
+			
+			add(oPanel);
+		}
+		if (model.difficulty == 3) {
 
 
-		oPanel.setBounds(988, 410, 190, 332);
-		oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		oPanel.setBackground(Color.WHITE);
-		
-		objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>", checkbox, JLabel.CENTER);
-		//objLabel1.setVerticalTextPosition(JLabel.EAST);
-		//objLabel1.setHorizontalTextPosition(JLabel.EAST);
-		oPanel.add(objLabel1, BorderLayout.NORTH);
-		//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives[0]) + "</html>");
-		objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
-		objLabel1.setSize(10, 10);
-		
-		objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>", checkbox, JLabel.CENTER);
-		oPanel.add(objLabel2, BorderLayout.WEST);
-		//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives[1]) + "</html>");
-		objLabel2.setFont(objLabel2.getFont().deriveFont(16.0f));
-		objLabel2.setSize(10, 10);
-		oPanel.add(objLabel2);
-		objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>", checkbox, JLabel.CENTER);
-		oPanel.add(objLabel2, BorderLayout.SOUTH);
-		//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives[2]) + "</html>");
-		objLabel3.setFont(objLabel3.getFont().deriveFont(16.0f));
-		objLabel3.setSize(10, 10);
-		oPanel.add(objLabel3);
-		add(oPanel);
+			oPanel = new JPanel(new BorderLayout());
+
+			oPanel.setBounds(988, 410, 190, 332);
+			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			oPanel.setBackground(Color.WHITE);
+			
+			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[0]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel1, BorderLayout.NORTH);
+			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives3[0]) + "</html>");
+			objLabel1.setFont(objLabel1.getFont().deriveFont(12.0f));
+			objLabel1.setSize(7, 7);
+			
+			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[1]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel2, BorderLayout.WEST);
+			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives3[1]) + "</html>");
+			objLabel2.setFont(objLabel2.getFont().deriveFont(12.0f));
+			objLabel2.setSize(7, 7);
+			oPanel.add(objLabel2);
+			
+			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[2]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel3, BorderLayout.WEST);
+			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives3[2]) + "</html>");
+			objLabel3.setFont(objLabel2.getFont().deriveFont(12.0f));
+			objLabel3.setSize(7, 7);
+			oPanel.add(objLabel3);
+			
+			objLabel4 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[3]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel4, BorderLayout.SOUTH);
+			//objLabel4.setText("<html>" + model.o.returnStatements(model.objectives3[3]) + "</html>");
+			objLabel4.setFont(objLabel4.getFont().deriveFont(12.0f));
+			objLabel4.setSize(7, 7);
+			oPanel.add(objLabel4);
+			
+			objLabel5 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[4]) + "</html>", checkbox, JLabel.CENTER);
+			oPanel.add(objLabel5, BorderLayout.SOUTH);
+			//objLabel5.setText("<html>" + model.o.returnStatements(model.objectives3[4]) + "</html>");
+			objLabel5.setFont(objLabel5.getFont().deriveFont(12.0f));
+			objLabel5.setSize(7, 7);
+			oPanel.add(objLabel5);
+			
+			add(oPanel);
+		}
+
 	}
 
+	/**
+	 * drawObjectives, gets the objectives from the model and displays them on the
+	 * screen
+	 * 
+	 * @param none
+	 * @return none
+	 */
+	public void drawObjectives() {
+		System.out.println("Draw Objectives");
+		if (model.difficulty == 1) {
+			JLabel objLabel1 = new JLabel(model.objectives1.get(0), null, JLabel.CENTER);
+			JLabel objLabel2 = new JLabel(model.objectives1.get(1), null, JLabel.CENTER);
+			JLabel objLabel3 = new JLabel(model.objectives1[2], null, JLabel.CENTER);
+		
+
+			sidePanel.add(objLabel1);
+			sidePanel.add(objLabel2);
+			sidePanel.add(objLabel3);
+
+			objLabel1.setBounds(100, 0, 100, 15);
+			objLabel2.setBounds(100, 120, 100, 15);
+			objLabel3.setBounds(100, 150, 100, 15);
+			
+			Font font = new Font("Verdana", Font.ITALIC, 14);
+			objLabel1.setFont(font);
+			objLabel2.setFont(font);
+			objLabel3.setFont(font);
+		}
+		if (model.difficulty == 2) {
+			JLabel objLabel1 = new JLabel(model.objectives2.get(0), null, JLabel.CENTER);
+			JLabel objLabel2 = new JLabel(model.objectives2.get(1), null, JLabel.CENTER);
+			JLabel objLabel3 = new JLabel(model.objectives2[2], null, JLabel.CENTER);
+			JLabel objLabel4 = new JLabel(model.objectives2.get(3), null, JLabel.CENTER);
+			
+
+			sidePanel.add(objLabel1);
+			sidePanel.add(objLabel2);
+			sidePanel.add(objLabel3);
+			sidePanel.add(objLabel4);
+
+			objLabel1.setBounds(100, 0, 100, 15);
+			objLabel2.setBounds(100, 50, 100, 15);
+			objLabel3.setBounds(100, 100, 100, 15);
+			objLabel4.setBounds(100, 150, 100, 15);
+
+			Font font = new Font("Verdana", Font.ITALIC, 14);
+			objLabel1.setFont(font);
+			objLabel2.setFont(font);
+			objLabel3.setFont(font);
+			objLabel4.setFont(font);
+			}
+		
+		if (model.difficulty == 3) {
+			JLabel objLabel1 = new JLabel(model.objectives3.get(0), null, JLabel.CENTER);
+			JLabel objLabel2 = new JLabel(model.objectives3.get(1), null, JLabel.CENTER);
+			JLabel objLabel3 = new JLabel(model.objectives3[2], null, JLabel.CENTER);
+			JLabel objLabel4 = new JLabel(model.objectives3.get(3), null, JLabel.CENTER);
+			JLabel objLabel5 = new JLabel(model.objectives3[4], null, JLabel.CENTER);
+		
+
+			sidePanel.add(objLabel1);
+			sidePanel.add(objLabel2);
+			sidePanel.add(objLabel3);
+			sidePanel.add(objLabel4);
+			sidePanel.add(objLabel5);
+
+			objLabel1.setBounds(100, 0, 100, 15);
+			objLabel2.setBounds(100, 35, 100, 15);
+			objLabel3.setBounds(100, 70, 100, 15);
+			objLabel4.setBounds(100, 110, 100, 15);
+			objLabel5.setBounds(100, 150, 100, 15);
+
+			Font font = new Font("Verdana", Font.ITALIC, 14);
+			objLabel1.setFont(font);
+			objLabel2.setFont(font);
+			objLabel3.setFont(font);
+			objLabel4.setFont(font);
+			objLabel5.setFont(font);
+		}
+		
+	}
 
 	/**
 	 * mouseReleased, is an overrided method from mouseListener that lets the
@@ -742,6 +897,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * the home screen
 	 * 
 	 */
+	
+	
 	public void drawMenu() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
