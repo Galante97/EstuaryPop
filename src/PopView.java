@@ -1023,6 +1023,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	}
 	
 
+
 	public void drawLoseScreen(){
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -1034,27 +1035,26 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
-		menu.setBounds(200, 400, 800, 150);
-		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JButton b1 = new JButton("Try Again");
-		b1.setBounds(0, 100, 80, 30);
-		b1.setBackground(Color.yellow);
-		b1.addMouseListener(new PlayAgainListener());
-		JButton b2 = new JButton("Quit");
-		b2.setBounds(0, 100, 80, 30);
-		b2.setBackground(Color.yellow);
-		b2.addMouseListener(new YouLoseListener());
-		menu.add(b1);
-		menu.add(b2);
-		add(menu);
-		setTitle("Game Over");
-		setSize(1200, 800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
-	}
+			menu.setBounds(200, 400, 800, 150);
+			menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			JButton b1 = new JButton("Try Again");
+			b1.setBounds(0, 100, 80, 30);
+			b1.setBackground(Color.yellow);
+			b1.addMouseListener(new PlayAgainListener());
+			JButton b2 = new JButton("Quit");
+			b2.setBounds(0, 100, 80, 30);
+			b2.setBackground(Color.yellow);
+			b2.addMouseListener(new YouLoseListener());
+			menu.add(b1);
+			menu.add(b2);
+			add(menu);
+			setTitle("Game Over");
+			setSize(1200, 800);
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setLocationRelativeTo(null);
+			getContentPane().setLayout(null);
+}
 
-	
 	public void drawDifficutlyMenu(){
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -1089,6 +1089,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 }
+
 
 
 

@@ -30,6 +30,7 @@ public class PopController {
 	// Main with view
 	public static void main(String[] args) {
 
+
 		while (play) {// Plays all aspects of the game until the player decides to quit
 			JFrame frame = new JFrame(); // create frame
 			PopModel m = new PopModel(); // create model
@@ -72,6 +73,7 @@ public class PopController {
 			
 			m.GameModeConsole = false;
 		
+
 			System.out.println("Grid Set!");
 
 			m.won = false;
