@@ -22,7 +22,7 @@ public class YouLoseListener implements MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		lose.setVisible(false);
 		view.setVisible(false);
-		YouLoseListener.controller.play = false;
+		PopController.play = false;
 		
 		
 		// TODO Auto-generated method stub

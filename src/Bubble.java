@@ -21,6 +21,21 @@ public class Bubble extends JPanel {// needs to extend jpanel
 
 	int h;
 	int w;
+	
+	
+	ImageIcon redGun = new ImageIcon("src/redBubbleGun.png"); //good
+	ImageIcon redGrid = new ImageIcon("src/redBubbleGrid.png"); //good
+	ImageIcon orangeGun = new ImageIcon("src/orangeBubbleGun.png"); //good
+	ImageIcon orangeGrid = new ImageIcon("src/orangeBubbleGrid.png"); //good
+	ImageIcon yellowGun = new ImageIcon("src/yellowBubbleGun.png"); //good
+	ImageIcon yellowGrid = new ImageIcon("src/yellowBubbleGrid.png"); //good
+	ImageIcon greenGun = new ImageIcon("src/greenBubbleGun.png");  //bad
+	ImageIcon greenGrid = new ImageIcon("src/greenBubbleGrid.png");  //bad
+	ImageIcon blueGun = new ImageIcon("src/blueBubbleGun.png"); //good
+	ImageIcon blueGrid = new ImageIcon("src/blueBubbleGrid.png"); //good
+	ImageIcon purpleGun = new ImageIcon("src/purpleBubbleGun.png"); //good
+	ImageIcon purpleGrid = new ImageIcon("src/purpleBubbleGrid.png"); //good
+
 
 	//////////////////////////////////////////
 
@@ -99,18 +114,21 @@ public class Bubble extends JPanel {// needs to extend jpanel
 		ImageIcon blue = new ImageIcon("src/blueBubble.png");
 		ImageIcon purple = new ImageIcon("src/purpleBubble.png");
 
+		
+		
+		
 		if (color == "R") {
-			image = red.getImage();
+			image = redGun.getImage();
 		} else if (color == "O") {
-			image = orange.getImage();
+			image = orangeGun.getImage();
 		} else if (color == "Y") {
-			image = yellow.getImage();
+			image = yellowGun.getImage();
 		} else if (color == "G") {
-			image = green.getImage();
+			image = greenGun.getImage();
 		} else if (color == "B") {
-			image = blue.getImage();
+			image = blueGun.getImage();
 		} else if (color == "P") {
-			image = purple.getImage();
+			image = purpleGun.getImage();
 		}
 
 	}
@@ -131,7 +149,21 @@ public class Bubble extends JPanel {// needs to extend jpanel
 	 * switches the bubble image
 	 */
 	public void switchImage() {
-		showGunImage = false;
+		//showGunImage = false;
+		
+		if (color == "R") {
+			image = redGrid.getImage();
+		} else if (color == "O") {
+			image = orangeGrid.getImage();
+		} else if (color == "Y") {
+			image = yellowGrid.getImage();
+		} else if (color == "G") {
+			image = greenGrid.getImage();
+		} else if (color == "B") {
+			image = blueGrid.getImage();
+		} else if (color == "P") {
+			image = purpleGrid.getImage();
+		}
 	}
 
 	///////////////////////////////////////////////
