@@ -327,6 +327,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			gunBubbleArr[i].removeAll();
 			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
 			//gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+			
 			gunBubbleArr[i].repaint();
 
 		}
