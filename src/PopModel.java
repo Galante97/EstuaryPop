@@ -15,10 +15,14 @@ public class PopModel {
 	int difficulty;
 
 	Objective o = new Objective();
-	Objective[] objs = new Objective[3];
-	int[] objectives = { 0, 0, 0 };
+	Objective[] objs1 = new Objective[3];
+	Objective[] objs2 = new Objective[4];
+	Objective[] objs3 = new Objective[5];
+	int[] objectives1 = { 0, 0, 0 };
+	int[] objectives2 = { 0, 0, 0, 0 };
+	int[] objectives3 = { 0, 0, 0, 0, 0 };
 	boolean[] objdone = { false, false, false };
-	int[] objectiveTally = { 0, 0, 0 };
+	int[] objectiveTally = { 0, 0, 0, 0 ,0 };
 
 	int gridColumns = 13;
 	int gridRows = 10;
@@ -76,7 +80,7 @@ public class PopModel {
 	 */
 	public PopModel(int d) {
 		difficulty = d;
-		startRows = 4 + d;
+		startRows = 4;
 	}
 
 	///////////////////////////////////////
@@ -112,12 +116,35 @@ public class PopModel {
 									// numbers. these will be the three objectives for the given game
 		System.out.println("Choosing objectives..");
 		Random rand = new Random();
-		while (objectives[0] == objectives[1] || objectives[0] == objectives[2] || objectives[1] == objectives[2]) {
-			objectives[0] = rand.nextInt(6);
-			objectives[1] = rand.nextInt(6);
-			objectives[2] = rand.nextInt(6);
-		} // close while
-	}// close chooseOjbectives
+		if (difficulty == 1) {
+			while (objectives1[0] == objectives1[1] || objectives1[0] == objectives1[2] || objectives1[1] == objectives1[2]) {
+				objectives1[0] = rand.nextInt(6);
+				objectives1[1] = rand.nextInt(6);
+				objectives1[2] = rand.nextInt(6);
+			}// close while
+		}
+		if (difficulty == 2) {
+			while (objectives2[0] == objectives2[1] || objectives2[0] == objectives2[2] || objectives2[0] == objectives2[3] ||
+					objectives2[1] == objectives2[2] || objectives2[1] == objectives2[3] || objectives2[2] == objectives2[3]) {
+				objectives2[0] = rand.nextInt(6);
+				objectives2[1] = rand.nextInt(6);
+				objectives2[2] = rand.nextInt(6);
+				objectives2[3] = rand.nextInt(6);
+			}// close while
+		}
+		if (difficulty == 3) {
+			while (objectives3[0] == objectives3[1] || objectives3[0] == objectives3[2] || objectives3[0] == objectives3[3] || 
+					objectives3[0] == objectives3[4] || objectives3[1] == objectives3[2] || objectives3[1] == objectives3[3] 
+					|| objectives3[1] == objectives3[4]	|| objectives3[2] == objectives3[3] || objectives3[2] == objectives3[4]
+						|| objectives3[3] == objectives3[4])  {
+				objectives3[0] = rand.nextInt(6);
+				objectives3[1] = rand.nextInt(6);
+				objectives3[2] = rand.nextInt(6);
+				objectives3[3] = rand.nextInt(6);
+				objectives3[4] = rand.nextInt(6);
+			}// close while
+		}
+}// close chooseOjbectives
 
 	/**
 	 * initializes the board by randomly placing bubbles in the top few rows
@@ -131,9 +158,23 @@ public class PopModel {
 				columns = gridColumns - 1;
 			}
 			for (int j = 0; j < gridColumns; j++) {
-				int r = rand.nextInt(3);
-				grid[i][j] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
-						o.returnGridImg(objectives[r]));
+				if (difficulty == 1) {
+					int r = rand.nextInt(3);
+					grid[i][j] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
+							o.returnGridImg(objectives1[r]));
+					grid[i][j].switchImage();
+				}
+				if (difficulty == 2) {	
+					int r = rand.nextInt(4);
+					grid[i][j] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
+							o.returnGridImg(objectives2[r]));
+					grid[i][j].switchImage();
+				}
+				if (difficulty == 3) {
+					int r = rand.nextInt(5);
+					grid[i][j] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
+							o.returnGridImg(objectives3[r]));
+				}
 				grid[i][j].switchImage();
 			} // close for
 			columns = gridColumns;
@@ -144,24 +185,44 @@ public class PopModel {
 		Random rand = new Random();
 		int columns = gridColumns;
 		System.out.println("Shifting grid...");
-		for (int i = startRows; i >= 0; i--) {
-			if (i == 0 || i == 1) {
+		for (int i = gridRows-1; i >= 0; i--) {
+			if (i == 0|| i ==1) {
 				/*if (shifts % 2 == 0) {
-					columns = gridColumns; // add indented row
+					columns = gridColumns - 1; // add indented row
 					//System.out.println("columns" + columns);
 					grid[i][columns] = null; // maintain staggering
-				} */
+				}*/
 				for (int j = 0; j < columns; j++) {
+					
+					if (difficulty ==1) {
 					int r = rand.nextInt(3);
-					grid[i][j] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
-							o.returnGridImg(objectives[r]));
+					
+					grid[i][j] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
+							o.returnGridImg(objectives1[r]));
 					grid[i][j].switchImage();
+					}
+					if (difficulty ==2) {
+						int r = rand.nextInt(4);
+						
+						grid[i][j] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
+								o.returnGridImg(objectives2[r]));
+						grid[i][j].switchImage();
+						}
+					if (difficulty ==3) {
+						int r = rand.nextInt(5);
+						
+						grid[i][j] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
+								o.returnGridImg(objectives3[r]));
+						grid[i][j].switchImage();
+						}
 					//System.out.println("columns" + j);
 				}
 			}
 			if (i > 1) {
 				for (int j = 0; j < gridColumns; j++) {
+					//int x = grid[i - 1][j].yCoord;
 					grid[i][j] = grid[i - 2][j];
+				//	grid[i][j].yCoord = x;
 				}
 			} // close for
 		} // close for
@@ -179,9 +240,21 @@ public class PopModel {
 				gunList[i] = gunList[i + 1];
 			}
 			Random rand = new Random();
+			if (difficulty == 1) {
 			int r = rand.nextInt(3);
-			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives[r]), o.returnGunImg(objectives[r]),
-					o.returnGridImg(objectives[r]));
+			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
+					o.returnGridImg(objectives1[r]));
+			}
+			if (difficulty == 2) {
+				int r = rand.nextInt(4);
+				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
+						o.returnGridImg(objectives2[r]));
+				}
+			if (difficulty == 3) {
+				int r = rand.nextInt(5);
+				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
+						o.returnGridImg(objectives3[r]));
+				}
 		}
 	}
 
@@ -223,8 +296,18 @@ public class PopModel {
 			System.out.println(objdone[i] + "Done");
 			if (objectiveTally[i] >= 5 && !objdone[i]) {
 				objdone[i] = true;
-				System.out.println(objectives[i]);
-				System.out.println("\t\t" + o.returnCompleteStatement(objectives[i]));
+				if (difficulty == 1) {
+					System.out.println(objectives1[i]);
+					System.out.println("\t\t" + o.returnCompleteStatement(objectives1[i]));
+				}
+				if (difficulty == 2) {
+					System.out.println(objectives2[i]);
+					System.out.println("\t\t" + o.returnCompleteStatement(objectives2[i]));
+				}
+				if (difficulty == 3) {
+					System.out.println(objectives3[i]);
+					System.out.println("\t\t" + o.returnCompleteStatement(objectives3[i]));
+				}
 				System.out.println("Press any number to continue... ");
 				int g = scn.nextInt();// kind of pointless. Just used to pause the game to allow the player to read
 										// the complete statement. maybe change to a click to continue
@@ -428,12 +511,30 @@ public class PopModel {
 			int m = 0;
 			boolean match = false;
 			while (!match) {
-				if (c.equals(o.returnColor(objectives[m]))) {
-					match = true;
-				} // close if
-				else {
-					m++;
-				} // close else
+				if (difficulty == 1) {
+					if (c.equals(o.returnColor(objectives1[m]))) {
+						match = true;
+					} // close if
+					else {
+						m++;
+					}
+				}//close if
+				if (difficulty == 2) {
+					if (c.equals(o.returnColor(objectives2[m]))) {
+						match = true;
+					} // close if
+					else {
+						m++;
+					}
+				}//close if
+				if (difficulty == 3) {
+					if (c.equals(o.returnColor(objectives3[m]))) {
+						match = true;
+					} // close if
+					else {
+						m++;
+					}
+				}//close if
 			} // close while
 			objectiveTally[m]++;
 		} // close if
@@ -491,9 +592,23 @@ public class PopModel {
 	 */
 	public void printObjectives(PopModel m) {
 		int n = 1;
-		for (int i : m.objectives) {
-			System.out.println("\t" + n + ".)\t" + m.o.returnStatements(i));
-			n++;
+		if (difficulty == 1) {
+			for (int i : m.objectives1) {
+				System.out.println("\t" + n + ".)\t" + m.o.returnStatements(i));
+				n++;
+			}
+		}
+		if (difficulty == 2) {
+			for (int i : m.objectives2) {
+				System.out.println("\t" + n + ".)\t" + m.o.returnStatements(i));
+				n++;
+			}
+		}
+		if (difficulty == 3) {
+			for (int i : m.objectives3) {
+				System.out.println("\t" + n + ".)\t" + m.o.returnStatements(i));
+				n++;
+			}
 		}
 	}
 
