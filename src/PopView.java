@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 /**
@@ -54,6 +55,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JLabel timerLabel;
 	JLabel scoreLabel;
 	JPanel scorePanel;
+	JLabel shiftLabel;
 	JPanel oPanel;
 	JLabel objLabel1;
 	JLabel objLabel2;
@@ -91,12 +93,16 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	private boolean clicked = false;
 	boolean start = false;
 	boolean BubbleMoving = false;
-	
+
 	ImageIcon checkbox = createImageIcon("checkbox.png", "");
 	ImageIcon checkboxdone = createImageIcon("checkboxdone.png", "");
 
+
 	MenuCustomMouseListener menuView; // mouselistener used to switch views between menu and game
 	HowToPlayMouseListener howToPlay; // mouselistener used to switch views between menu and howToPLay
+	EasyMouseListener easy = new EasyMouseListener();
+	MediumMouseListener medium = new MediumMouseListener();
+	HardMouseListener hard = new HardMouseListener();
 
 	/**
 	 * Constructor for the PopView class, handles connecting the model and frame
@@ -204,7 +210,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	public void drawGridBubbles() {
 		int rowAdder = 6;
 
-		for (int i = 0; i < model.startRows+rowAdder; i++) {
+		for (int i = 0; i < model.startRows + rowAdder; i++) {
 
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel panel = new JPanel();
@@ -215,7 +221,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 					System.out.print(" [nil] ");
 					panel.add(model.grid[i][j], BorderLayout.NORTH);
 
-				} 
+				}
 
 				if (i == 0) {
 					panel.setBounds(j * bubbleWH + 30, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
@@ -231,18 +237,17 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 				panel.setOpaque(false);
 				add(panel);
 
-				System.out.print(" i: " + i + " j: " + j);
+				//System.out.print(" i: " + i + " j: " + j);
 				gridBubbleArr[i][j] = panel;
-				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+				//gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
 			System.out.println("");
 		}
 	}
 
-
 	public void updateGrid() {
 		int rowAdder = 6;
-		for (int i = 0; i < model.startRows+rowAdder; i++) {
+		for (int i = 0; i < model.startRows + rowAdder; i++) {
 			for (int j = 0; j < model.gridColumns; j++) {
 				// System.out.print("[" + i + "," + j + "]");
 				if (i < 10 && model.grid[i][j] == null) {
@@ -259,6 +264,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 
 	}
+
 	/**
 	 * drawGun, draws the gun where the bubbles will be shot out of
 	 * 
@@ -326,14 +332,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		for (int i = 0; i < 6; i++) {
 			gunBubbleArr[i].removeAll();
 			gunBubbleArr[i].add(model.gunList[i], BorderLayout.NORTH);
-			//gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
-			
+			// gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
 			gunBubbleArr[i].repaint();
 
 		}
 
 	}
-	
+
 	protected ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = getClass().getResource(path);
 		if (imgURL != null) {
@@ -343,7 +349,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			return null;
 		}
 	}
-	
+
 	public void drawLoseBar() {
 		JPanel loseBar = new JPanel();
 		loseBar.setBounds(10, 508, 975, 5);
@@ -370,21 +376,65 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			timerLabel.setText((delay + " seconds"));
 			timerLabel.repaint();
 		}
-		
-		if(model.objdone[0] == true) {
-			objLabel1.setIcon(checkboxdone);
-			objLabel1.repaint();
+		if (model.difficulty == 1) {
+			if (model.objdone1[0] == true) {
+				objLabel1.setIcon(checkboxdone);
+				objLabel1.repaint();
+			}
+			if (model.objdone1[1] == true) {
+				objLabel2.setIcon(checkboxdone);
+				objLabel2.repaint();
+			}
+			if (model.objdone1[2] == true) {
+				objLabel3.setIcon(checkboxdone);
+				objLabel3.repaint();
+			}
 		}
-		if(model.objdone[1] == true) {
-			objLabel2.setIcon(checkboxdone);
-			objLabel2.repaint();
+
+		if (model.difficulty == 2) {
+			if (model.objdone2[0] == true) {
+				objLabel1.setIcon(checkboxdone);
+				objLabel1.repaint();
+			}
+			if (model.objdone2[1] == true) {
+				objLabel2.setIcon(checkboxdone);
+				objLabel2.repaint();
+			}
+			if (model.objdone2[2] == true) {
+				objLabel3.setIcon(checkboxdone);
+				objLabel3.repaint();
+			}
+			if (model.objdone2[3] == true) {
+				objLabel4.setIcon(checkboxdone);
+				objLabel4.repaint();
+			}
 		}
-		if(model.objdone[2] == true) {
-			objLabel3.setIcon(checkboxdone);
-			objLabel3.repaint();
+
+		if (model.difficulty == 3) {
+			if (model.objdone3[0] == true) {
+				objLabel1.setIcon(checkboxdone);
+				objLabel1.repaint();
+			}
+			if (model.objdone3[1] == true) {
+				objLabel2.setIcon(checkboxdone);
+				objLabel2.repaint();
+			}
+			if (model.objdone3[2] == true) {
+				objLabel3.setIcon(checkboxdone);
+				objLabel3.repaint();
+			}
+			if (model.objdone3[3] == true) {
+				objLabel4.setIcon(checkboxdone);
+				objLabel4.repaint();
+			}
+			if (model.objdone3[4] == true) {
+				objLabel5.setIcon(checkboxdone);
+				objLabel5.repaint();
+			}
 		}
-				
-		
+
+		shiftLabel.setText("<html>" + (8 - model.shotsFired) + " shots until bubbles shift down" + "</html>");
+		shiftLabel.repaint();
 
 		OcilationDelay++;
 		if (OcilationDelay % 50 == 0) { // slows down thre speed of the arrow
@@ -496,7 +546,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		timerPanel.add(timerLabel);
 		add(timerPanel);
 
-		scorePanel = new JPanel();
+		scorePanel = new JPanel(new BorderLayout());
 		scorePanel.setBounds(988, 210, 190, 200);
 		scorePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		scorePanel.setBackground(Color.LIGHT_GRAY);
@@ -506,116 +556,195 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
 
+		shiftLabel = new JLabel();
+		shiftLabel.setText("<html>" + (8 - model.shotsFired) + " shots until bubbles shift down" + "</html>");
+		shiftLabel.setFont(scoreLabel.getFont().deriveFont(16.0f));
+		scorePanel.add(shiftLabel, BorderLayout.SOUTH);
+		add(scorePanel);
+
 		if (model.difficulty == 1) {
 
-			oPanel = new JPanel(new BorderLayout());
+			oPanel = new JPanel();
+			BoxLayout box = new BoxLayout(oPanel, BoxLayout.Y_AXIS);
 
 			oPanel.setBounds(988, 410, 190, 332);
 			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			oPanel.setBackground(Color.WHITE);
-			
-			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[0]) + "</html>", checkbox, JLabel.CENTER);
-			oPanel.add(objLabel1, BorderLayout.NORTH);
-			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives1[0]) + "</html>");
+
+			JTextArea text1 = new JTextArea(model.o.returnStatements(model.objectives1[0]));
+			text1.setWrapStyleWord(true);
+			text1.setLineWrap(true);
+			oPanel.add(text1);
+
+			objLabel1 = new JLabel(checkbox);// JLabel("<html>" + model.o.returnStatements(model.objectives1[0]) +
+												// "</html>", checkbox, JLabel.CENTER);
+			// objLabel1.setText("<html>" + model.o.returnStatements(model.objectives1[0]) +
+			// "</html>");
 			objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
 			objLabel1.setSize(10, 10);
-			
-			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[1]) + "</html>", checkbox, JLabel.CENTER);
-			oPanel.add(objLabel2, BorderLayout.WEST);
-			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives1[1]) + "</html>");
+			oPanel.add(objLabel1);
+
+			JTextArea text2 = new JTextArea(model.o.returnStatements(model.objectives1[1]));
+			text2.setWrapStyleWord(true);
+			text2.setLineWrap(true);
+			oPanel.add(text2);
+
+			objLabel2 = new JLabel(checkbox);
+			// objLabel2.setText("<html>" + model.o.returnStatements(model.objectives1[1]) +
+			// "</html>");
 			objLabel2.setFont(objLabel2.getFont().deriveFont(16.0f));
 			objLabel2.setSize(10, 10);
 			oPanel.add(objLabel2);
-			
-			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives1[2]) + "</html>", checkbox, JLabel.CENTER);
-			oPanel.add(objLabel3, BorderLayout.SOUTH);
-			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives1[2]) + "</html>");
+
+			JTextArea text3 = new JTextArea(model.o.returnStatements(model.objectives1[2]));
+			text3.setWrapStyleWord(true);
+			text3.setLineWrap(true);
+			oPanel.add(text3);
+
+			objLabel3 = new JLabel(checkbox);
+			// objLabel3.setText("<html>" + model.o.returnStatements(model.objectives1[2]) +
+			// "</html>");
 			objLabel3.setFont(objLabel3.getFont().deriveFont(16.0f));
 			objLabel3.setSize(10, 10);
 			oPanel.add(objLabel3);
+
 			add(oPanel);
 		}
 
 		if (model.difficulty == 2) {
 
-			oPanel = new JPanel(new BorderLayout());
+			oPanel = new JPanel();
+			BoxLayout box = new BoxLayout(oPanel, BoxLayout.Y_AXIS);
 
 			oPanel.setBounds(988, 410, 190, 332);
 			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			oPanel.setBackground(Color.WHITE);
-			
-			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[0]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text1 = new JTextArea(model.o.returnStatements(model.objectives2[0]));
+			text1.setWrapStyleWord(true);
+			text1.setLineWrap(true);
+			oPanel.add(text1);
+
+			objLabel1 = new JLabel(checkbox);
 			oPanel.add(objLabel1, BorderLayout.NORTH);
-			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives2[0]) + "</html>");
+			// objLabel1.setText("<html>" + model.o.returnStatements(model.objectives2[0]) +
+			// "</html>");
 			objLabel1.setFont(objLabel1.getFont().deriveFont(14.0f));
 			objLabel1.setSize(8, 8);
-			
-			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[1]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text2 = new JTextArea(model.o.returnStatements(model.objectives2[1]));
+			text2.setWrapStyleWord(true);
+			text2.setLineWrap(true);
+			oPanel.add(text2);
+
+			objLabel2 = new JLabel(checkbox);
 			oPanel.add(objLabel2, BorderLayout.WEST);
-			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives2[1]) + "</html>");
+			// objLabel2.setText("<html>" + model.o.returnStatements(model.objectives2[1]) +
+			// "</html>");
 			objLabel2.setFont(objLabel2.getFont().deriveFont(14.0f));
 			objLabel2.setSize(8, 8);
 			oPanel.add(objLabel2);
-			
-			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[2]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text3 = new JTextArea(model.o.returnStatements(model.objectives2[2]));
+			text3.setWrapStyleWord(true);
+			text3.setLineWrap(true);
+			oPanel.add(text3);
+
+			objLabel3 = new JLabel(checkbox);
 			oPanel.add(objLabel3, BorderLayout.SOUTH);
-			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives2[2]) + "</html>");
+			// objLabel3.setText("<html>" + model.o.returnStatements(model.objectives2[2]) +
+			// "</html>");
 			objLabel3.setFont(objLabel3.getFont().deriveFont(14.0f));
 			objLabel3.setSize(8, 8);
 			oPanel.add(objLabel3);
-			
-			objLabel4 = new JLabel("<html>" + model.o.returnStatements(model.objectives2[3]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text4 = new JTextArea(model.o.returnStatements(model.objectives2[3]));
+			text4.setWrapStyleWord(true);
+			text4.setLineWrap(true);
+			oPanel.add(text4);
+
+			objLabel4 = new JLabel(checkbox);
 			oPanel.add(objLabel4, BorderLayout.SOUTH);
-			//objLabel4.setText("<html>" + model.o.returnStatements(model.objectives2[3]) + "</html>");
+			// objLabel4.setText("<html>" + model.o.returnStatements(model.objectives2[3]) +
+			// "</html>");
 			objLabel4.setFont(objLabel4.getFont().deriveFont(14.0f));
 			objLabel4.setSize(8, 8);
 			oPanel.add(objLabel4);
-			
+
 			add(oPanel);
 		}
 		if (model.difficulty == 3) {
-
-
-			oPanel = new JPanel(new BorderLayout());
+			oPanel = new JPanel();
+			BoxLayout box = new BoxLayout(oPanel, BoxLayout.Y_AXIS);
 
 			oPanel.setBounds(988, 410, 190, 332);
 			oPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			oPanel.setBackground(Color.WHITE);
-			
-			objLabel1 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[0]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text1 = new JTextArea(model.o.returnStatements(model.objectives3[0]));
+			text1.setWrapStyleWord(true);
+			text1.setLineWrap(true);
+			oPanel.add(text1);
+
+			objLabel1 = new JLabel(checkbox);
 			oPanel.add(objLabel1, BorderLayout.NORTH);
-			//objLabel1.setText("<html>" + model.o.returnStatements(model.objectives3[0]) + "</html>");
+			// objLabel1.setText("<html>" + model.o.returnStatements(model.objectives3[0]) +
+			// "</html>");
 			objLabel1.setFont(objLabel1.getFont().deriveFont(12.0f));
 			objLabel1.setSize(7, 7);
-			
-			objLabel2 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[1]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text2 = new JTextArea(model.o.returnStatements(model.objectives3[1]));
+			text2.setWrapStyleWord(true);
+			text2.setLineWrap(true);
+			oPanel.add(text2);
+
+			objLabel2 = new JLabel(checkbox);
 			oPanel.add(objLabel2, BorderLayout.WEST);
-			//objLabel2.setText("<html>" + model.o.returnStatements(model.objectives3[1]) + "</html>");
+			// objLabel2.setText("<html>" + model.o.returnStatements(model.objectives3[1]) +
+			// "</html>");
 			objLabel2.setFont(objLabel2.getFont().deriveFont(12.0f));
 			objLabel2.setSize(7, 7);
 			oPanel.add(objLabel2);
-			
-			objLabel3 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[2]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text3 = new JTextArea(model.o.returnStatements(model.objectives3[2]));
+			text3.setWrapStyleWord(true);
+			text3.setLineWrap(true);
+			oPanel.add(text3);
+
+			objLabel3 = new JLabel(checkbox);
 			oPanel.add(objLabel3, BorderLayout.WEST);
-			//objLabel3.setText("<html>" + model.o.returnStatements(model.objectives3[2]) + "</html>");
+			// objLabel3.setText("<html>" + model.o.returnStatements(model.objectives3[2]) +
+			// "</html>");
 			objLabel3.setFont(objLabel2.getFont().deriveFont(12.0f));
 			objLabel3.setSize(7, 7);
 			oPanel.add(objLabel3);
-			
-			objLabel4 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[3]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text4 = new JTextArea(model.o.returnStatements(model.objectives3[3]));
+			text4.setWrapStyleWord(true);
+			text4.setLineWrap(true);
+			oPanel.add(text4);
+
+			objLabel4 = new JLabel(checkbox);
 			oPanel.add(objLabel4, BorderLayout.SOUTH);
-			//objLabel4.setText("<html>" + model.o.returnStatements(model.objectives3[3]) + "</html>");
+			// objLabel4.setText("<html>" + model.o.returnStatements(model.objectives3[3]) +
+			// "</html>");
 			objLabel4.setFont(objLabel4.getFont().deriveFont(12.0f));
 			objLabel4.setSize(7, 7);
 			oPanel.add(objLabel4);
-			
-			objLabel5 = new JLabel("<html>" + model.o.returnStatements(model.objectives3[4]) + "</html>", checkbox, JLabel.CENTER);
+
+			JTextArea text5 = new JTextArea(model.o.returnStatements(model.objectives3[4]));
+			text5.setWrapStyleWord(true);
+			text5.setLineWrap(true);
+			oPanel.add(text5);
+
+			objLabel5 = new JLabel(checkbox);
 			oPanel.add(objLabel5, BorderLayout.SOUTH);
-			//objLabel5.setText("<html>" + model.o.returnStatements(model.objectives3[4]) + "</html>");
+			// objLabel5.setText("<html>" + model.o.returnStatements(model.objectives3[4]) +
+			// "</html>");
 			objLabel5.setFont(objLabel5.getFont().deriveFont(12.0f));
 			objLabel5.setSize(7, 7);
 			oPanel.add(objLabel5);
-			
+
 			add(oPanel);
 		}
 
@@ -628,80 +757,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @param none
 	 * @return none
 	 */
-	public void drawObjectives() {
-		System.out.println("Draw Objectives");
-		if (model.difficulty == 1) {
-			JLabel objLabel1 = new JLabel(model.objectives1.get(0), null, JLabel.CENTER);
-			JLabel objLabel2 = new JLabel(model.objectives1.get(1), null, JLabel.CENTER);
-			JLabel objLabel3 = new JLabel(model.objectives1[2], null, JLabel.CENTER);
-		
-
-			sidePanel.add(objLabel1);
-			sidePanel.add(objLabel2);
-			sidePanel.add(objLabel3);
-
-			objLabel1.setBounds(100, 0, 100, 15);
-			objLabel2.setBounds(100, 120, 100, 15);
-			objLabel3.setBounds(100, 150, 100, 15);
-			
-			Font font = new Font("Verdana", Font.ITALIC, 14);
-			objLabel1.setFont(font);
-			objLabel2.setFont(font);
-			objLabel3.setFont(font);
-		}
-		if (model.difficulty == 2) {
-			JLabel objLabel1 = new JLabel(model.objectives2.get(0), null, JLabel.CENTER);
-			JLabel objLabel2 = new JLabel(model.objectives2.get(1), null, JLabel.CENTER);
-			JLabel objLabel3 = new JLabel(model.objectives2[2], null, JLabel.CENTER);
-			JLabel objLabel4 = new JLabel(model.objectives2.get(3), null, JLabel.CENTER);
-			
-
-			sidePanel.add(objLabel1);
-			sidePanel.add(objLabel2);
-			sidePanel.add(objLabel3);
-			sidePanel.add(objLabel4);
-
-			objLabel1.setBounds(100, 0, 100, 15);
-			objLabel2.setBounds(100, 50, 100, 15);
-			objLabel3.setBounds(100, 100, 100, 15);
-			objLabel4.setBounds(100, 150, 100, 15);
-
-			Font font = new Font("Verdana", Font.ITALIC, 14);
-			objLabel1.setFont(font);
-			objLabel2.setFont(font);
-			objLabel3.setFont(font);
-			objLabel4.setFont(font);
-			}
-		
-		if (model.difficulty == 3) {
-			JLabel objLabel1 = new JLabel(model.objectives3.get(0), null, JLabel.CENTER);
-			JLabel objLabel2 = new JLabel(model.objectives3.get(1), null, JLabel.CENTER);
-			JLabel objLabel3 = new JLabel(model.objectives3[2], null, JLabel.CENTER);
-			JLabel objLabel4 = new JLabel(model.objectives3.get(3), null, JLabel.CENTER);
-			JLabel objLabel5 = new JLabel(model.objectives3[4], null, JLabel.CENTER);
-		
-
-			sidePanel.add(objLabel1);
-			sidePanel.add(objLabel2);
-			sidePanel.add(objLabel3);
-			sidePanel.add(objLabel4);
-			sidePanel.add(objLabel5);
-
-			objLabel1.setBounds(100, 0, 100, 15);
-			objLabel2.setBounds(100, 35, 100, 15);
-			objLabel3.setBounds(100, 70, 100, 15);
-			objLabel4.setBounds(100, 110, 100, 15);
-			objLabel5.setBounds(100, 150, 100, 15);
-
-			Font font = new Font("Verdana", Font.ITALIC, 14);
-			objLabel1.setFont(font);
-			objLabel2.setFont(font);
-			objLabel3.setFont(font);
-			objLabel4.setFont(font);
-			objLabel5.setFont(font);
-		}
-		
-	}
 
 	/**
 	 * mouseReleased, is an overrided method from mouseListener that lets the
@@ -898,8 +953,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * the home screen
 	 * 
 	 */
-	
-	
+
 	public void drawMenu() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -967,5 +1021,46 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 
 	}
+	
+	
+	public void drawDifficutlyMenu(){
+		JPanel menu = new JPanel();
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		setContentPane(new JLabel(imageIcon));
+		menu.setBounds(375, 400, 450, 50);
+		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JButton b1 = new JButton("Easy");
+		b1.setBounds(50, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(easy);
+		JButton b2 = new JButton("Medium");
+		b2.setBounds(100, 100, 80, 30);
+		b2.setBackground(Color.green);
+		b2.addMouseListener(medium);
+		JButton b3 = new JButton("Hard");
+		b3.setBounds(150, 100, 80, 30);
+		b3.setBackground(Color.red);
+		b3.addMouseListener(hard);
+		menu.add(b1);
+		menu.add(b2);
+		menu.add(b3);
+		add(menu);
+		setTitle("Start Menu");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+	}
+
+	
+	
+	
 
 }

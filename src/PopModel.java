@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 
 public class PopModel {
 
-	int difficulty;
+	int difficulty = -1;
 
 	Objective o = new Objective();
 	Objective[] objs1 = new Objective[3];
@@ -21,7 +21,9 @@ public class PopModel {
 	int[] objectives1 = { 0, 0, 0 };
 	int[] objectives2 = { 0, 0, 0, 0 };
 	int[] objectives3 = { 0, 0, 0, 0, 0 };
-	boolean[] objdone = { false, false, false };
+	boolean[] objdone1 = { false, false, false };
+	boolean[] objdone2 = { false, false, false, false };
+	boolean[] objdone3 = { false, false, false, false, false };
 	int[] objectiveTally = { 0, 0, 0, 0 ,0 };
 
 	int gridColumns = 13;
@@ -78,7 +80,11 @@ public class PopModel {
 	 * @param d
 	 *            is the difficulty passed in from PopController
 	 */
-	public PopModel(int d) {
+	public PopModel() {
+
+	}
+	
+	public void setDifficulty(int d) {
 		difficulty = d;
 		startRows = 4;
 	}
@@ -291,28 +297,46 @@ public class PopModel {
 		} else {
 			System.out.println("Choose a path number between 0 and 28!");
 		}
-		for (int i = 0; i <= 2; i++) {
-			System.out.println(objectiveTally[i] + " Tally");
-			System.out.println(objdone[i] + "Done");
-			if (objectiveTally[i] >= 5 && !objdone[i]) {
-				objdone[i] = true;
-				if (difficulty == 1) {
+		if (difficulty == 1) {
+			for (int i = 0; i <= 2; i++) {
+				System.out.println(objectiveTally[i] + " Tally");
+				System.out.println(objdone1[i] + "Done");
+				if (objectiveTally[i] >= 3 && !objdone1[i]) {
+					objdone1[i] = true;
 					System.out.println(objectives1[i]);
 					System.out.println("\t\t" + o.returnCompleteStatement(objectives1[i]));
+					i++;
 				}
-				if (difficulty == 2) {
-					System.out.println(objectives2[i]);
-					System.out.println("\t\t" + o.returnCompleteStatement(objectives2[i]));
+			}
+			if (difficulty == 2) {
+				for (int i = 0; i <= 3; i++) {
+
+					System.out.println(objectiveTally[i] + " Tally");
+					System.out.println(objdone2[i] + "Done");
+					if (objectiveTally[i] >= 3 && !objdone2[i]) {
+						objdone2[i] = true;
+						System.out.println(objectives2[i]);
+						System.out.println("\t\t" + o.returnCompleteStatement(objectives2[i]));
+						i++;
+					}
 				}
 				if (difficulty == 3) {
-					System.out.println(objectives3[i]);
-					System.out.println("\t\t" + o.returnCompleteStatement(objectives3[i]));
-				}
+					for (int i = 0; i <= 4; i++) {	
+						System.out.println(objectiveTally[i] + " Tally");
+						System.out.println(objdone3[i] + "Done");
+						if (objectiveTally[i] >= 3 && !objdone3[i]) {
+							objdone3[i] = true;
+							System.out.println(objectives3[i]);
+							System.out.println("\t\t" + o.returnCompleteStatement(objectives3[i]));
+							i++;
+						}
+					}
+				}			
 				System.out.println("Press any number to continue... ");
 				int g = scn.nextInt();// kind of pointless. Just used to pause the game to allow the player to read
-										// the complete statement. maybe change to a click to continue
+				// the complete statement. maybe change to a click to continue
 			}
-			i++;
+
 		}
 
 		// Use click to fire (for real version)
@@ -418,10 +442,10 @@ public class PopModel {
 		} // close for
 
 		shotsFired++;
-		if (shotsFired > 5) { //every 3rd
+		if (shotsFired > 7) { //every 3rd
 			System.out.println("------Shift----");
 			shiftGrid();
-			shifts++;
+			shifts += 2;
 			shotsFired = 0;
 		}
 		
@@ -642,300 +666,7 @@ public class PopModel {
 		System.out.println("You lost... :'(");
 	}
 
-	// /**
-	// * check for matches between bubbles in the game
-	// */
-	// public void checkMatch() { // not complete yet
-	// matchedList.add(gunList[0]); // if size > 4, popping will occur
-	// // matchedList.add(b); // this is our first matching bubble
-	// recursion(contactY, contactX, gunList[0]); // look for more matches
-	// if (matchedList.size() >= 4) { // pop bubble by deleting from grid
-	// for (Bubble bub : matchedList) {
-	// for (int i = 0; i < grid.length; i++) {
-	// for (int j = 0; j < grid[0].length; j++) {
-	// if (grid[i][j] == null) {
-	// continue;
-	// }
-	// if (grid[i][j].xCoord == bub.xCoord && grid[i][j].yCoord == bub.yCoord) {
-	// grid[i][j] = null;
-	// // matchedList.remove();
-	// }
-	// }
-	// }
-	// }
-	// }
-	// }
-
-	// /**
-	// *
-	// * @param bub1 grid bubble being checked for match
-	// * @param bub2 gun bubble being used for matching locations
-	// * @return
-	// */
-	// public boolean checkContact(Bubble bub1, Bubble bub2) {
-	// System.out.println("reached");// checks bubble contact between gunbubble and
-	// gridbubble
-	// if ((((bub2.xCoord - bubbleImageWidth) <= bub1.xCoord) && (bub1.xCoord <=
-	// (bub2.xCoord + bubbleImageWidth)))
-	// && (((bub2.yCoord - bubbleImageHeight) <= bub1.yCoord)
-	// && (bub1.yCoord <= (bub2.yCoord + bubbleImageHeight)))) {
-	// System.out.println("tru!!");
-	// return true;
-	// } else {
-	// System.out.println("false!!");
-	// return false;
-	// }
-	// }
-
-	// /**
-	// *
-	// * @param bub1 bubble used for matching color
-	// * @param bub2 bubble used for matching color
-	// * @return
-	// */
-	// public boolean match(Bubble bub1, Bubble bub2) {
-	// return bub1.color == bub2.color && bub1 != null && bub2 != null;
-	// }
-
-	// /**
-	// *
-	// * @param row y-index location in grid
-	// * @param col x-index location in grid
-	// * @param pivot gun bubble being compared to
-	// */
-	// public void recursion(int row, int col, Bubble pivot) {
-	// if (grid[row][col] == null) {
-	// return;
-	// }
-	// if (grid[row][col].color == pivot.color) {
-	// matchedList.add(grid[row][col]);
-	// beenHere(row, col);
-	// } else if (grid[row][col].color != pivot.color || grid[row][col] == null ||
-	// beenHere(row, col)) {
-	// return;
-	// }
-	// if (isInBound(row, col + 1) && !beenHere(row, col + 1)) {
-	// recursion(row, col + 1, pivot);
-	// }
-	// if (isInBound(row, col - 1) && !beenHere(row, col - 1)) {
-	// recursion(row, col - 1, pivot);
-	// }
-	// if (isInBound(row - 1, col) && !beenHere(row - 1, col)) {
-	// recursion(row - 1, col, pivot);
-	// }
-	// if (isInBound(row + 1, col) && !beenHere(row + 1, col)) {
-	// recursion(row + 1, col, pivot);
-	// } else {
-	// return;
-	// }
-	// }
-
-	// /**
-	// *
-	// * @param row y-index of grid
-	// * @param col x-index of grid
-	// * @return true if inside boundary of grid
-	// */
-	// public boolean isInBound(int row, int col) {
-	// return row <= grid.length - 1 && col <= grid[0].length - 1 && col >= 0 && row
-	// >= 0;
-	// }
-
-	// /**
-	// *
-	// * @param row y-value of grid
-	// * @param col x-value of grid
-	// * @return true if the grid index have been used before (for recursive check)
-	// */
-	// public boolean beenHere(int row, int col) {
-	// int[] xy = new int[2];
-	// boolean flag = false;
-	// for (int[] xys : haveBeenHere) {
-	// if (xys[0] == row && xys[1] == col) {
-	// flag = true;
-	// }
-	// }
-	// if (flag == false) {
-	// xy[0] = row;
-	// xy[1] = col;
-	// haveBeenHere.add(xy);
-	// }
-	// return flag;
-	// }
-
-	// **~~lets not worry about this for the alpha~~**
-	// public void shift(){ // shift gridbubbles down screen by one image height to
-	// make room for next new row
-	// for(Bubble[] bArr: grid){
-	// for(Bubble b: bArr){
-	// b.yCoord += 1;
-	// }//close for
-	// }//close for
-	// for(Bubble m : grid[0]){
-	//
-	// }
-	// }
-
-	// /**
-	// *
-	// * @param b gun bubble being added to grid
-	// *
-	// * checks to see where in the grid the bubble landed compared to the one it
-	// made
-	// * contact with
-	// * helper for shoot
-	// *
-	// */
-	// public void addToGrid(Bubble b) {
-	// b.showGunImage = false;
-	// if ((contactX == b.xCoord) && (contactY > b.yCoord)) {// above contact bubble
-	// grid[contactX][contactY - 1] = b;
-	// }
-	// if ((contactX > b.xCoord) && (contactY > b.yCoord)) {// above contact bubble,
-	// to the left (not needed for alpha,
-	// // but needed for staggered shape)
-	// grid[contactX - 1][contactY - 1] = b;
-	// }
-	// if ((contactX < b.xCoord) && (contactY > b.yCoord)) {// above contact bubble,
-	// to the right (not needed for
-	// // alpha, but needed for staggered shape)
-	// grid[contactX + 1][contactY - 1] = b;
-	// }
-	// if ((contactX == b.xCoord) && (contactY < b.yCoord)) {// below contact bubble
-	// grid[contactX][contactY + 1] = b;
-	// }
-	// if ((contactX > b.xCoord) && (contactY < b.yCoord)) {// below contact bubble,
-	// to the left (not needed for alpha,
-	// // but needed for staggered shape)
-	// grid[contactX - 1][contactY + 1] = b;
-	// }
-	// if ((contactX < b.xCoord) && (contactY < b.yCoord)) {// below contact bubble,
-	// to the right (not needed for
-	// // alpha, but needed for staggered shape)
-	// grid[contactX + 1][contactY + 1] = b;
-	// }
-	// if ((contactX > b.xCoord) && (contactY == b.yCoord)) {// left of contact
-	// bubble
-	// grid[contactX - 1][contactY] = b;
-	// }
-	// if ((contactX < b.xCoord) && (contactY == b.yCoord)) {// right of contact
-	// bubble
-	// grid[contactX + 1][contactY] = b;
-	// }
-	// }
-
-	// /**
-	// *
-	// * @param b gun bubble being tested
-	// * @param degr angle of gun
-	// * @param xMoved projection of gun onto x-axis
-	// * @param yMoved projection of gun onto y-axis
-	// * @return true if the gun bubble has made contact
-	// *
-	// * if clicked, gun pauses and shoots
-	// * need to do get degree, get gunXcoord, get gunYcoord in controller
-	// * ran during every frame of shoot - checks if it comes into contact with
-	// * another bubble - if it does, we return true
-	// * helper for shoot
-	// *
-	// *
-	// */
-	// public boolean stopBubble(Bubble b, int degr, int xMoved, int yMoved) {
-	// if ((xMoved / (gridBubblesX) >= 1) || (yMoved / (gridBubblesY) >= 1)) { //
-	// sees if the xCoord and yCoord would
-	// System.out.println("checking"); // place it into a
-	// // bubble spot so we don't have to check every single frame
-	// xMoved = 0;
-	// yMoved = 0; // reset these values
-	// if (degr < 90) { // check left half of grid - minimizes amount of bubbles to
-	// check
-	// for (int i = 0; i < currGridRows; i ++) {
-	// for (int j = 0; j < gridColumns / 2; j ++) {
-	// if (checkContact(b, grid[i][j])) { // need to add or y = frame height
-	// contactX = i;
-	// contactY = j;
-	// return true;
-	// }
-	// }
-	// }
-	// } else if (degr >= 90) { // check right half of grid
-	// for (int i = 0; i < currGridRows; i ++) {
-	// for (int j = gridColumns/2; j < gridColumns; j ++) {// call update helper
-	// if (checkContact(b, grid[i][j])) {
-	// contactX = i;
-	// contactY = j;
-	// return true;
-	// }
-	// }
-	// }
-	// }
-	// }
-	// System.out.println(false);
-	// return false;
-	// }
-
-	// /**
-	// * @param b gun bubble being moved
-	// * @param degr angle of gun
-	// *
-	// * moves forward on an angle
-	// * helper for shoot
-	// */
-	// public void moveBubbleForward(Bubble b, int degr) {
-	// Long x = Math.round(bubbleSpeed * Math.sin(degr));
-	// Long y = Math.round(bubbleSpeed * Math.cos(degr));
-	//
-	// b.xCoord += x.intValue();
-	//
-	// b.yCoord += y.intValue();
-	//
-	// }
-
-	// /**
-	// * @param degr angle of gun
-	// * @param xCo x-component of gun
-	// * @param yCo y-component of gun
-	// *
-	// * puts the gunBubble into the xCoord and yCoord of where the gun is and
-	// shoots
-	// * it by moving the bubble until it comes in
-	// * contact with another bubble
-	// * takes degree, xCoordinate, and yCoordinate of the gun at the time when
-	// shoot
-	// * is activated
-	// * called by moveGun
-	// */
-	// public void shoot(int degr, double xCo, double yCo) {
-	// Long x = Math.round(xCo);
-	// Long y = Math.round(yCo);
-	// gunList[0].xCoord = x.intValue();
-	// gunList[0].yCoord = y.intValue();
-	// int xMoved = gunList[0].xCoord;
-	// int yMoved = gunList[0].yCoord;
-	//
-	// boolean keepChecking = stopBubble(gunList[0], degr, xMoved, yMoved);
-	//
-	//
-	// while (keepChecking == false) { // move the bubble forward until it makes
-	// contact
-	// System.out.println("xMoved");
-	// moveBubbleForward(gunList[0], degr);
-	// xMoved += gunList[0].xCoord;
-	// yMoved += gunList[0].yCoord;
-	// keepChecking = stopBubble(gunList[0], degr, xMoved, yMoved);
-	// // this isn't working, checking entire array takes way too long
-	// }
-	//
-	// System.out.println("added");
-	//
-	// addToGrid(gunList[0]);
-	//
-	// checkMatch(); // check if there are any matches that need to be popped
-	//
-	// gunList[0] = null;
-	// reloadGun(); // removes old gunBubble and reloads gun
-	//
-	// }
+	
 
 	public static void main(String[] args) {
 		System.out.println("What difficulty would you like to play? ...\n*(1 = Easy, 2 = Medium, 3 = Hard)*");

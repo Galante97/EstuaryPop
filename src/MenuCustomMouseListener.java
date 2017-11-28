@@ -14,14 +14,14 @@ public class MenuCustomMouseListener implements MouseListener {
 	
 	
 
-	public static PopView view;
+	public static PopView diffMenu;
 	public static PopView menu;
     public static PopView howToPlay;
 
 	@Override
 	public void mouseClicked(MouseEvent e) {	
 		menu.setVisible(false);
-		view.setVisible(true);
+		diffMenu.setVisible(true);
 	
 	}
 
@@ -49,8 +49,8 @@ public class MenuCustomMouseListener implements MouseListener {
 		
 	}
 	
-	public static void sendInstancesToMenuCustomMouseListener(PopView view, PopView menu, PopView howToPlay){
-		MenuCustomMouseListener.view= view;
+	public static void sendInstancesToMenuCustomMouseListener(PopView diffMenu, PopView menu, PopView howToPlay){
+		MenuCustomMouseListener.diffMenu= diffMenu;
 		MenuCustomMouseListener.menu=menu;
 		MenuCustomMouseListener.howToPlay=howToPlay;
 	}

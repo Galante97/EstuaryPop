@@ -29,30 +29,42 @@ public class PopController {
 	// Main with view
 	public static void main(String[] args) {
 
-		System.out.println("What difficulty would you like to play? ...\n*(1 = Easy, 2 = Medium, 3 = Hard)*");
-		int d = scn.nextInt();
+//		System.out.println("What difficulty would you like to play? ...\n*(1 = Easy, 2 = Medium, 3 = Hard)*");
+//		int d = scn.nextInt();
 
 		JFrame frame = new JFrame(); // create frame
-		PopModel m = new PopModel(d); // create model
+		PopModel m = new PopModel(); // create model
 		PopView view = new PopView(m, frame); // create view of game play
 		PopView menu = new PopView(m, frame); // menu view
 		PopView howto = new PopView(m, frame);
 		menu.menuView = new MenuCustomMouseListener();
 		menu.howToPlay = new HowToPlayMouseListener();
 		howto.howToPlay = new HowToPlayMouseListener();
-		MenuCustomMouseListener.sendInstancesToMenuCustomMouseListener(view, menu, howto);
-		HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(view, menu, howto);
-
-		m.chooseObjectives();
-		m.printObjectives(m);
-		m.setGrid(); // set model grid
-		m.loadGun(); // load model gun
+		PopView diffMenu = new PopView(m, frame);
+		
+		
+		diffMenu.drawDifficutlyMenu();
+		
+		MenuCustomMouseListener.sendInstancesToMenuCustomMouseListener(diffMenu, menu, howto);
+		HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(diffMenu, menu, howto);
+		EasyMouseListener.pullInstances(view, diffMenu, m);
+		MediumMouseListener.pullInstances(view, diffMenu, m);
+		HardMouseListener.pullInstances(view, diffMenu, m);
 		menu.drawMenu();
 		menu.setVisible(true);
 		// view.drawHowToPlay();
 		howto.drawHowToPlay();
+	
+		while(m.difficulty == -1) {
+			System.out.print(""); //wait
+		}
+		
+		m.chooseObjectives();
+		m.printObjectives(m);
+		m.setGrid(); // set model grid
+		m.loadGun(); // load model gun
 		view.draw(); // draw bubbles/panel/gun/etc all corresponding to model
-
+		
 		m.GameModeConsole = false;
 
 		while (m.playAgain) {// Plays all aspects of the game until the player decides to quit
