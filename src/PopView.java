@@ -980,7 +980,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		b3.setBackground(Color.red);
 		menu.add(b1);
 		menu.add(b2);
-		menu.add(b3);
+		//menu.add(b3);
 		add(menu);
 		setTitle("Start Menu");
 		setSize(1200, 800);
@@ -1045,6 +1045,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		b2.setBackground(Color.yellow);
 		b2.addMouseListener(new YouLoseListener());
 		menu.add(b1);
+		menu.add(b2);
 		add(menu);
 		setTitle("Game Over");
 		setSize(1200, 800);

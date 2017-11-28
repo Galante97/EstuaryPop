@@ -12,6 +12,7 @@ public class YouLoseListener implements MouseListener {
 		view.setVisible(false);
 		lose.setVisible(true);
 		
+		
 	}
 	public static void sendInstancesToYouLoseListener(PopView view, PopView loseScreen, PopController con){
 		YouLoseListener.view = view;
@@ -23,6 +24,7 @@ public class YouLoseListener implements MouseListener {
 		lose.setVisible(false);
 		view.setVisible(false);
 		PopController.play = false;
+		PopController.quit = false;
 		
 		
 		// TODO Auto-generated method stub

@@ -19,7 +19,7 @@ public class PopController {
 
 	static Scanner scn = new Scanner(System.in);
 	static boolean play = true;
-
+    static boolean quit = true;
 	// public int difficulty; // determines speed of game
 	// boolean clicked;
 
@@ -53,10 +53,12 @@ public class PopController {
 			HardMouseListener.pullInstances(view, diffMenu, m);
 			HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(view, menu, howto);
 			YouLoseListener.sendInstancesToYouLoseListener(view, lose, pop);
+			PlayAgainListener.SendInstancesToPlayAgain(view, lose, pop);
 			menu.drawMenu();
 			menu.setVisible(true);
 			// view.drawHowToPlay();
 			howto.drawHowToPlay();
+			lose.drawLoseScreen();
 		
 			while(m.difficulty == -1) {
 				System.out.print(""); //wait
@@ -111,6 +113,10 @@ public class PopController {
 			if (m.lost) {// print statement if the player loses
 				m.printLose(m);
 				YouLoseListener.turnOnLoseScreen();
+				while(quit){
+					System.out.print("");
+				}
+				
 			} // close if
 			
 			
