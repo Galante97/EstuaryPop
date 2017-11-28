@@ -795,5 +795,41 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 
 	}
+	
+	public void drawLoseScreen(){
+		JPanel menu = new JPanel();
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("src/gameOver.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		setContentPane(new JLabel(imageIcon));
+		menu.setBounds(200, 400, 800, 150);
+		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JLabel jlabel = new JLabel(
+				"<html>The gun moves automatically from side to side.<br> " + " Use the left mouse button to fire! <br>"
+						+ "Take some shots at matching bubbles above<br>" + " to pop them!</html");
+		jlabel.setFont(new Font("Verdana", 1, 20));
+		menu.add(jlabel);
+		JButton b1 = new JButton("Try Again");
+		b1.setBounds(0, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(new PlayAgainListener());
+		JButton b2 = new JButton("Quit");
+		b2.setBounds(0, 100, 80, 30);
+		b2.setBackground(Color.yellow);
+		b2.addMouseListener(new YouLoseListener());
+		menu.add(b1);
+		add(menu);
+		setTitle("Game Over");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+
+	}
 
 }
