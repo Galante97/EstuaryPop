@@ -510,6 +510,17 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		System.out.println("Draw game panel");
 
 		gamePanel = new JPanel();
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		JLabel thumb = new JLabel();
+		thumb.setIcon(imageIcon);
+		gamePanel.add(thumb);
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		gamePanel.addMouseListener(this);
@@ -958,15 +969,16 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/Estuary Logo.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
-		menu.setBounds(375, 400, 450, 50);
-		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		menu.setOpaque(false);
+		menu.setBounds(375, 500, 450, 50);
+		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JButton b1 = new JButton("How To Play");
 		b1.setBounds(50, 100, 80, 30);
 		b1.setBackground(Color.yellow);
@@ -994,18 +1006,20 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/Estuary How to Play.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
-		menu.setBounds(200, 400, 800, 150);
-		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		menu.setOpaque(true);
+		menu.setBounds(200, 450, 800, 150);
+		String text = "The gun moves automatically from side to side." + "<br>"  + " Use the left mouse button to fire!" + "<br>"
+				+ "Take some shots at matching bubbles above" + "<br>" + " to pop them!";
+		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JLabel jlabel = new JLabel(
-				"<html>The gun moves automatically from side to side.<br> " + " Use the left mouse button to fire! <br>"
-						+ "Take some shots at matching bubbles above<br>" + " to pop them!</html");
+				"<html><div style='text-align: center;'>" + text + "</div></html>");
 		jlabel.setFont(new Font("Verdana", 1, 20));
 		menu.add(jlabel);
 		JButton b1 = new JButton("OK, Start Game!");
@@ -1035,8 +1049,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
-			menu.setBounds(200, 400, 800, 150);
-			menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			menu.setBounds(200, 500, 800, 150);
+			menu.setOpaque(false);
+			//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			JButton b1 = new JButton("Try Again");
 			b1.setBounds(0, 100, 80, 30);
 			b1.setBackground(Color.yellow);
@@ -1059,15 +1074,16 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("src/estMenu.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/Estuary Difficulty.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
+		menu.setOpaque(false);
 		setContentPane(new JLabel(imageIcon));
-		menu.setBounds(375, 400, 450, 50);
-		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		menu.setBounds(375, 500, 450, 50);
+		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JButton b1 = new JButton("Easy");
 		b1.setBounds(50, 100, 80, 30);
 		b1.setBackground(Color.yellow);
