@@ -672,7 +672,7 @@ public class PopModel {
 		System.out.println("What difficulty would you like to play? ...\n*(1 = Easy, 2 = Medium, 3 = Hard)*");
 		int d = scn.nextInt();
 
-		PopModel m = new PopModel(d); // create model
+		PopModel m = new PopModel(); // create model
 
 		m.GameModeConsole = true;
 
