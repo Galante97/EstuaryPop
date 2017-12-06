@@ -736,4 +736,43 @@ public class PopModel {
 			} // close if
 		} // close while
 	}// close main
+	
+	public void setpracticeGrid() {
+		int columns = gridColumns;
+		System.out.println("Filling grid...");
+		for (int i = 0; i < startRows; i++) {
+			if (i % 2 != 0) {
+				columns = gridColumns - 1;
+			}
+			for (int j = 0; j < gridColumns; j++) {
+				if (j <  gridColumns/2) {
+					
+					grid[i][j] = new Bubble(o.returnColor(objectives1[1]), o.returnGunImg(objectives1[1]),
+							o.returnGridImg(objectives1[1]));
+					grid[i][j].switchImage();
+				}else{
+					grid[i][j] = new Bubble(o.returnColor(objectives1[2]), o.returnGunImg(objectives1[2]),
+							o.returnGridImg(objectives1[2]));
+					grid[i][j].switchImage();
+				}
+				
+			} // close for
+			columns = gridColumns;
+		} // close for
+	}// close setGrid
+
+	public void loadpracticeGun() {
+		System.out.println("Loading Gun...");
+		while (gunList[0] == null) {
+			for (int i = 0; i < gunListLength - 1; i++) {
+				gunList[i] = gunList[i + 1];
+			}
+			
+			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[1]), o.returnGunImg(objectives1[1]),
+					o.returnGridImg(objectives1[1]));
+
+		}
+	}
+	
+	
 }
