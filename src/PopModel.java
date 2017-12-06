@@ -763,14 +763,20 @@ public class PopModel {
 
 	public void loadpracticeGun() {
 		System.out.println("Loading Gun...");
+		int j = 0;
 		while (gunList[0] == null) {
+			
 			for (int i = 0; i < gunListLength - 1; i++) {
 				gunList[i] = gunList[i + 1];
 			}
-			
+			if(j%2==0){
 			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[1]), o.returnGunImg(objectives1[1]),
 					o.returnGridImg(objectives1[1]));
-
+			}else{
+				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[2]), o.returnGunImg(objectives1[2]),
+						o.returnGridImg(objectives1[2]));
+			}
+			j++;
 		}
 	}
 	
