@@ -1106,7 +1106,35 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 }
 
+	public void drawPractice() {
+		drawSidePanel();
+		drawGridBubbles();
+		drawGunBubbles();
+		drawGun();
+		drawLoseBar();
 
+		// drawObjectives();
+
+		// drawGridForTesting();
+		drawGamePanel();
+		
+		JPanel panel = new JPanel();
+		JButton b1 = new JButton("Easy");
+		b1.setBounds(50, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(easy);
+		panel.add(b1);
+		setTitle("Estuary Pop!");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+
+		timer = new Timer(DELAY, this);
+		timer.start();
+
+		System.out.println("Everything Drawn: Welcome to Estuary Pop");
+	}
 
 
 }

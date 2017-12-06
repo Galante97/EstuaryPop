@@ -20,6 +20,7 @@ public class PopController {
 	static Scanner scn = new Scanner(System.in);
 	static boolean play = true;
     static boolean quit = true;
+	static boolean pract = true;
 	// public int difficulty; // determines speed of game
 	// boolean clicked;
 
@@ -57,86 +58,127 @@ public class PopController {
 			PlayAgainListener.SendInstancesToPlayAgain(view, lose, pop);
 			menu.drawMenu();
 			menu.setVisible(true);
-			// view.drawHowToPlay();
 			howto.drawHowToPlay();
 			lose.drawLoseScreen();
 		
 			while(m.difficulty == -1) {
 				System.out.print(""); //wait
 			}
+			while(menu.isVisible()){
+				System.out.println("");
+			}
+			if(pract){
+				m.chooseObjectives();
+				m.printObjectives(m);
+				m.setpracticeGrid(); // set model grid
+				m.loadpracticeGun(); // load model gun
+				view.drawPractice(); // draw bubbles/panel/gun/etc all corresponding to model
+				
+				m.GameModeConsole = false;
 			
-			m.chooseObjectives();
-			m.printObjectives(m);
-			m.setGrid(); // set model grid
-			m.loadGun(); // load model gun
-			view.draw(); // draw bubbles/panel/gun/etc all corresponding to model
-			
-			m.GameModeConsole = false;
-		
 
-			System.out.println("Grid Set!");
+				System.out.println("Grid Set!");
 
-			m.won = false;
-			m.lost = false;
-			while (!m.won && !m.lost) {// plays the game until the player has won or lost
-				m.printGrid(m);
-				System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1] + ","
-						+ m.objectiveTally[2] + "]" + "\t\t\t\t");
-				m.printGunList(m);
-				try {
-					while (m.userClicked == false) {
-						System.out.print(""); // needs something in while loop or it wont work
+				m.won = false;
+				m.lost = false;
+				while (!m.won && !m.lost) {// plays the game until the player has won or lost
+					m.printGrid(m);
+					System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1] + ","
+							+ m.objectiveTally[2] + "]" + "\t\t\t\t");
+					m.printGunList(m);
+					try {
+						while (m.userClicked == false) {
+							System.out.print(""); // needs something in while loop or it wont work
 
+						}
+
+						m.moveGun();
+
+					} catch (InterruptedException e) {
+						System.out.println("Delay...");
 					}
-
-					m.moveGun();
-
-				} catch (InterruptedException e) {
-					System.out.println("Delay...");
-				}
-				m.won = true;
-				for (Bubble[] row : m.grid) {// checks to see if the grid is empty. If so, the player wins
-					for (Bubble b : row) {
+					m.won = true;
+					for (Bubble[] row : m.grid) {// checks to see if the grid is empty. If so, the player wins
+						for (Bubble b : row) {
+							if (b != null) {
+								m.won = false;
+							} // close if
+						} // close for
+					} // close for
+					for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
+																// line. If so, the player loses
 						if (b != null) {
-							m.won = false;
+							m.lost = true;
 						} // close if
 					} // close for
-				} // close for
-				for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
-															// line. If so, the player loses
-					if (b != null) {
-						m.lost = true;
-					} // close if
-				} // close for
-			} // close while
-			if (m.won) {// print statement if the player wins
-				m.printWin(m);
-			} // close if
-			if (m.lost) {// print statement if the player loses
-				m.printLose(m);
-				YouLoseListener.turnOnLoseScreen();
-				while(quit){
-					System.out.print("");
-				}
+				} // close while
+				if (m.won) {// print statement if the player wins
+					m.printWin(m);
+				} // close if
+				if (m.lost) {// print statement if the player loses
+					m.printLose(m);
+					YouLoseListener.turnOnLoseScreen();
+					while(quit){
+						System.out.print("");
+					}
+					
+				} // close if
+			}else{
+				m.chooseObjectives();
+				m.printObjectives(m);
+				m.setGrid(); // set model grid
+				m.loadGun(); // load model gun
+				view.draw(); // draw bubbles/panel/gun/etc all corresponding to model
 				
-			} // close if
+				m.GameModeConsole = false;
 			
-			
-//			int g = -1;
-//			while (g != 0 || g != 1) {// asks if the player wants to play again after they won/ lost
-//				System.out.println("Do you want to play again? ...\n*(0 = no, 1 = yes)*");
-//				g = scn.nextInt();
-//				if (g == 0 || g == 1) {
-//					break;
-//				} // close if
-//				else {
-//					System.out.println("Please enter 0 or 1.");
-//				} // close else
-//			} // close while
-//			if (g == 0) {
-//				m.playAgain = false;
-//				System.out.println("Game over.");
-//			} // close if
+
+				System.out.println("Grid Set!");
+
+				m.won = false;
+				m.lost = false;
+				while (!m.won && !m.lost) {// plays the game until the player has won or lost
+					m.printGrid(m);
+					System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1] + ","
+							+ m.objectiveTally[2] + "]" + "\t\t\t\t");
+					m.printGunList(m);
+					try {
+						while (m.userClicked == false) {
+							System.out.print(""); // needs something in while loop or it wont work
+
+						}
+
+						m.moveGun();
+
+					} catch (InterruptedException e) {
+						System.out.println("Delay...");
+					}
+					m.won = true;
+					for (Bubble[] row : m.grid) {// checks to see if the grid is empty. If so, the player wins
+						for (Bubble b : row) {
+							if (b != null) {
+								m.won = false;
+							} // close if
+						} // close for
+					} // close for
+					for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
+																// line. If so, the player loses
+						if (b != null) {
+							m.lost = true;
+						} // close if
+					} // close for
+				} // close while
+				if (m.won) {// print statement if the player wins
+					m.printWin(m);
+				} // close if
+				if (m.lost) {// print statement if the player loses
+					m.printLose(m);
+					YouLoseListener.turnOnLoseScreen();
+					while(quit){
+						System.out.print("");
+					}			
+				} // close if
+			}// close else reg game 
 		} // close while
 	}// close main
 
