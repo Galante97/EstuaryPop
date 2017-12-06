@@ -1116,14 +1116,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		// drawObjectives();
 
 		// drawGridForTesting();
-		drawGamePanel();
+		drawGamePracticePanel();
 		
-		JPanel panel = new JPanel();
-		JButton b1 = new JButton("Easy");
-		b1.setBounds(50, 100, 80, 30);
-		b1.setBackground(Color.yellow);
-		b1.addMouseListener(easy);
-		panel.add(b1);
+		
 		setTitle("Estuary Pop!");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1135,6 +1130,39 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
+	
+	public void drawGamePracticePanel() {
+		System.out.println("Draw game panel");
+
+		gamePanel = new JPanel();
+		BufferedImage img = null;
+		BufferedImage img2 = null;
+		try {
+			img = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+			e.printStackTrace();
+		}try {
+			img2 = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		JLabel thumb = new JLabel();
+		thumb.setIcon(imageIcon);
+		JButton b1 = new JButton("Quit");
+		b1.setBounds(200, 700, 200, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(easy);
+		gamePanel.add(thumb);
+		gamePanel.setBounds(10, 10, 975, 760);
+		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		gamePanel.addMouseListener(this);
+		add(b1);
+		add(gamePanel);
+	}
+
 
 
 }
