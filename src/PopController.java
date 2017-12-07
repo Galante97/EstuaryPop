@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.JFrame;
 
 /**
@@ -21,15 +23,10 @@ public class PopController {
 	static boolean play = true;
     static boolean quit = true;
 	static boolean pract = false;
-	// public int difficulty; // determines speed of game
-	// boolean clicked;
-
-	////////////////////////////////
-	// Some printing functions
 
 	////////////////////////////////
 	// Main with view
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 
 		while (play) {// Plays all aspects of the game until the player decides to quit
@@ -61,14 +58,14 @@ public class PopController {
 			//howto.drawHowToPlay();
 			lose.drawLoseScreen();		
 			while(m.difficulty == -1) {
-				System.out.print(""); //wait
+				TimeUnit.MILLISECONDS.sleep(100);//wait
 			}
 			while(menu.isVisible()){
-				System.out.println("");
+				TimeUnit.MILLISECONDS.sleep(100);
 			}
 			if(pract){
 				m.chooseObjectives();
-				m.printObjectives(m);
+				//m.printObjectives(m);
 				m.setpracticeGrid(); // set model grid
 				m.loadpracticeGun(); // load model gun
 				view.drawPractice(); // draw bubbles/panel/gun/etc all corresponding to model		
@@ -78,7 +75,7 @@ public class PopController {
 				while (!m.won && !m.lost) {// plays the game until the player has won or lost
 					try {
 						while (m.userClicked == false) {
-							System.out.print(""); // needs something in while loop or it wont work
+							TimeUnit.MILLISECONDS.sleep(100); // needs something in while loop or it wont work
 						}
 						m.moveGun();
 					} catch (InterruptedException e) {
@@ -103,16 +100,16 @@ public class PopController {
 //					m.printWin(m);
 //				} // close if
 				if (m.lost) {// print statement if the player loses
-					m.printLose(m);
+					//m.printLose(m);
 					YouLoseListener.turnOnLoseScreen();
 					while(quit){
-						System.out.print("");
+						TimeUnit.MILLISECONDS.sleep(100);
 					}
 					
 				} // close if
 			}else{
 				m.chooseObjectives();
-				m.printObjectives(m);
+				//m.printObjectives(m);
 				m.setGrid(); // set model grid
 				m.loadGun(); // load model gun
 				view.draw(); // draw bubbles/panel/gun/etc all corresponding to model				
@@ -121,11 +118,11 @@ public class PopController {
 				m.won = false;
 				m.lost = false;
 				while (!m.won && !m.lost) {// plays the game until the player has won or lost
-					m.printGrid(m);
-					m.printGunList(m);
+					//m.printGrid(m);
+					//m.printGunList(m);
 					try {
 						while (m.userClicked == false) {
-							System.out.print(""); // needs something in while loop or it wont work
+							TimeUnit.MILLISECONDS.sleep(100); // needs something in while loop or it wont work
 						}
 						m.moveGun();
 					} catch (InterruptedException e) {
@@ -147,13 +144,13 @@ public class PopController {
 					} // close for
 				} // close while
 				if (m.won) {// print statement if the player wins
-					m.printWin(m);
+					//m.printWin(m);
 				} // close if
 				if (m.lost) {// print statement if the player loses
-					m.printLose(m);
+					//m.printLose(m);
 					YouLoseListener.turnOnLoseScreen();
 					while(quit){
-						System.out.print("");
+						TimeUnit.MILLISECONDS.sleep(100);
 					}			
 				} // close if
 			}// close else reg game 
