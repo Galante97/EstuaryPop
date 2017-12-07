@@ -84,24 +84,24 @@ public class PopController {
 					} catch (InterruptedException e) {
 						System.out.println("Delay...");
 					}
-					m.won = true;
-					for (Bubble[] row : m.grid) {// checks to see if the grid is empty. If so, the player wins
-						for (Bubble b : row) {
-							if (b != null) {
-								m.won = false;
-							} // close if
-						} // close for
-					} // close for
-					for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
-																// line. If so, the player loses
-						if (b != null) {
-							m.lost = true;
-						} // close if
-					} // close for
+//					m.won = true;
+//					for (Bubble[] row : m.grid) {// checks to see if the grid is empty. If so, the player wins
+//						for (Bubble b : row) {
+//							if (b != null) {
+//								m.won = false;
+//							} // close if
+//						} // close for
+//					} // close for
+//					for (Bubble b : m.grid[m.gridRows - 2]) {// checks to see if there are any bubbles under the dashed
+//																// line. If so, the player loses
+//						if (b != null) {
+//							m.lost = true;
+//						} // close if
+//					} // close for
 				} // close while
-				if (m.won) {// print statement if the player wins
-					m.printWin(m);
-				} // close if
+//				if (m.won) {// print statement if the player wins
+//					m.printWin(m);
+//				} // close if
 				if (m.lost) {// print statement if the player loses
 					m.printLose(m);
 					YouLoseListener.turnOnLoseScreen();

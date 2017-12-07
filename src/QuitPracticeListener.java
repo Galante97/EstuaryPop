@@ -9,11 +9,8 @@ public class QuitPracticeListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		for(int i=0;i<model.grid[0].length;i++){
-			for(int j=0;j<model.grid.length;j++){
-				model.grid[i][j]=null;
-			}
-		}
+		model.lost = true;
+	    model.userClicked= true;
 	}
 
 	@Override
