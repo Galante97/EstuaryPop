@@ -167,19 +167,19 @@ public class PopModel {
 				if (difficulty == 1) {
 					int r = rand.nextInt(3);
 					grid[i][j] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
-							o.returnGridImg(objectives1[r]));
+							o.returnGridImg(objectives1[r]), difficulty);
 					grid[i][j].switchImage();
 				}
 				if (difficulty == 2) {	
 					int r = rand.nextInt(4);
 					grid[i][j] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
-							o.returnGridImg(objectives2[r]));
+							o.returnGridImg(objectives2[r]), difficulty);
 					grid[i][j].switchImage();
 				}
 				if (difficulty == 3) {
 					int r = rand.nextInt(5);
 					grid[i][j] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
-							o.returnGridImg(objectives3[r]));
+							o.returnGridImg(objectives3[r]), difficulty);
 				}
 				grid[i][j].switchImage();
 			} // close for
@@ -204,21 +204,21 @@ public class PopModel {
 					int r = rand.nextInt(3);
 					
 					grid[i][j] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
-							o.returnGridImg(objectives1[r]));
+							o.returnGridImg(objectives1[r]), difficulty);
 					grid[i][j].switchImage();
 					}
 					if (difficulty ==2) {
 						int r = rand.nextInt(4);
 						
 						grid[i][j] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
-								o.returnGridImg(objectives2[r]));
+								o.returnGridImg(objectives2[r]), difficulty);
 						grid[i][j].switchImage();
 						}
 					if (difficulty ==3) {
 						int r = rand.nextInt(5);
 						
 						grid[i][j] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
-								o.returnGridImg(objectives3[r]));
+								o.returnGridImg(objectives3[r]), difficulty);
 						grid[i][j].switchImage();
 						}
 					//System.out.println("columns" + j);
@@ -249,17 +249,17 @@ public class PopModel {
 			if (difficulty == 1) {
 			int r = rand.nextInt(3);
 			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
-					o.returnGridImg(objectives1[r]));
+					o.returnGridImg(objectives1[r]), difficulty);
 			}
 			if (difficulty == 2) {
 				int r = rand.nextInt(4);
 				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives2[r]), o.returnGunImg(objectives2[r]),
-						o.returnGridImg(objectives2[r]));
+						o.returnGridImg(objectives2[r]), difficulty);
 				}
 			if (difficulty == 3) {
 				int r = rand.nextInt(5);
 				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives3[r]), o.returnGunImg(objectives3[r]),
-						o.returnGridImg(objectives3[r]));
+						o.returnGridImg(objectives3[r]), difficulty);
 				}
 		}
 	}
@@ -385,10 +385,10 @@ public class PopModel {
 	public void shoot(int t) {// works with with manual path # input or click to fire
 		System.out.println("Shooting...");
 		String c = gunList[0].color;
-		int[][] finalPositions = { { 0, 8 }, { 0, 7 }, { 0, 6 }, { 0, 5 }, { 0, 4 }, { 0, 3 }, { 0, 2 }, { 0, 1 },
+		int[][] finalPositions = { { 0, 7 }, { 0, 7 }, { 0, 6 }, { 0, 5 }, { 0, 4 }, { 0, 3 }, { 0, 2 }, { 0, 1 },
 				{ 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 }, { 7, 0 }, { 8, 0 }, { 9, 0 },
 				{ 10, 0 }, { 11, 0 }, { 12, 0 }, { 12, 1 }, { 12, 2 }, { 12, 3 }, { 12, 4 }, { 12, 5 }, { 12, 6 },
-				{ 12, 7 }, { 12, 8 } };// list of final postions the bubble can be shot to
+				{ 12, 7 }, { 12, 7 } };// list of final postions the bubble can be shot to
 		Path p = new Path(finalPositions[t][0], finalPositions[t][1]);// creates path based on which direction the
 																		// bubble is shot
 		p.fillPath();
@@ -748,11 +748,11 @@ public class PopModel {
 				if (j <  gridColumns/2) {
 					
 					grid[i][j] = new Bubble(o.returnColor(objectives1[1]), o.returnGunImg(objectives1[1]),
-							o.returnGridImg(objectives1[1]));
+							o.returnGridImg(objectives1[1]), difficulty);
 					grid[i][j].switchImage();
 				}else{
 					grid[i][j] = new Bubble(o.returnColor(objectives1[2]), o.returnGunImg(objectives1[2]),
-							o.returnGridImg(objectives1[2]));
+							o.returnGridImg(objectives1[2]), difficulty);
 					grid[i][j].switchImage();
 				}
 				
@@ -771,10 +771,10 @@ public class PopModel {
 			}
 			if(j%2==0){
 			gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[1]), o.returnGunImg(objectives1[1]),
-					o.returnGridImg(objectives1[1]));
+					o.returnGridImg(objectives1[1]), difficulty);
 			}else{
 				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[2]), o.returnGunImg(objectives1[2]),
-						o.returnGridImg(objectives1[2]));
+						o.returnGridImg(objectives1[2]), difficulty);
 			}
 			j++;
 		}

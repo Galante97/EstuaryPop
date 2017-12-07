@@ -40,6 +40,8 @@ import javax.swing.Timer;
 
 public class PopView extends JFrame implements MouseListener, ActionListener {
 
+	static double SCALE_FACTOR = 1.0;
+	
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
@@ -413,10 +415,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		counter++;
-		int delay = (counter / 675) * DELAY; // ONE SECOND
+		int delay = (counter / 375) * DELAY; // ONE SECOND
 		int delayMessage = 1100; // milliseconds //CHANGED
 
-		if (counter % 675 == 0) { // avoid repaint issues
+		if (counter % 375 == 0) { // avoid repaint issues
 			timerLabel.setText((delay + " seconds"));
 			timerLabel.repaint();
 		}
