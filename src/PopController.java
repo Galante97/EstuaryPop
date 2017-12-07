@@ -49,7 +49,6 @@ public class PopController {
 			diffMenu.drawDifficutlyMenu();
 			
 			MenuCustomMouseListener.sendInstancesToMenuCustomMouseListener(diffMenu, menu, howto);
-			HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(diffMenu, menu, howto);
 			EasyMouseListener.pullInstances(view, diffMenu, m);
 			MediumMouseListener.pullInstances(view, diffMenu, m);
 			HardMouseListener.pullInstances(view, diffMenu, m);
@@ -58,7 +57,7 @@ public class PopController {
 			PlayAgainListener.SendInstancesToPlayAgain(view, lose, pop);
 			menu.drawMenu();
 			menu.setVisible(true);
-			howto.drawHowToPlay();
+			//howto.drawHowToPlay();
 			lose.drawLoseScreen();
 		
 			while(m.difficulty == -1) {
@@ -72,28 +71,18 @@ public class PopController {
 				m.printObjectives(m);
 				m.setpracticeGrid(); // set model grid
 				m.loadpracticeGun(); // load model gun
-				view.drawPractice(); // draw bubbles/panel/gun/etc all corresponding to model
-				
+				view.drawPractice(); // draw bubbles/panel/gun/etc all corresponding to model		
 				m.GameModeConsole = false;
-			
-
-				System.out.println("Grid Set!");
-
 				m.won = false;
 				m.lost = false;
 				while (!m.won && !m.lost) {// plays the game until the player has won or lost
 					m.printGrid(m);
-					System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1] + ","
-							+ m.objectiveTally[2] + "]" + "\t\t\t\t");
 					m.printGunList(m);
 					try {
 						while (m.userClicked == false) {
 							System.out.print(""); // needs something in while loop or it wont work
-
 						}
-
 						m.moveGun();
-
 					} catch (InterruptedException e) {
 						System.out.println("Delay...");
 					}
@@ -128,28 +117,19 @@ public class PopController {
 				m.printObjectives(m);
 				m.setGrid(); // set model grid
 				m.loadGun(); // load model gun
-				view.draw(); // draw bubbles/panel/gun/etc all corresponding to model
-				
-				m.GameModeConsole = false;
-			
-
+				view.draw(); // draw bubbles/panel/gun/etc all corresponding to model				
+				m.GameModeConsole = false;		
 				System.out.println("Grid Set!");
-
 				m.won = false;
 				m.lost = false;
 				while (!m.won && !m.lost) {// plays the game until the player has won or lost
 					m.printGrid(m);
-					System.out.print("\nScore: " + m.score + " [" + m.objectiveTally[0] + "," + m.objectiveTally[1] + ","
-							+ m.objectiveTally[2] + "]" + "\t\t\t\t");
 					m.printGunList(m);
 					try {
 						while (m.userClicked == false) {
 							System.out.print(""); // needs something in while loop or it wont work
-
 						}
-
 						m.moveGun();
-
 					} catch (InterruptedException e) {
 						System.out.println("Delay...");
 					}

@@ -1154,7 +1154,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		JLabel thumb = new JLabel();
 		JLabel match = new JLabel();
 		thumb.setIcon(imageIcon);
-		match.setBounds(0, 304, 300, 300);
+		match.setBounds(0, 390, 300, 300);
 		match.setIcon(imageIcon2);
 		gamePanel.setLayout(null);
 		gamePanel.add(match);
