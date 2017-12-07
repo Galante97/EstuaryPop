@@ -1042,7 +1042,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("src/gameOver.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
+			img = ImageIO.read(new File("src/playAgain.jpg")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -1057,7 +1057,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			b1.setBackground(Color.yellow);
 			b1.addMouseListener(new PlayAgainListener());
 			JButton b2 = new JButton("Quit");
-			b2.setBounds(0, 100, 80, 30);
+			b2.setBounds(0, 150, 80, 30);
 			b2.setBackground(Color.yellow);
 			b2.addMouseListener(new YouLoseListener());
 			menu.add(b1);

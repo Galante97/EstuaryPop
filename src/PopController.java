@@ -20,7 +20,7 @@ public class PopController {
 	static Scanner scn = new Scanner(System.in);
 	static boolean play = true;
     static boolean quit = true;
-	static boolean pract = true;
+	static boolean pract = false;
 	// public int difficulty; // determines speed of game
 	// boolean clicked;
 
@@ -52,7 +52,7 @@ public class PopController {
 			EasyMouseListener.pullInstances(view, diffMenu, m);
 			MediumMouseListener.pullInstances(view, diffMenu, m);
 			HardMouseListener.pullInstances(view, diffMenu, m);
-			HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(view, menu, howto);
+			HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(diffMenu, menu, howto);
 			YouLoseListener.sendInstancesToYouLoseListener(view, lose, pop);
 			PlayAgainListener.SendInstancesToPlayAgain(view, lose, pop);
 			menu.drawMenu();
