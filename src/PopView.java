@@ -1160,8 +1160,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		gamePanel.add(match);
 		gamePanel.setOpaque(true);
 		gamePanel.setBounds(200, 450, 800, 150);
-		JButton b1 = new JButton("Quit");
-		b1.setBounds(200, 700, 200, 30);
+		JButton b1 = new JButton("Press here when you're ready to play!");
+		b1.setBounds(100, 700, 300, 30);
 		b1.setBackground(Color.yellow);
 		b1.addMouseListener(new QuitPracticeListener());
 		gamePanel.add(thumb);
