@@ -24,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
@@ -64,6 +65,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	JLabel objLabel5;
 	int counter = 0;
 
+	boolean showobj0 = false;
+	boolean showobj1 = false;
+	boolean showobj2 = false;
+	boolean showobj3 = false;
+	boolean showobj4 = false;
+	boolean gameWon = false;
+
 	JPanel BubbleInGun;
 	int BubbleInGunX = 450; // for shooting
 	int BubbleInGunY = 712; // for shooting
@@ -96,7 +104,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	ImageIcon checkbox = createImageIcon("checkbox.png", "");
 	ImageIcon checkboxdone = createImageIcon("checkboxdone.png", "");
-
 
 	MenuCustomMouseListener menuView; // mouselistener used to switch views between menu and game
 	HowToPlayMouseListener howToPlay; // mouselistener used to switch views between menu and howToPLay
@@ -237,9 +244,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 				panel.setOpaque(false);
 				add(panel);
 
-				//System.out.print(" i: " + i + " j: " + j);
+				// System.out.print(" i: " + i + " j: " + j);
 				gridBubbleArr[i][j] = panel;
-				//gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
+				// gridBubbleArr[i][j].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			}
 			System.out.println("");
 		}
@@ -359,6 +366,41 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		add(loseBar);
 	}
 
+	public void completionPopUp(int objectiveIndex, int objectiveNum, int delay) {
+		ActionListener taskPerformer = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				JLabel msgLabel = new JLabel("<html><div style='text-align: center;'>"
+						+ model.o.returnCompleteStatement(objectiveIndex) + "</div></html>");
+				msgLabel.setFont(new Font("Chalkboard", Font.BOLD, 20));
+
+				JOptionPane.showMessageDialog(frame, msgLabel, "Objective " + objectiveNum + " Complete!",
+						JOptionPane.PLAIN_MESSAGE);
+			}
+		};
+		Timer timedMessage = new Timer(delay, taskPerformer);
+		timedMessage.setRepeats(false);
+		timedMessage.start();
+	}
+
+	public void winGamePopUp(int delay) {
+
+		ActionListener taskPerformer = new ActionListener() {
+			int objs = model.difficulty + 2;
+
+			public void actionPerformed(ActionEvent evt) {
+				JLabel msgLabel = new JLabel("<html><div style='text-align: center;'>" + "Wow! You've completed all "
+						+ objs + " objectives! <br> Continue playing to try to get a new high score!"
+						+ "</div></html>");
+				msgLabel.setFont(new Font("Chalkboard", Font.BOLD, 20));
+
+				JOptionPane.showMessageDialog(frame, msgLabel, "All objectives complete!", JOptionPane.PLAIN_MESSAGE);
+			}
+		};
+		Timer timedMessage = new Timer(delay, taskPerformer);
+		timedMessage.setRepeats(false);
+		timedMessage.start();
+	}
+
 	/**
 	 * actionPerformed, is an overrided method from the actionLisenter class that
 	 * lets the program know if the user clicked and where
@@ -367,73 +409,146 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 *            unused
 	 * @return none
 	 */
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		counter++;
 		int delay = (counter / 675) * DELAY; // ONE SECOND
+		int delayMessage = 1100; // milliseconds //CHANGED
 
 		if (counter % 675 == 0) { // avoid repaint issues
 			timerLabel.setText((delay + " seconds"));
 			timerLabel.repaint();
 		}
 		if (model.difficulty == 1) {
+			if (model.objdone1[0] == true && model.objdone1[1] == true && model.objdone1[2] == true) {
+				if (gameWon == false) {
+					winGamePopUp(delayMessage);
+				}
+				gameWon = true;
+			}
 			if (model.objdone1[0] == true) {
 				objLabel1.setIcon(checkboxdone);
 				objLabel1.repaint();
+				if (showobj0 == false) {
+					completionPopUp(model.objectives1[0], 1, delayMessage);
+					showobj0 = true;
+				}
+
 			}
 			if (model.objdone1[1] == true) {
 				objLabel2.setIcon(checkboxdone);
 				objLabel2.repaint();
+				if (showobj1 == false) {
+					completionPopUp(model.objectives1[1], 2, delayMessage);
+					showobj1 = true;
+				}
+
 			}
 			if (model.objdone1[2] == true) {
 				objLabel3.setIcon(checkboxdone);
 				objLabel3.repaint();
+				if (showobj2 == false) {
+					completionPopUp(model.objectives1[2], 3, delayMessage);
+					showobj2 = true;
+				}
+
 			}
 		}
 
 		if (model.difficulty == 2) {
+			if (model.objdone2[0] == true && model.objdone2[1] == true && model.objdone2[2] == true
+					&& model.objdone2[3] == true) {
+				if (gameWon == false) {
+					winGamePopUp(delayMessage);
+				}
+				gameWon = true;
+			}
 			if (model.objdone2[0] == true) {
 				objLabel1.setIcon(checkboxdone);
 				objLabel1.repaint();
+				if (showobj0 == false) {
+					completionPopUp(model.objectives2[0], 1, delayMessage);
+					showobj0 = true;
+				}
 			}
 			if (model.objdone2[1] == true) {
 				objLabel2.setIcon(checkboxdone);
 				objLabel2.repaint();
+				if (showobj1 == false) {
+					completionPopUp(model.objectives2[1], 2, delayMessage);
+					showobj1 = true;
+				}
 			}
 			if (model.objdone2[2] == true) {
 				objLabel3.setIcon(checkboxdone);
 				objLabel3.repaint();
+				if (showobj2 == false) {
+					completionPopUp(model.objectives2[2], 3, delayMessage);
+					showobj2 = true;
+				}
 			}
 			if (model.objdone2[3] == true) {
 				objLabel4.setIcon(checkboxdone);
 				objLabel4.repaint();
+				if (showobj3 == false) {
+					completionPopUp(model.objectives2[3], 4, delayMessage);
+					showobj3 = true;
+				}
 			}
 		}
 
 		if (model.difficulty == 3) {
+			if (model.objdone3[0] == true && model.objdone3[1] == true && model.objdone3[2] == true
+					&& model.objdone3[3] == true && model.objdone3[4] == true) {
+				if (gameWon == false) {
+					winGamePopUp(delayMessage);
+				}
+				gameWon = true;
+			}
 			if (model.objdone3[0] == true) {
 				objLabel1.setIcon(checkboxdone);
 				objLabel1.repaint();
+				if (showobj0 == false) {
+					completionPopUp(model.objectives3[0], 1, delayMessage);
+					showobj0 = true;
+				}
 			}
 			if (model.objdone3[1] == true) {
 				objLabel2.setIcon(checkboxdone);
 				objLabel2.repaint();
+				if (showobj1 == false) {
+					completionPopUp(model.objectives3[1], 2, delayMessage);
+					showobj1 = true;
+				}
 			}
 			if (model.objdone3[2] == true) {
 				objLabel3.setIcon(checkboxdone);
 				objLabel3.repaint();
+				if (showobj2 == false) {
+					completionPopUp(model.objectives3[2], 3, delayMessage);
+					showobj2 = true;
+				}
 			}
 			if (model.objdone3[3] == true) {
 				objLabel4.setIcon(checkboxdone);
 				objLabel4.repaint();
+				if (showobj3 == false) {
+					completionPopUp(model.objectives3[3], 4, delayMessage);
+					showobj3 = true;
+				}
 			}
 			if (model.objdone3[4] == true) {
 				objLabel5.setIcon(checkboxdone);
 				objLabel5.repaint();
+				if (showobj4 == false) {
+					completionPopUp(model.objectives3[4], 5, delayMessage);
+					showobj4 = true;
+				}
 			}
 		}
-
-		shiftLabel.setText("<html>" + (8 - model.shotsFired) + " shots until bubbles shift down" + "</html>");
+		shiftLabel.setText("<html><div style='text-align: center;'>" + (8 - model.shotsFired)
+				+ " shots until bubbles shift down" + "</div></html>"); // CHANGE
 		shiftLabel.repaint();
 
 		OcilationDelay++;
@@ -490,11 +605,12 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 				updateGunBubbles(); // update
 				updateGrid(); // update grid first then gun bubbles
 
-				scoreLabel.setText("Score: " + model.score);
+				scoreLabel
+						.setText("<html><div style='text-align: center;'>" + "Score: " + model.score + "</div></html>"); // CHANGED
 				scoreLabel.repaint();
 				BubbleMoving = false;
 
-				System.out.println("+++_+_+_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+");
+				// System.out.println("+++_+_+_+_+_++_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+");
 			}
 		}
 	}
@@ -553,7 +669,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		timerPanel.setBackground(Color.LIGHT_GRAY);
 		timerLabel = new JLabel();
 		timerLabel.setText("");
-		timerLabel.setFont(timerLabel.getFont().deriveFont(32.0f));
+		timerLabel.setFont(new Font("Chalkboard", Font.PLAIN, 32));
 		timerPanel.add(timerLabel);
 		add(timerPanel);
 
@@ -563,13 +679,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		scorePanel.setBackground(Color.LIGHT_GRAY);
 		scoreLabel = new JLabel();
 		scoreLabel.setText("");
-		scoreLabel.setFont(scoreLabel.getFont().deriveFont(32.0f));
+		scoreLabel.setFont(new Font("Chalkboard", Font.PLAIN, 32)); // CHANGE
 		scorePanel.add(scoreLabel);
 		add(scorePanel);
 
 		shiftLabel = new JLabel();
 		shiftLabel.setText("<html>" + (8 - model.shotsFired) + " shots until bubbles shift down" + "</html>");
-		shiftLabel.setFont(scoreLabel.getFont().deriveFont(16.0f));
+		shiftLabel.setFont(new Font("Chalkboard", Font.BOLD, 16)); // CHANGE
 		scorePanel.add(shiftLabel, BorderLayout.SOUTH);
 		add(scorePanel);
 
@@ -588,7 +704,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			oPanel.add(text1);
 
 			objLabel1 = new JLabel(checkbox);// JLabel("<html>" + model.o.returnStatements(model.objectives1[0]) +
-												// "</html>", checkbox, JLabel.CENTER);
+			// "</html>", checkbox, JLabel.CENTER);
 			// objLabel1.setText("<html>" + model.o.returnStatements(model.objectives1[0]) +
 			// "</html>");
 			objLabel1.setFont(objLabel1.getFont().deriveFont(16.0f));
@@ -978,7 +1094,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		setContentPane(new JLabel(imageIcon));
 		menu.setOpaque(false);
 		menu.setBounds(375, 500, 450, 50);
-		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		// menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JButton b1 = new JButton("How To Play");
 		b1.setBounds(50, 100, 80, 30);
 		b1.setBackground(Color.yellow);
@@ -992,7 +1108,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		b3.setBackground(Color.red);
 		menu.add(b1);
 		menu.add(b2);
-		//menu.add(b3);
+		// menu.add(b3);
 		add(menu);
 		setTitle("Start Menu");
 		setSize(1200, 800);
@@ -1015,11 +1131,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		setContentPane(new JLabel(imageIcon));
 		menu.setOpaque(true);
 		menu.setBounds(200, 450, 800, 150);
-		String text = "The gun moves automatically from side to side." + "<br>"  + " Use the left mouse button to fire!" + "<br>"
-				+ "Take some shots at matching bubbles above" + "<br>" + " to pop them!";
-		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JLabel jlabel = new JLabel(
-				"<html><div style='text-align: center;'>" + text + "</div></html>");
+		String text = "The gun moves automatically from side to side." + "<br>" + " Use the left mouse button to fire!"
+				+ "<br>" + "Take some shots at matching bubbles above" + "<br>" + " to pop them!";
+		// menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JLabel jlabel = new JLabel("<html><div style='text-align: center;'>" + text + "</div></html>");
 		jlabel.setFont(new Font("Verdana", 1, 20));
 		menu.add(jlabel);
 		JButton b1 = new JButton("OK, Start Game!");
@@ -1035,10 +1150,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 
 	}
-	
 
-
-	public void drawLoseScreen(){
+	public void drawLoseScreen() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
@@ -1049,28 +1162,28 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		Image dimg = img.getScaledInstance(1200, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		setContentPane(new JLabel(imageIcon));
-			menu.setBounds(200, 500, 800, 150);
-			menu.setOpaque(false);
-			//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			JButton b1 = new JButton("Try Again");
-			b1.setBounds(0, 100, 80, 30);
-			b1.setBackground(Color.yellow);
-			b1.addMouseListener(new PlayAgainListener());
-			JButton b2 = new JButton("Quit");
-			b2.setBounds(0, 150, 80, 30);
-			b2.setBackground(Color.yellow);
-			b2.addMouseListener(new YouLoseListener());
-			menu.add(b1);
-			menu.add(b2);
-			add(menu);
-			setTitle("Game Over");
-			setSize(1200, 800);
-			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setLocationRelativeTo(null);
-			getContentPane().setLayout(null);
-}
+		menu.setBounds(200, 500, 800, 150);
+		menu.setOpaque(false);
+		// menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JButton b1 = new JButton("Try Again");
+		b1.setBounds(0, 100, 80, 30);
+		b1.setBackground(Color.yellow);
+		b1.addMouseListener(new PlayAgainListener());
+		JButton b2 = new JButton("Quit");
+		b2.setBounds(0, 150, 80, 30);
+		b2.setBackground(Color.yellow);
+		b2.addMouseListener(new YouLoseListener());
+		menu.add(b1);
+		menu.add(b2);
+		add(menu);
+		setTitle("Game Over");
+		setSize(1200, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(null);
+	}
 
-	public void drawDifficutlyMenu(){
+	public void drawDifficutlyMenu() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
 		try {
@@ -1083,7 +1196,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		menu.setOpaque(false);
 		setContentPane(new JLabel(imageIcon));
 		menu.setBounds(375, 500, 450, 50);
-		//menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		// menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		JButton b1 = new JButton("Easy");
 		b1.setBounds(50, 100, 80, 30);
 		b1.setBackground(Color.yellow);
@@ -1100,11 +1213,12 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		menu.add(b2);
 		menu.add(b3);
 		add(menu);
-		setTitle("Start Menu");setSize(1200, 800);
+		setTitle("Start Menu");
+		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
-}
+	}
 
 	public void drawPractice() {
 		drawSidePanel();
@@ -1117,8 +1231,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		// drawGridForTesting();
 		drawGamePracticePanel();
-		
-		
+
 		setTitle("Estuary Pop!");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1130,7 +1243,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
-	
+
 	public void drawGamePracticePanel() {
 		System.out.println("Draw game panel");
 
@@ -1141,12 +1254,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			img = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
-		}try {
+		}
+		try {
 			img2 = ImageIO.read(new File("src/matching.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		Image dimg2 = img2.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
@@ -1161,7 +1275,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		gamePanel.setOpaque(true);
 		gamePanel.setBounds(200, 450, 800, 150);
 		JButton b1 = new JButton("Press here when you're ready to play!");
-		b1.setBounds(100, 700, 300, 30);
+ 		b1.setBounds(100, 700, 300, 30);
 		b1.setBackground(Color.yellow);
 		b1.addMouseListener(new QuitPracticeListener());
 		gamePanel.add(thumb);
@@ -1171,7 +1285,5 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		add(b1);
 		add(gamePanel);
 	}
-
-
 
 }
