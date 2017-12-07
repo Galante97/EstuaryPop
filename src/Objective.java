@@ -12,18 +12,22 @@ public class Objective {
 	public String[] colorsTester = { "R", "O", "Y", "G", "B", "P" };// for printing larger array in console
 	public String[] gunImages = { "crabegg", "trash ", "Ameboc.", "fish   ", "fly    ", "oyster " };
 	public String[] gridImages = { "birds  ", "recyleB", "Hshoecrab", "fisher ", "frog   ", "otter  " };
-	public String[] statements = { "Help feed 3 birds by giving them crab eggs!",
-			"Clean up the estuary by putting 3 pieces of trash in the recyle bin!",
-			"Help scientists collect 3 horseshoe crabs for blood research!",
-			"Help the fisherman find 3 fish!", "Help the frogs find 3 flies to eat!",
-			"Show the otters where 3 oysters are to help them feed!" };
-	public String[] completeStatements = {
-			"Nice Job! You helped the [Insert bird species here] find the crab eggs. Continue to try to get a high score!",
-			"Awesome! You helped clean up some trash from the estuary. Keep playing to try to get a high score!",
-			"Help scientists collect horseshoe crabs for blood research",
-			"Nice! You helped the fisherman catch his fish. Continue to try to get a new high score!",
-			"Nice Job! You helped the frogs find flies to eat. Keep playing to try to get a new high score!",
-			"Great job! You helped the otters find oysters to eat. Keep playing to try to get a new high score!" };
+	public String[] statements = {  //CHANGED
+			"Help feed 3 flocks of Red Knot shorebirds by finding them horseshoe crab eggs!",
+			"Clean up the estuary by collecting trash from 3 areas!",
+			"Help 3 scientists gather horseshoe crabs to collect their blood!",
+			"Help the fisherman find 3 schools of Atlantic Striped Bass!", "Help the American Bullfrogs find 3 flies to eat!",
+			"Show the River Otters where 3 oysters are to help them feed!" };
+
+
+	public String[] completeStatements = { //CHANGED
+			"<html>Nice Job! You helped the Red Knot birds find horseshoe crab eggs to eat.<br>Keep playing to try to complete the other objectives!</html>",
+			"<html>Awesome! You helped clean up trash from the estuary so that the habitats can thrive.<br>Keep playing to try to complete the other objectives!</html>",
+			"<html>Great! You helped the scientists collect horseshoe crabs <br> to harvest the healing properties of their blue blood. <br>Keep playing to try to complete the other objectives!</html>",
+			"<html>Nice! You helped the fisherman catch the Atlantic Striped Bass.<br>Keep playing to try to complete the other objectives!</html>",
+			"<html>Nice Job! You helped the American Bullfrogs find flies to eat.<br>Keep playing to try to complete the other objectives!</html>",
+			"<html>Great job! You helped the River Otters find oysters to eat.<br>Keep playing to try to complete the other objectives!</html>" };
+
 
 	///////////////////////////////////////////
 
