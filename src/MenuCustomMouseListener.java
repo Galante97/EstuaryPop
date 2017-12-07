@@ -19,7 +19,8 @@ public class MenuCustomMouseListener implements MouseListener {
     public static PopView howToPlay;
 
 	@Override
-	public void mouseClicked(MouseEvent e) {	
+	public void mouseClicked(MouseEvent e) {
+		PopController.pract=false;
 		menu.setVisible(false);
 		diffMenu.setVisible(true);
 	

@@ -55,11 +55,11 @@ public class PopController {
 			HowToPlayMouseListener.sendInstancesToHowToPlayMouseListener(diffMenu, menu, howto);
 			YouLoseListener.sendInstancesToYouLoseListener(view, lose, pop);
 			PlayAgainListener.SendInstancesToPlayAgain(view, lose, pop);
+			QuitPracticeListener.SendInstances(view, lose, m);
 			menu.drawMenu();
 			menu.setVisible(true);
 			//howto.drawHowToPlay();
-			lose.drawLoseScreen();
-		
+			lose.drawLoseScreen();		
 			while(m.difficulty == -1) {
 				System.out.print(""); //wait
 			}
@@ -76,8 +76,6 @@ public class PopController {
 				m.won = false;
 				m.lost = false;
 				while (!m.won && !m.lost) {// plays the game until the player has won or lost
-					m.printGrid(m);
-					m.printGunList(m);
 					try {
 						while (m.userClicked == false) {
 							System.out.print(""); // needs something in while loop or it wont work
