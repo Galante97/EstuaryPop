@@ -178,7 +178,11 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
-	public void drawGridForTesting() { // this is strictly for visuals and will be removed later on
+	
+	/**
+	 * this is strictly for visuals and will be removed later on
+	 */
+	public void drawGridForTesting() { 
 		for (int i = 0; i < model.startRows + 6; i++) {
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel gridPanel = new JPanel();
@@ -254,6 +258,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void updateGrid() {
 		int rowAdder = 6;
 		for (int i = 0; i < model.startRows + rowAdder; i++) {
@@ -359,6 +366,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 	}
 
+	
+	/**
+	 * win lose line drawn on screen
+	 */
 	public void drawLoseBar() {
 		JPanel loseBar = new JPanel();
 		loseBar.setBounds(10, 508, 975, 5);
@@ -368,6 +379,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		add(loseBar);
 	}
 
+	
+	/**
+	 * 
+	 * @param objectiveIndex objective type of game
+	 * @param objectiveNum objective completed of game
+	 * @param delay hold time of popup
+	 */
 	public void completionPopUp(int objectiveIndex, int objectiveNum, int delay) {
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -384,6 +402,12 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		timedMessage.start();
 	}
 
+	
+	
+	/**
+	 * 
+	 * @param delay used for popup message
+	 */
 	public void winGamePopUp(int delay) {
 
 		ActionListener taskPerformer = new ActionListener() {
@@ -879,22 +903,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	}
 
-	/**
-	 * drawObjectives, gets the objectives from the model and displays them on the
-	 * screen
-	 * 
-	 * @param none
-	 * @return none
-	 */
+	
 
 	/**
 	 * mouseReleased, is an overrided method from mouseListener that lets the
 	 * program know if the mouse has been released
 	 * 
 	 * this method is used as a shoot function to shoot the bubble
-	 * 
-	 * @param none
-	 * @return none
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -1032,9 +1047,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * know if the mouse has been pressed
 	 * 
 	 * we do not use this method, but must be overrided from mouseListener
-	 * 
-	 * @param none
-	 * @return none
 	 */
 	public void mousePressed(MouseEvent e) {
 	}
@@ -1120,6 +1132,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	}
 
+	/**
+	 * draw how to play screen in game
+	 */
 	public void drawHowToPlay() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -1153,6 +1168,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	}
 
+	
+	/**
+	 * draw lose screen
+	 */
 	public void drawLoseScreen() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -1185,6 +1204,9 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		getContentPane().setLayout(null);
 	}
 
+	/**
+	 * draw difficulty menu
+	 */
 	public void drawDifficutlyMenu() {
 		JPanel menu = new JPanel();
 		BufferedImage img = null;
@@ -1246,6 +1268,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
+	
+	/**
+	 * draw practice view of game 
+	 */
 	public void drawGamePracticePanel() {
 		System.out.println("Draw game panel");
 

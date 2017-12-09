@@ -9,6 +9,14 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+
+/**
+ * 
+ * @author  James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ */
+
+
 public class Bubble extends JPanel {// needs to extend jpanel
 
 	public int xCoord;
@@ -96,6 +104,11 @@ public class Bubble extends JPanel {// needs to extend jpanel
 		// commented because it was causing issues
 		initBubble();
 	}
+	/**
+	 * 
+	 * @param x x of the bubble location
+	 * @param y y of the bubble location
+	 */
 
 	Bubble(int x, int y) {
 		xCoord = x;
@@ -218,7 +231,7 @@ public class Bubble extends JPanel {// needs to extend jpanel
 
 	///////////////////////////////////////////////
 
-	/**
+	/** 
 	 * bubbles to string method
 	 * 
 	 * @return the bubbles parameters as a string

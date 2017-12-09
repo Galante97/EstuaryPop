@@ -1,4 +1,10 @@
 
+
+/**
+ * 
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ */
 public class Path {
 
 	int length;

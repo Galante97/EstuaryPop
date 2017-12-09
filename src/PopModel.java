@@ -9,6 +9,11 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
+/**
+ * 
+ * @author  James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ */
 
 public class PopModel {
 
@@ -57,22 +62,7 @@ public class PopModel {
 	int highScore = 0;
 	static Scanner scn = new Scanner(System.in);
 
-	/*
-	 * int bubbleImageWidth = 50; // need a getter for this int bubbleImageHeight =
-	 * 50; // need a getter for this LinkedList<Bubble> matchedList = new
-	 * LinkedList<Bubble>(); // list of matched bubbles to be possibly popped
-	 * LinkedList<int[]> haveBeenHere = new LinkedList<int[]>(); int gunImageWidth;
-	 * // need a getter for this int gunImageHeight; // need a getter for this
-	 * private double gunXCoord =450; private double gunYCoord = 500; Boolean
-	 * gunDirec = true; double gunEdgeX = 0; double gunEdgeY = 0; // number of rows
-	 * we are starting with, must be initialized here private int degree = 90;
-	 * //just a test, will be initialized with moveGun when that actually works int
-	 * bubbleSpeed = 1; boolean clicked = false; int gridBubblesX = 25; //
-	 * determines xCoords grid bubbles int gridBubblesY = 25; int contactX; int
-	 * contactY;
-	 */
-
-	///////////////////////////////////////
+	
 
 	/**
 	 * constructor
@@ -84,35 +74,16 @@ public class PopModel {
 
 	}
 	
+	/**
+	 * 
+	 * @param d difficulty level used to start game
+	 */
 	public void setDifficulty(int d) {
 		difficulty = d;
 		startRows = 4;
 	}
 
-	///////////////////////////////////////
-
-	// /**
-	// * @return current angle of the gun
-	// */
-	// public int getDegree() {
-	// return degree;
-	// }
-	// /**
-	// *
-	// * @return gun x-location
-	// */
-	// public double getGunXCo() {
-	// return gunXCoord;
-	// }
-	// /**
-	// *
-	// * @return gun y-location
-	// */
-	// public double getGunYCo() {
-	// return gunYCoord;
-	// }
-
-	////////////////////////////////////////
+	
 
 	/**
 	 * Randomly chooses 3 objectives that will teach the player 3 things about
@@ -152,7 +123,7 @@ public class PopModel {
 		}
 }// close chooseOjbectives
 
-	/**
+	/** 
 	 * initializes the board by randomly placing bubbles in the top few rows
 	 */
 	public void setGrid() {
@@ -165,7 +136,7 @@ public class PopModel {
 			}
 			for (int j = 0; j < gridColumns; j++) {
 				if (difficulty == 1) {
-					int r = rand.nextInt(3);
+					int r = rand.nextInt(3); 
 					grid[i][j] = new Bubble(o.returnColor(objectives1[r]), o.returnGunImg(objectives1[r]),
 							o.returnGridImg(objectives1[r]), difficulty);
 					grid[i][j].switchImage();
@@ -187,6 +158,9 @@ public class PopModel {
 		} // close for
 	}// close setGrid
 
+	/**
+	 *  shift grid down during game play
+	 */
 	public void shiftGrid() {
 		Random rand = new Random();
 		int columns = gridColumns;
@@ -339,22 +313,12 @@ public class PopModel {
 
 		}
 
-		// Use click to fire (for real version)
-		// Needs click listener to work
-		/*
-		 * boolean clicked = false;//add click listener boolean movingRight =true; int
-		 * pathN = 0; while(!clicked){ if(movingRight){ pathN++; } else{ pathN--; }
-		 * if(pathN <= 0){ movingRight = true; } if(pathN >= 18){ movingRight = false; }
-		 * TimeUnit.MILLISECONDS.sleep(100); //System.out.println(pathN); }
-		 * shoot(pathN); int i = 0; for(int n: objectiveTally){ if(n >= 5 &&
-		 * !objdone[i]){ objdone[i] = true; System.out.println("\t\t" +
-		 * o.returnCompleteStatement(i));
-		 * System.out.println("Press any number to continue... "); int g =
-		 * scn.nextInt();//kind of pointless } i++; }
-		 */
+		
 	}
 
-	/////////
+	/**
+	 * used for txt based game play. it input x,y for shooting
+	 */
 	public void dummyShoot() {// for testing purposes
 		System.out.println("Dummy Shoot...");
 		while (true) {
@@ -774,7 +738,7 @@ public class PopModel {
 					o.returnGridImg(objectives1[1]), difficulty);
 			}else{
 				gunList[gunListLength - 1] = new Bubble(o.returnColor(objectives1[2]), o.returnGunImg(objectives1[2]),
-						o.returnGridImg(objectives1[2]), difficulty);
+						o.returnGridImg(objectives1[2]), difficulty); 
 			}
 			j++;
 		}

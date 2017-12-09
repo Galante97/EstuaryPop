@@ -1,4 +1,11 @@
 
+/**
+ * 
+ * @author James Galante, Sam Hughes, Chris Sutton, Olivia Leipa, Scott Miller
+ *
+ */
+
+
 public class gridToCoordinates {
 	public int gridX;
 	int gridY;
@@ -8,6 +15,10 @@ public class gridToCoordinates {
 	int coordX;
 	int coordY;
 
+	/**
+	 * 
+	 * @return Xcoord of mouse
+	 */
 	public int getCoordX() {
 
 		if (gridX == 0) {
@@ -82,6 +93,10 @@ public class gridToCoordinates {
 
 	}
 
+	/**
+	 * 
+	 * @return y coord of mouse
+	 */
 	public int getCoordY() {
 		if (gridY == 0) {
 			coordY = -58 + 20;
