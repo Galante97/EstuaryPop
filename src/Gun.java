@@ -66,7 +66,7 @@ public class Gun extends JPanel {
 		at.rotate(Math.toRadians(degree), image.getWidth(this) / 2, image.getHeight(this) / 2); //gun arrow
 		g2d.drawImage(image, at, null); 
 		
-		g.drawImage(gunBaseImage, image.getWidth(this) / 2 - 15, image.getHeight(this) / 2 - 20, null); //gun base positon
+		//g.drawImage(gunBaseImage, image.getWidth(this) / 2 - 15, image.getHeight(this) / 2 - 20, null); //gun base positon
 
 	}
 

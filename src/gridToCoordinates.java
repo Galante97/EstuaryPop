@@ -22,104 +22,151 @@ public class gridToCoordinates {
 	public int getCoordX() {
 
 		if (gridX == 0) {
-			if (isStagerred == true)
-				coordX = 30;
-			else
-				coordX = 65;
+			if (isStagerred == true) {
+				double tempX = 30.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 65.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 1) {
-			if (isStagerred == true)
-				coordX = 100;
-			else
-				coordX = 135;
+			if (isStagerred == true) {
+				double tempX = 100.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 135.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 2) {
-			if (isStagerred == true)
-				coordX = 170;
-			else
-				coordX = 205;
+			if (isStagerred == true) {
+				double tempX = 170.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 205.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 3) {
-			if (isStagerred == true)
-				coordX = 240;
-			else
-				coordX = 275;
+			if (isStagerred == true) {
+				double tempX = 240.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 275.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 
 		} else if (gridX == 4) {
-			if (isStagerred == true)
-				coordX = 310;
-			else
-				coordX = 345;
+			if (isStagerred == true) {
+				double tempX = 310.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 345.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 5) {
-			if (isStagerred == true)
-				coordX = 380;
-			else
-				coordX = 415;
+			if (isStagerred == true) {
+				double tempX = 380.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 415.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 6) {
-			if (isStagerred == true)
-				coordX = 450;
-			else
-				coordX = 485;
+			if (isStagerred == true) {
+				double tempX = 450.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 485.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 7) {
-			if (isStagerred == true)
-				coordX = 520;
-			else
-				coordX = 555;
+			if (isStagerred == true) {
+				double tempX = 520.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 555.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 8) {
-			if (isStagerred == true)
-				coordX = 590;
-			else
-				coordX = 625;
+			if (isStagerred == true) {
+				double tempX = 590.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 625.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 9) {
-			if (isStagerred == true)
-				coordX = 660;
-			else
-				coordX = 695;
+			if (isStagerred == true) {
+				double tempX = 660.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 695.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 10) {
-			if (isStagerred == true)
-				coordX = 730;
-			else
-				coordX = 765;
+			if (isStagerred == true) {
+				double tempX = 730.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 765.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		} else if (gridX == 11) {
-			if (isStagerred == true)
-				coordX = 800;
-			else
-				coordX = 835;
+			if (isStagerred == true) {
+				double tempX = 800.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 835.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+
+			}
 		} else if (gridX == 12) {
-			if (isStagerred == true)
-				coordX = 870;
-			else
-				coordX = 905;
+			if (isStagerred == true) {
+				double tempX = 870.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			} else {
+				double tempX = 905.0 * PopView.SCALE_FACTOR;
+				coordX = (int) tempX;
+			}
 		}
 
 		return coordX;
 
 	}
 
-	/**
-	 * 
-	 * @return y coord of mouse
-	 */
 	public int getCoordY() {
 		if (gridY == 0) {
-			coordY = -58 + 20;
+			double tempY = (-58 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 1) {
-			coordY = 12 + 20;
+			double tempY = (12 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 2) {
-			coordY = 82 + 20;
+			double tempY = (82 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 3) {
-			coordY = 152 + 20;
+			double tempY = (152 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 4) {
-			coordY = 222 + 20;
+			double tempY = (222 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 5) {
-			coordY = 292 + 20;
+			double tempY = (292 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 6) {
-			coordY = 362 + 20;
+			double tempY = (362 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 7) {
-			coordY = 430 + 20;
+			double tempY = (430 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 8) {
-			coordY = 502 + 20;
+			double tempY = (502 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 9) {
-			coordY = 572 + 20;
+			double tempY = (572 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		} else if (gridY == 10) {
-			coordY = 642 + 20;
+			double tempY = (642 + 20) * PopView.SCALE_FACTOR;
+			coordY = (int) tempY;
 		}
 
 		return coordY;

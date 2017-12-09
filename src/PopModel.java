@@ -246,7 +246,7 @@ public class PopModel {
 	 *             when dealing with the time delay for click to fire
 	 */
 	public void moveGun() throws InterruptedException {
-		 score--;
+		// score--;
 
 		// Use dummyShoot (for testing)
 		/*

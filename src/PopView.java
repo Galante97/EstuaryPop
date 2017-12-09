@@ -10,6 +10,8 @@ import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -41,10 +43,13 @@ import javax.swing.Timer;
 public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	static double SCALE_FACTOR = 1.0;
-	
+
 	JFrame frame;
 	JPanel sidePanel;
 	JPanel gamePanel;
+	JPanel gunPanel;
+	JPanel loseBar;
+	JPanel gunPanelBase;
 	JPanel menu;
 
 	Gun gun;
@@ -125,6 +130,20 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	public PopView(PopModel Model, JFrame frame) {
 		this.model = Model;
 		this.frame = frame;
+
+		this.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				double y = getHeight();
+				if (y > 800) {
+					if (timer.isRunning()) {
+						SCALE_FACTOR = y / 800.0;
+						updatePanelPositons();
+
+					}
+				}
+
+			}
+		});
 	}
 
 	/**
@@ -160,9 +179,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		drawGunBubbles();
 		drawGun();
 		drawLoseBar();
-
-		// drawObjectives();
-
 		// drawGridForTesting();
 		drawGamePanel();
 
@@ -178,11 +194,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
-	
 	/**
 	 * this is strictly for visuals and will be removed later on
 	 */
-	public void drawGridForTesting() { 
+	public void drawGridForTesting() {
 		for (int i = 0; i < model.startRows + 6; i++) {
 			for (int j = 0; j < model.gridColumns; j++) {
 				JPanel gridPanel = new JPanel();
@@ -231,19 +246,30 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 				if (i < 6 && model.grid[i][j] != null) {
 					model.grid[i][j].xCoord = i * bubbleWH;
 					model.grid[i][j].yCoord = j * bubbleWH;
-					System.out.print(" [nil] ");
+					// System.out.print(" [nil] ");
 					panel.add(model.grid[i][j], BorderLayout.NORTH);
 
 				}
 
 				if (i == 0) {
-					panel.setBounds(j * bubbleWH + 30, i * bubbleWH + 12, bubbleWH, bubbleWH + 6);
+					double x = (j * bubbleWH + 30) * SCALE_FACTOR;
+					double y = (i * bubbleWH + 12) * SCALE_FACTOR;
+					double bubSize = bubbleWH * SCALE_FACTOR;
+					panel.setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+
 				} else {
 					if (i % 2 == 0) { // staggering if statement
+						double x = (j * bubbleWH + 30) * SCALE_FACTOR;
+						double y = ((i * (bubbleWH - 10)) + 12) * SCALE_FACTOR;
+						double bubSize = bubbleWH * SCALE_FACTOR;
+						panel.setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
 
-						panel.setBounds(j * bubbleWH + 30, (i * (bubbleWH - 10)) + 12, bubbleWH, bubbleWH + 6);
 					} else {
-						panel.setBounds(j * bubbleWH + 65, (i * (bubbleWH - 10)) + 12, bubbleWH, bubbleWH + 6);
+						double x = (j * bubbleWH + 65) * SCALE_FACTOR;
+						double y = ((i * (bubbleWH - 10)) + 12) * SCALE_FACTOR;
+						double bubSize = bubbleWH * SCALE_FACTOR;
+
+						panel.setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
 					}
 				}
 
@@ -257,6 +283,122 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			System.out.println("");
 		}
 	}
+
+	public void updatePanelPositons() {
+		// ************************************************//
+		// GRID//
+		int rowAdder = 6;
+		for (int i = 0; i < model.startRows + rowAdder; i++) {
+			for (int j = 0; j < model.gridColumns; j++) {
+
+				if (i == 0) {
+					double x = (j * bubbleWH + 30) * SCALE_FACTOR;
+					double y = (i * bubbleWH + 12) * SCALE_FACTOR;
+					double bubSize = bubbleWH * SCALE_FACTOR;
+					gridBubbleArr[i][j].setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+
+				} else {
+					if (i % 2 == 0) { // staggering if statement
+						double x = (j * bubbleWH + 30) * SCALE_FACTOR;
+						double y = ((i * (bubbleWH - 10)) + 12) * SCALE_FACTOR;
+						double bubSize = bubbleWH * SCALE_FACTOR;
+						gridBubbleArr[i][j].setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+
+					} else {
+						double x = (j * bubbleWH + 65) * SCALE_FACTOR;
+						double y = ((i * (bubbleWH - 10)) + 12) * SCALE_FACTOR;
+						double bubSize = bubbleWH * SCALE_FACTOR;
+
+						gridBubbleArr[i][j].setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+					}
+				}
+
+			}
+
+		}
+
+		// ************************************************//
+		// SIDE PANEL//
+
+		// scorePanel.setBounds(988, 210, 190, 100);
+		// oPanel.setBounds(988, 305, 190, 432);
+
+		double sideX = 990 * SCALE_FACTOR;
+		double sideY = 10 * SCALE_FACTOR;
+		double sideW = 200 * SCALE_FACTOR;
+		double sideH = 760 * SCALE_FACTOR;
+		sidePanel.setBounds((int) sideX, (int) sideY, (int) sideW, (int) sideH);
+
+		double timerX = 988 * SCALE_FACTOR;
+		double timerY = 10 * SCALE_FACTOR;
+		double timerW = 190 * SCALE_FACTOR;
+		double timerH = 200 * SCALE_FACTOR;
+		timerPanel.setBounds((int) timerX, (int) timerY, (int) timerW, (int) timerH);
+
+		double scoreX = 988 * SCALE_FACTOR;
+		double scoreY = 210 * SCALE_FACTOR;
+		double scoreW = 190 * SCALE_FACTOR;
+		double scoreH = 100 * SCALE_FACTOR;
+		scorePanel.setBounds((int) scoreX, (int) scoreY, (int) scoreW, (int) scoreH);
+
+		double objX = 988 * SCALE_FACTOR;
+		double objY = 305 * SCALE_FACTOR;
+		double objW = 190 * SCALE_FACTOR;
+		double objH = 432 * SCALE_FACTOR;
+		oPanel.setBounds((int) objX, (int) objY, (int) objW, (int) objH);
+
+		// ************************************************//
+		// gun bubbles//
+
+		for (int i = 0; i < model.gunListLength - 1; i++) {
+			if (i == 0) {
+				double x = (i * bubbleWH + 450) * SCALE_FACTOR;
+				double y = (712) * SCALE_FACTOR;
+				double bubSize = bubbleWH * SCALE_FACTOR;
+				BubbleInGun.setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+
+			} else {
+				double x = (i * bubbleWH + 480) * SCALE_FACTOR;
+				double y = (690) * SCALE_FACTOR;
+				double bubSize = bubbleWH * SCALE_FACTOR;
+				gunBubbleArr[i].setBounds((int) x, (int) y, (int) bubSize, (int) bubSize + 6);
+
+			}
+
+		}
+		// ************************************************//
+		// gun//
+		gunPanelBase.setBounds((int) ((450 - 30) * SCALE_FACTOR), (int) ((712 - 60) * SCALE_FACTOR),
+				(int) (131 * SCALE_FACTOR), (int) (121 * SCALE_FACTOR));
+
+		double gunX = (450 - 92) * SCALE_FACTOR;
+		double gunY = (712 - 150) * SCALE_FACTOR;
+		double gunW = (205 + 50) * SCALE_FACTOR;
+		double gunH = (270) * SCALE_FACTOR;
+		gunPanel.setBounds((int) gunX, (int) gunY, (int) gunW, (int) gunH);
+
+		double tempX = BubbleInGunX * SCALE_FACTOR;
+		double tempY = BubbleInGunY * SCALE_FACTOR;
+
+		BubbleInGunX = (int) tempX;
+		BubbleInGunY = (int) tempY;
+
+		// ************************************************//
+		// lose bar//
+		double loseX = 10 * SCALE_FACTOR;
+		double loseY = 508 * SCALE_FACTOR;
+		double loseW = 975 * SCALE_FACTOR;
+		double loseH = 5 * SCALE_FACTOR;
+		loseBar.setBounds((int) loseX, (int) loseY, (int) loseW, (int) loseH);
+
+		double gameX = 10 * SCALE_FACTOR;
+		double gameY = 10 * SCALE_FACTOR;
+		double gameW = 975 * SCALE_FACTOR;
+		double gameH = 760 * SCALE_FACTOR;
+		gamePanel.setBounds((int) gameX, (int) gameY, (int) gameW, (int) gameH);
+
+	}
+
 
 	/**
 	 * 
@@ -288,13 +430,21 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void drawGun() {
-		JPanel panel = new JPanel();
+		gunPanelBase = new JPanel();
+		GunBase gunBaseIm = new GunBase();
+		gunPanelBase.setBounds(BubbleInGunX - 30, BubbleInGunY - 60, 131, 121);
+		// gunPanelBase.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		gunPanelBase.setOpaque(false);
+		add(gunPanelBase);
+		gunPanelBase.add(gunBaseIm, BorderLayout.CENTER);
+
+		gunPanel = new JPanel();
 		gun = new Gun();
-		panel.setBounds(BubbleInGunX - 92, BubbleInGunY - 150, gun.w + 50, gun.h);
-		// panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		panel.setOpaque(false);
-		add(panel);
-		panel.add(gun, BorderLayout.CENTER);
+		gunPanel.setBounds(BubbleInGunX - 92, BubbleInGunY - 150, gun.w + 50, gun.h);
+		// gunPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		gunPanel.setOpaque(false);
+		add(gunPanel);
+		gunPanel.add(gun, BorderLayout.CENTER);
 
 	}
 
@@ -342,8 +492,13 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 	 * @return none
 	 */
 	public void updateGunBubbles() {
-		System.out.println("-Reload-");
-		gunBubbleArr[0].setBounds(BubbleInGunX, BubbleInGunY, bubbleWH, bubbleWH + 6);
+		// System.out.println("-Reload-");
+
+		double tempX = 450 * SCALE_FACTOR;
+		double tempY = 712 * SCALE_FACTOR;
+		double tempWh = bubbleWH * SCALE_FACTOR;
+
+		gunBubbleArr[0].setBounds((int) tempX, (int) tempY, (int) tempWh, (int) (tempWh + 6));
 
 		for (int i = 0; i < 6; i++) {
 			gunBubbleArr[i].removeAll();
@@ -351,7 +506,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			// gunBubbleArr[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
 			gunBubbleArr[i].repaint();
-
 		}
 
 	}
@@ -366,12 +520,11 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 	}
 
-	
 	/**
 	 * win lose line drawn on screen
 	 */
 	public void drawLoseBar() {
-		JPanel loseBar = new JPanel();
+		loseBar = new JPanel();
 		loseBar.setBounds(10, 508, 975, 5);
 		loseBar.setBackground(Color.RED);
 		loseBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -379,12 +532,14 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		add(loseBar);
 	}
 
-	
 	/**
 	 * 
-	 * @param objectiveIndex objective type of game
-	 * @param objectiveNum objective completed of game
-	 * @param delay hold time of popup
+	 * @param objectiveIndex
+	 *            objective type of game
+	 * @param objectiveNum
+	 *            objective completed of game
+	 * @param delay
+	 *            hold time of popup
 	 */
 	public void completionPopUp(int objectiveIndex, int objectiveNum, int delay) {
 		ActionListener taskPerformer = new ActionListener() {
@@ -402,11 +557,10 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		timedMessage.start();
 	}
 
-	
-	
 	/**
 	 * 
-	 * @param delay used for popup message
+	 * @param delay
+	 *            used for popup message
 	 */
 	public void winGamePopUp(int delay) {
 
@@ -589,8 +743,11 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 			gun.repaint();
 		}
 		if (clicked == true) {
-			bubbleMovingPosX = BubbleInGunX;
-			bubbleMovingPosY = BubbleInGunY;
+			double tempX = 450 * SCALE_FACTOR;
+			double tempY = 712 * SCALE_FACTOR;
+
+			bubbleMovingPosX = (int) tempX;
+			bubbleMovingPosY = (int) tempY;
 			clicked = false;
 
 		}
@@ -624,10 +781,12 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 			}
 
-			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, bubbleWH, bubbleWH + 6); // reseting bubble bounds
-
+			double tempWH = bubbleWH * SCALE_FACTOR;
+			BubbleInGun.setBounds(bubbleMovingPosX, bubbleMovingPosY, (int) tempWH, (int) (tempWH + 6));
+	
 			if (bubbleMovingPosY <= finalShootigPosY) { // bubble made contact
-				lineErrorHandlerY = BubbleInGunY; // reset
+				double tempY = 712 * SCALE_FACTOR;
+				lineErrorHandlerY = (int) tempY; // reset
 				updateGunBubbles(); // update
 				updateGrid(); // update grid first then gun bubbles
 
@@ -653,16 +812,16 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 		gamePanel = new JPanel();
 		BufferedImage img = null;
-		try {
+		/*try {
 			img = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
+		ImageIcon imageIcon = new ImageIcon(dimg); 
 		JLabel thumb = new JLabel();
-		thumb.setIcon(imageIcon);
-		gamePanel.add(thumb);
+		thumb.setIcon(imageIcon); 
+		gamePanel.add(thumb); */
 		gamePanel.setBounds(10, 10, 975, 760);
 		gamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		gamePanel.addMouseListener(this);
@@ -902,8 +1061,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		}
 
 	}
-
-	
 
 	/**
 	 * mouseReleased, is an overrided method from mouseListener that lets the
@@ -1168,7 +1325,6 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 
 	}
 
-	
 	/**
 	 * draw lose screen
 	 */
@@ -1268,9 +1424,8 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		System.out.println("Everything Drawn: Welcome to Estuary Pop");
 	}
 
-	
 	/**
-	 * draw practice view of game 
+	 * draw practice view of game
 	 */
 	public void drawGamePracticePanel() {
 		System.out.println("Draw game panel");
@@ -1278,24 +1433,24 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		gamePanel = new JPanel();
 		BufferedImage img = null;
 		BufferedImage img2 = null;
-		try {
+		/*try {
 			img = ImageIO.read(new File("src/background.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		try {
 			img2 = ImageIO.read(new File("src/matching.png")); // https://coast.noaa.gov/estuaries/curriculum/climate-extension.html
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
+		/*Image dimg = img.getScaledInstance(1300, 800, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg); */
 		Image dimg2 = img2.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
 		ImageIcon imageIcon2 = new ImageIcon(dimg2);
 		JLabel thumb = new JLabel();
 		JLabel match = new JLabel();
-		thumb.setIcon(imageIcon);
+		//thumb.setIcon(imageIcon);
 		match.setBounds(0, 390, 300, 300);
 		match.setIcon(imageIcon2);
 		gamePanel.setLayout(null);
@@ -1303,7 +1458,7 @@ public class PopView extends JFrame implements MouseListener, ActionListener {
 		gamePanel.setOpaque(true);
 		gamePanel.setBounds(200, 450, 800, 150);
 		JButton b1 = new JButton("Press here when you're ready to play!");
- 		b1.setBounds(100, 700, 300, 30);
+		b1.setBounds(100, 700, 300, 30);
 		b1.setBackground(Color.yellow);
 		b1.addMouseListener(new QuitPracticeListener());
 		gamePanel.add(thumb);
